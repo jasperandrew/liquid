@@ -1,5 +1,3 @@
-var tabs = new SimpleTabs(document.getElementById('tabs'));
-
 var tables = [];
 tables[0] = new Tabulator("#table1", {
     height:"311px",
@@ -57,13 +55,13 @@ document.querySelector("#load").addEventListener('click', function(){
     loadTableData('https://jsonplaceholder.typicode.com/posts', 1);
     loadTableData('https://jsonplaceholder.typicode.com/comments', 2);
 
-    document.querySelector('li.table1').addEventListener('click', redrawTable);
-    document.querySelector('li.table2').addEventListener('click', redrawTable);
-    document.querySelector('li.table3').addEventListener('click', redrawTable);
+    // document.querySelector('li.table1').addEventListener('click', redrawTable);
+    // document.querySelector('li.table2').addEventListener('click', redrawTable);
+    // document.querySelector('li.table3').addEventListener('click', redrawTable);
 });
 
-window.addEventListener('resize', function(){
-    tables[0].redraw();
-    tables[1].redraw();
-    tables[2].redraw();
-});
+// window.addEventListener('resize', function(){
+//     tables[0].redraw();
+//     tables[1].redraw();
+//     tables[2].redraw();
+// });

@@ -1,28 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="css/default.css">
-        <link rel="stylesheet" href="css/demo.css">
-        <link rel="stylesheet" href="css/tabulator_simple.min.css">
-        <link rel="stylesheet" href="css/style.css">
-    </head>
+	<head>
+		<meta charset="utf-8">
+		<title>Liquid Frontend</title>
+
+		<link rel="stylesheet" href="css/tabs.css">
+		<link rel="stylesheet" href="css/tabulator.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css">
+		<link rel="stylesheet" href="css/style.css">
+	</head>
 
 <body>
-    <ul class="simple-tabs" id="tabs">
-        <li class="table1 active">Users</li>
-        <li class="table2">Posts</li>
-        <li class="table3">Comments</li>
-    </ul>
-    <div class="clear-float"></div>
-    <div id="table1" class="tab-page active-page"></div>
-    <div id="table2" class="tab-page"></div>
-    <div id="table3" class="tab-page"></div>
-    <button id="load">Load</button>
-    
-    <script src="js/simple-tabs-pure-js.min.js"></script>
-    <script src="js/tabulator.min.js"></script>
-    <script src="js/main.js"></script>
-
+	<div class = "tabinator">
+		<input type = "radio" id = "tab1" name = "tabs" checked>
+		<label for = "tab1">Users</label>
+		<input type = "radio" id = "tab2" name = "tabs">
+		<label for = "tab2">Posts</label>
+		<input type = "radio" id = "tab3" name = "tabs">
+		<label for = "tab3">Comments</label>
+		<div id = "content1">
+			<div id="table1"></div>
+		</div>
+		<div id = "content2">
+			<div id="table2"></div>
+		</div>
+		<div id = "content3">
+			<div id="table3"></div>
+		</div>
+	</div>
+	<button id="load">Load</button>
+	
+	<script src="js/tabulator.min.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/index.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.min.js"></script>
 </body>
 </html>

@@ -1,18 +1,15 @@
 var tables = [];
 tables[0] = new Tabulator("#table1", {
-    height:"311px",
     layout:"fitData",
     placeholder:"No Data Set",
     columns:[]
 });
 tables[1] = new Tabulator("#table2", {
-    height:"311px",
     layout:"fitData",
     placeholder:"No Data Set",
     columns:[]
 });
 tables[2] = new Tabulator("#table3", {
-    height:"311px",
     layout:"fitData",
     placeholder:"No Data Set",
     columns:[]

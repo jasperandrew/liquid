@@ -120,7 +120,7 @@ function test() {
 	// 	}
 	// });
 	
-	var request = createCORSRequest("get", "http://spurcell.pythonanywhere.com/throwin_file/");
+	var request = createCORSRequest("get", "http://spurcell.pythonanywhere.com/throwin_file");
 	if (request){
 		request.onload = function() {
 			console.log(request.responseText);

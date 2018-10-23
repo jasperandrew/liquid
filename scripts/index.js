@@ -90,22 +90,46 @@ var jasperTabulator = {
 // 	}
 // };
 
+function createCORSRequest(method, url){
+	var xhr = new XMLHttpRequest();
+	if ("withCredentials" in xhr){
+		xhr.open(method, url, true);
+	} else if (typeof XDomainRequest != "undefined"){
+		xhr = new XDomainRequest();
+		xhr.open(method, url);
+	} else {
+		xhr = null;
+	}
+	return xhr;
+}
+
 function test() {
 	var data = new FormData(),
 		input = $('#file')[0].files[0];
 
 	data.append('file', input);
 
-	$.ajax({
-		url : 'https://spurcell.pythonanywhere.com/throwin_file/' + input.name,
-		type : 'POST',
-		data : data,
-		processData: false,  // tell jQuery not to process the data
-		contentType: false,  // tell jQuery not to set contentType
-		success : function(response) {
-			console.log(response);
-		}
-	});
+	// $.ajax({
+	// 	url : 'https://spurcell.pythonanywhere.com/throwin_file/' + input.name,
+	// 	type : 'POST',
+	// 	data : data,
+	// 	processData: false,  // tell jQuery not to process the data
+	// 	contentType: false,  // tell jQuery not to set contentType
+	// 	success : function(response) {
+	// 		console.log(response);
+	// 	}
+	// });
+	
+	var request = createCORSRequest("get", "http://spurcell.pythonanywhere.com/throwin_file/");
+	if (request){
+		request.onload = function() {
+			console.log(request.responseText);
+		};
+		request.onreadystatechange = function() {
+			console.log(request.responseText);
+		};
+		request.send(data);
+	}
 
 	//tableManager.pushRawData()
 }

@@ -40,7 +40,7 @@ function loadTableData(url, tableIdx){
             }
 
             tables[tableIdx].setColumns(cols);
-            tables[tableIdx].setData(data)
+            tables[tableIdx].setData(data);
         });
 }
 

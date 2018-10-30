@@ -1,17 +1,17 @@
 let tables = [];
-tables[0] = new Tabulator("#table1", {
-    layout:"fitData",
-    placeholder:"No Data Set",
+tables[0] = new Tabulator('#table1', {
+    layout:'fitData',
+    placeholder:'No Data Set',
     columns:[]
 });
-tables[1] = new Tabulator("#table2", {
-    layout:"fitData",
-    placeholder:"No Data Set",
+tables[1] = new Tabulator('#table2', {
+    layout:'fitData',
+    placeholder:'No Data Set',
     columns:[]
 });
-tables[2] = new Tabulator("#table3", {
-    layout:"fitData",
-    placeholder:"No Data Set",
+tables[2] = new Tabulator('#table3', {
+    layout:'fitData',
+    placeholder:'No Data Set',
     columns:[]
 });
 
@@ -27,7 +27,7 @@ function loadTableData(url, tableIdx){
     }))
     .then(function(){
         for(item in data[0]){
-            if(typeof(data[0][item]) === "object"){
+            if(typeof(data[0][item]) === 'object'){
                 var subcols = [];
                 for(i in data[0][item]){
                     subcols.push({title:i, field:item + '.' + i});
@@ -51,13 +51,13 @@ function loadTableData(url, tableIdx){
 //$(document).foundation();
 
 var eventHandler = {
-	"eventMap": {
+	'eventMap': {
 		 'click .upload': 'tableManager.uploadEventHandler',
 	},
-	"init": function() {
+	'init': function() {
 		this.eventManager(tableManager, this.eventMap);
 	},
-	"eventManager": function(namespace, eventMap) {
+	'eventManager': function(namespace, eventMap) {
 		$.each(eventsMap, function(eventTypeSelector, handler) {
 			var a = eventTypeSelector.split(' ');
 			var eventType = a[0];
@@ -79,16 +79,21 @@ var eventHandler = {
 };
 
 var tableManager = {
-	"uploadEventHandler": function(upload) {
+	'uploadEventHandler': function(upload) {
 		$(upload).on('change', function (input) {
 				this.getTableFromRaw(input);
 		});
 	},
-	"getTableFromRaw": function(source, table) {
-		function push(data, name) {
-			fetch(API_URL + 'throwin_file/' + name, {
-				method: "POST",
-				body: data
+	'getTableFromRaw': function(source, table) {
+		function push(file_contents, name) {
+			let json = {
+				task_name: 'liquid_gui', // will vary with tasks
+				cmd_name: 'throwin'
+			};
+
+			// console.log(encodeURI(API_URL + 'cmd/?json_data=' + JSON.stringify(json) + '&file_contents=' + file_contents));
+			fetch(encodeURI(API_URL + 'cmd/?json_data=' + JSON.stringify(json) + '&file_contents=' + file_contents), {
+				method: 'POST'
 			})
 			.then(response => {
                 console.log(response);
@@ -101,15 +106,18 @@ var tableManager = {
 		if(source === 'file'){
 			let reader = new FileReader(),
 				file = document.querySelector('#file').files[0];
-			reader.onload = e => push(e.target.result, file.name);
+			reader.onload = e => {
+                console.log(e.target.result);
+                push(e.target.result, file.name);
+            }
 			reader.readAsText(file);
 		}
 	},
-	"getUpdatedTable": function(data, table) {
+	'getUpdatedTable': function(data, table) {
 		return $.ajax({
-				type: "post",
+				type: 'post',
 				data: data,
-				dataType: "json",
+				dataType: 'json',
 				url: liquidShawnUrl
 			}).done(function(response) {
 				this.updateTable(table, response);
@@ -117,7 +125,7 @@ var tableManager = {
 				console.error('Error retrieving table: ', error);
 			});
 	},
-	"setTable": function(table, columns, data) {
+	'setTable': function(table, columns, data) {
         let cols = [];
         for(i in columns) cols.push({ title:columns[i].toUpperCase(), field:columns[i] });
         console.log(cols, data);
@@ -127,18 +135,18 @@ var tableManager = {
 };
 
 // var questionHandler = {
-// 	"questionMap": {
-// 		"question1": {
-// 			"questionText": "lorem ipsum",
-// 			"answerOptions": [
-// 				{"yes": handler},
-// 				{"no": handler}
+// 	'questionMap': {
+// 		'question1': {
+// 			'questionText': 'lorem ipsum',
+// 			'answerOptions': [
+// 				{'yes': handler},
+// 				{'no': handler}
 // 			]
 // 		}
 // 	}
 // };
 
-document.querySelector("#load").addEventListener('click', function(){
+document.querySelector('#load').addEventListener('click', function(){
     //loadTableData('https://jsonplaceholder.typicode.com/users', 0);
     tableManager.getTableFromRaw('file', 0);
     loadTableData('https://jsonplaceholder.typicode.com/posts', 1);

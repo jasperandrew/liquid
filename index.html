@@ -6,31 +6,44 @@
 
 		<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css"> -->
 		<link rel="stylesheet" href="styles/tabulator.min.css">
-		<link rel="stylesheet" href="styles/tabs.css">
 		<link rel="stylesheet" href="styles/style.css">
 	</head>
 
 <body>
-	<div class = "tabinator">
-		<input type = "radio" id = "tab1" name = "tabs" checked>
-		<label for = "tab1">Users</label>
-		<input type = "radio" id = "tab2" name = "tabs">
-		<label for = "tab2">Posts</label>
-		<input type = "radio" id = "tab3" name = "tabs">
-		<label for = "tab3">Comments</label>
-		<div id = "content1">
-			<div class="table" id="table1"></div>
-		</div>
-		<div id = "content2">
-			<div class="table" id="table2"></div>
-		</div>
-		<div id = "content3">
-			<div class="table" id="table3"></div>
+	<div class="dialogue">
+		<p class="prompt">Let's begin! For your initial table/list, would you like to:</p>
+		<div class="option">
+				<input type="radio" id="ans1" name="answers" value="0">
+				<label for="ans1">Upload a file from your computer</label>
+			</div>
+		<div class="option">
+			<input type="radio" id="ans2" name="answers" value="1">
+			<label for="ans2">Query a database or call an API</label>
 		</div>
 	</div>
-	<button id="load">Load</button>
 	<input id="file" type="file" />
-	
+	<button id="load">Load</button>
+	<div class="tabs">
+		<div class="tab">
+			<input type="radio" id="tab1" name="tabs" checked><label for="tab1">Users</label>
+			<div class="content">
+				<div class="table" id="table1"></div>
+			</div>
+		</div>
+		<div class="tab">
+			<input type="radio" id="tab2" name="tabs"><label for="tab2">Posts</label>
+			<div class="content">
+				<div class="table" id="table2"></div>
+			</div>
+		</div>
+		<div class="tab">
+			<input type="radio" id="tab3" name="tabs"><label for="tab3">Comments</label>
+			<div class="content">
+				<div class="table" id="table3"></div>
+			</div>
+		</div>
+	</div>
+
 	<script src="scripts/jquery-3.3.1.min.js"></script>
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/js/foundation.min.js"></script> -->
 	<script src="scripts/tabulator.min.js"></script>

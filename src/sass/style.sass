@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans")
+
+body
+  font-family: "Open Sans"
+
+.dialogue
+  border: 1px solid black
+  padding: 20px
+
+.dialogue .prompt
+  margin-top: 0
+
+.option input
+  display: none
+
+.option label
+  display: inline-block
+  margin: 5px 0 0 40px
+  border: 1px solid #bbb
+  padding: 5px 15px
+  border-radius: 5px
+
+.option label:hover
+  cursor: pointer
+  border-color: #888888
+
+.option input:checked ~ label
+  background: rgb(154, 226, 154)
+
+.option input:checked ~ label:before
+  content: '✔'
+  position: relative
+  right: 5px
+
+.tabcontainer::after
+  content: 'No files yet!'
+  
+
+.tabs
+  position: fixed
+  bottom: 7px
+
+.tab
+  display: inline
+  margin: 0
+  font-size: 0
+
+.tab input
+  display: none
+
+.tab label
+  position: relative
+  font-size: initial
+  box-sizing: border-box
+  padding: 10px 25px 20px 25px
+  color: #888
+  border: 1px solid #bbb
+  border-radius: 4px 4px 0 0
+
+.tab label:hover
+  color: #333
+  cursor: pointer
+  bottom: 2px
+
+.tab input:checked ~ label
+  color: #333
+  background: #fff
+  bottom: 5px
+
+.tab .content
+  display: block
+  position: fixed
+  bottom: 50px
+  left: 0
+  width: calc(100% - 20px)
+  margin: 10px
+  z-index: 0
+  border: 1px solid #bbb
+
+.tab input:checked ~ .content
+  display: block
+  z-index: 9
+
+.table
+  height: 60vh

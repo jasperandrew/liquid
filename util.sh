@@ -30,6 +30,13 @@ build () {
 	npx sass src/sass/:styles/
 }
 
+server () {
+	echo "[Util] Starting server..."
+	trap "kill 0" EXIT
+	npx http-server
+	wait
+}
+
 start () {
 	echo "[Util] Starting server..."
 	echo "[Util] Watching files for updates..."

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Open+Sans");
 body {
   font-family: "Open Sans";
@@ -23,17 +24,24 @@ body {
   padding: 5px 15px;
   border-radius: 5px;
 }
+
 .option label:hover {
   cursor: pointer;
   border-color: #888888;
 }
+
 .option input:checked ~ label {
-  background: rgb(154, 226, 154);
+  background: #9ae29a;
 }
+
 .option input:checked ~ label:before {
-  content: '✔';
+  content: "✔";
   position: relative;
   right: 5px;
+}
+
+.tabcontainer::after {
+  content: "No files yet!";
 }
 
 .tabs {

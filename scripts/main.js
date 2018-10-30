@@ -147,8 +147,8 @@ var tableManager = {
 // };
 
 document.querySelector('#load').addEventListener('click', function(){
-    //loadTableData('https://jsonplaceholder.typicode.com/users', 0);
-    tableManager.getTableFromRaw('file', 0);
+    loadTableData('https://jsonplaceholder.typicode.com/users', 0);
+    //tableManager.getTableFromRaw('file', 0);
     loadTableData('https://jsonplaceholder.typicode.com/posts', 1);
     loadTableData('https://jsonplaceholder.typicode.com/comments', 2);
 });

@@ -18,6 +18,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+/**************************************************************************
+ * JSX stuff
+ */
 var Dialogue =
 /*#__PURE__*/
 function (_React$Component) {
@@ -61,10 +64,34 @@ function (_React$Component) {
   return Dialogue;
 }(React.Component);
 
-var Tab =
+var Throwin =
 /*#__PURE__*/
 function (_React$Component2) {
-  _inherits(Tab, _React$Component2);
+  _inherits(Throwin, _React$Component2);
+
+  function Throwin(props) {
+    _classCallCheck(this, Throwin);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Throwin).call(this, props));
+  }
+
+  _createClass(Throwin, [{
+    key: "render",
+    value: function render() {
+      return React.createElement("div", {
+        className: this.props.type,
+        id: 't' + this.props.i
+      });
+    }
+  }]);
+
+  return Throwin;
+}(React.Component);
+
+var Tab =
+/*#__PURE__*/
+function (_React$Component3) {
+  _inherits(Tab, _React$Component3);
 
   function Tab(props) {
     _classCallCheck(this, Tab);
@@ -86,10 +113,10 @@ function (_React$Component2) {
       }), React.createElement("label", {
         htmlFor: id
       }, this.props.tabName), React.createElement("div", {
-        className: "content"
-      }, React.createElement("div", {
-        className: "table",
-        id: 'table' + this.props.i
+        className: "throwin"
+      }, React.createElement(Throwin, {
+        type: this.props.type,
+        i: this.props.i
       })));
     }
   }]);
@@ -99,105 +126,129 @@ function (_React$Component2) {
 
 var TabContainer =
 /*#__PURE__*/
-function (_React$Component3) {
-  _inherits(TabContainer, _React$Component3);
+function (_React$Component4) {
+  _inherits(TabContainer, _React$Component4);
 
   function TabContainer(props) {
-    var _this;
-
     _classCallCheck(this, TabContainer);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TabContainer).call(this, props));
-    _this.tabs = [];
-    return _this;
+    return _possibleConstructorReturn(this, _getPrototypeOf(TabContainer).call(this, props));
   }
 
   _createClass(TabContainer, [{
     key: "render",
     value: function render() {
-      this.tabs.push(React.createElement(Tab, {
-        key: "0",
-        i: "0",
-        isChecked: false,
-        tabName: "Test"
-      }));
-      this.tabs.push(React.createElement(Tab, {
-        key: "1",
-        i: "1",
-        isChecked: false,
-        tabName: "bologne.txt"
-      }));
+      var tabs = [];
+      tabManager.data.forEach(function (tab) {
+        tabs.push(tab.tabElement);
+      });
       return React.createElement("div", {
         className: "tabs"
-      }, this.tabs);
+      }, tabs);
     }
   }]);
 
   return TabContainer;
 }(React.Component);
+/**************************************************************************
+ * 
+ */
 
-ReactDOM.render(React.createElement(Dialogue, {
-  prompt: "Let's begin! For your initial table/list, would you like to:"
-}), document.querySelector('#dialogue_container'));
-ReactDOM.render(React.createElement(TabContainer, null), document.querySelector('#tab_container')); // let tables = [];
-// tables[0] = new Tabulator('#table1', {
-//     layout:'fitData',
-//     placeholder:'No Data Set',
-//     columns:[]
-// });
-// tables[1] = new Tabulator('#table2', {
-//     layout:'fitData',
-//     placeholder:'No Data Set',
-//     columns:[]
-// });
-// tables[2] = new Tabulator('#table3', {
-//     layout:'fitData',
-//     placeholder:'No Data Set',
-//     columns:[]
-// });
 
-var API_URL = 'https://spurcell.pythonanywhere.com/';
-
-function loadTableData(url, tableIdx) {
-  var data = [],
-      cols = [];
-  fetch(url).then(function (response) {
-    return response.json();
-  }).then(function (json) {
-    return json.forEach(function (row) {
-      data.push(row);
+var tabManager = {
+  data: [],
+  activeTab: 1,
+  addTab: function addTab(name, contentType, contentSource, content) {
+    console.log(content);
+    var n = this.data.length + 1;
+    this.data.push({
+      tabElement: React.createElement(Tab, {
+        key: n,
+        i: n,
+        isChecked: n === this.activeTab ? true : false,
+        tabName: name,
+        type: contentType
+      }),
+      throwin: {
+        name: name,
+        id: '#t' + n,
+        type: contentType,
+        src: contentSource,
+        content: content,
+        object: null
+      }
     });
-  }).then(function () {
-    for (item in data[0]) {
-      if (_typeof(data[0][item]) === 'object') {
-        var subcols = [];
+  },
+  render: function render() {
+    ReactDOM.render(React.createElement(TabContainer, null), document.querySelector('#tab_container'));
+    this.data.forEach(function (tab) {
+      var t = tab.throwin;
 
-        for (i in data[0][item]) {
-          subcols.push({
-            title: i,
-            field: item + '.' + i
+      if (t.type === 'table') {
+        if (!t.object) {
+          t.object = new Tabulator(t.id, {
+            layout: 'fitData',
+            placeholder: 'Loading...'
           });
         }
 
-        cols.push({
-          title: item,
-          columns: subcols
-        });
-      } else {
-        cols.push({
-          title: item,
-          field: item
-        });
+        if (t.src === 'fetch') {
+          var data = {
+            cols: [],
+            rows: []
+          };
+          fetch(t.content).then(function (response) {
+            console.log(response);
+            return response.json();
+          }).then(function (json) {
+            return json.forEach(function (row) {
+              data.rows.push(row);
+            });
+          }).then(function () {
+            for (var item in data.rows[0]) {
+              data.cols.push({
+                title: item,
+                field: item
+              });
+            }
+          }).then(function () {
+            t.object.setColumns(data.cols);
+            t.object.setData(data.rows);
+          });
+        } else {
+          t.object.setColumns(t.content.cols);
+          t.object.setData(t.content.rows);
+        }
+      } else if (t.type === 'text') {
+        document.querySelector(t.id).innerHTML = t.content;
       }
-    }
-
-    console.log(cols, data);
-    tables[tableIdx].setColumns(cols);
-    tables[tableIdx].setData(data);
-  });
-} //$(document).foundation();
-
-
+    });
+  }
+};
+var testTable = {
+  cols: [{
+    title: 'A',
+    field: 'a'
+  }, {
+    title: 'B',
+    field: 'b'
+  }],
+  rows: [{
+    a: 1,
+    b: 2
+  }, {
+    a: 3,
+    b: 4
+  }]
+};
+tabManager.addTab('Hard-coded Table', 'table', 'local', testTable);
+tabManager.addTab('Web API Call', 'table', 'fetch', 'https://jsonplaceholder.typicode.com/posts');
+tabManager.addTab('Hard-coded Text', 'text', 'local', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
+tabManager.render();
+ReactDOM.render(React.createElement(Dialogue, {
+  prompt: "Let's begin! For your initial table/list, would you like to:"
+}), document.querySelector('#dialogue_container'));
+var API_URL = 'https://spurcell.pythonanywhere.com/';
 var eventHandler = {
   'eventMap': {
     'click .upload': 'tableManager.uploadEventHandler'
@@ -237,21 +288,24 @@ var tableManager = {
       var json_data = {
         task_name: 'liquid_gui',
         // will vary with tasks
-        cmd_name: 'throwin'
-      }; // console.log(encodeURI('json_data=' + JSON.stringify(json_data) + '&file_contents=' + filestr));
-
+        cmd_name: 'throwin_file',
+        file_name: name
+      };
+      var body = encodeURI('json_data=' + JSON.stringify(json_data) + '&file_contents=' + filestr);
+      console.log(body);
       fetch(API_URL + 'cmd', {
         method: 'POST',
-        // headers: {
-        //   'Accept': 'application/json, text/plain, */*',
-        //   'Content-Type': 'application/json'
-        // },
-        body: encodeURI('json_data=' + JSON.stringify(json_data) + '&file_contents=' + filestr)
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: body
       }).then(function (response) {
         console.log(response);
-        return response.json();
+        return response.text();
       }).catch(function (err) {
         return console.log('[Upload error] ' + err);
+      }).then(function (json) {
+        return console.log(json);
       }); // .then(json => tableManager.setTable(table, json['col_list'], json['table_data']));
     }
 

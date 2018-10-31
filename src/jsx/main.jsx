@@ -1,7 +1,12 @@
+/**************************************************************************
+ * JSX stuff
+ */
+
 class Dialogue extends React.Component {
 	constructor(props) {
 		super(props);
 	}
+
 	render() {
 		return (
 			<div className='dialogue'>
@@ -19,10 +24,23 @@ class Dialogue extends React.Component {
 	}
 }
 
+class Throwin extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		return (
+			<div className={this.props.type} id={'t' + this.props.i}></div>
+		);
+	}
+}
+
 class Tab extends React.Component {
 	constructor(props) {
 		super(props);
 	}
+
 	render() {
 		let id = 'tab' + this.props.i;
 
@@ -30,8 +48,8 @@ class Tab extends React.Component {
 			<div className='tab'>
 				<input type='radio' id={id} name='tabs' defaultChecked={this.props.isChecked}/>
 				<label htmlFor={id}>{this.props.tabName}</label>
-				<div className='content'>
-					<div className='table' id={'table' + this.props.i}></div>
+				<div className='throwin'>
+					<Throwin type={this.props.type} i={this.props.i}/>
 				</div>
 			</div>
 		);
@@ -41,68 +59,101 @@ class Tab extends React.Component {
 class TabContainer extends React.Component {
 	constructor(props){
 		super(props);
-		this.tabs = [];
 	}
+
 	render() {
-		this.tabs.push(<Tab key='0' i='0' isChecked={false} tabName='Test'/>);
-		this.tabs.push(<Tab key='1' i='1' isChecked={false} tabName='bologne.txt'/>);
+		let tabs = [];
+		tabManager.data.forEach(tab => { tabs.push(tab.tabElement); });
 		return (
 			<div className='tabs'>
-				{this.tabs}
+				{tabs}
 			</div>
 		);
 	}
 }
 
-ReactDOM.render(<Dialogue prompt="Let's begin! For your initial table/list, would you like to:"/>, document.querySelector('#dialogue_container'));
-ReactDOM.render(<TabContainer/>, document.querySelector('#tab_container'));
-// let tables = [];
-// tables[0] = new Tabulator('#table1', {
-//     layout:'fitData',
-//     placeholder:'No Data Set',
-//     columns:[]
-// });
-// tables[1] = new Tabulator('#table2', {
-//     layout:'fitData',
-//     placeholder:'No Data Set',
-//     columns:[]
-// });
-// tables[2] = new Tabulator('#table3', {
-//     layout:'fitData',
-//     placeholder:'No Data Set',
-//     columns:[]
-// });
+/**************************************************************************
+ * 
+ */
 
-const API_URL = 'https://spurcell.pythonanywhere.com/';
+let tabManager = {
+	data: [],
+	activeTab: 1,
+	addTab: function(name, contentType, contentSource, content) {
+		console.log(content);
+		let n = this.data.length + 1;
+		this.data.push({
+			tabElement: <Tab key={n} i={n} isChecked={n === this.activeTab ? true : false} tabName={name} type={contentType}/>,
+			throwin: {
+				name: name,
+				id: '#t' + n,
+				type: contentType,
+				src: contentSource,
+				content: content,
+				object: null
+			}
+		});
+	},
+	render: function() {
+		ReactDOM.render(<TabContainer/>, document.querySelector('#tab_container'));
+		this.data.forEach(tab => {
+			let t = tab.throwin;
+			if(t.type === 'table'){
+				if(!t.object){
+					t.object = new Tabulator(t.id, {
+						layout:'fitData',
+						placeholder:'Loading...'
+					});
+				}
+				if(t.src === 'fetch'){
+					let data = { cols: [], rows: [] };
+					fetch(t.content)
+					.then(response => {
+						console.log(response);
+						return response.json();
+					})
+					.then(json => json.forEach(row => {
+						data.rows.push(row);
+					}))
+					.then(() => {
+						for(let item in data.rows[0]){
+							data.cols.push({ title:item, field:item });
+						}
+					})
+					.then(() => {
+						t.object.setColumns(data.cols);
+						t.object.setData(data.rows);
+					});
+				}else{
+					t.object.setColumns(t.content.cols);
+					t.object.setData(t.content.rows);
+				}
+			}else if(t.type === 'text'){
+				document.querySelector(t.id).innerHTML = t.content;
+			}
+		});
+	}
+};
 
-function loadTableData(url, tableIdx){
-    var data = [], cols = [];
-
-    fetch(url)
-    .then(response => response.json())
-    .then(json => json.forEach(row => {
-        data.push(row);
-    }))
-    .then(function(){
-        for(item in data[0]){
-            if(typeof(data[0][item]) === 'object'){
-                var subcols = [];
-                for(i in data[0][item]){
-                    subcols.push({title:i, field:item + '.' + i});
-                }
-                cols.push({ title:item, columns:subcols });
-            }else{
-                cols.push({ title:item, field:item });
-            }
-        }
-
-        console.log(cols,data);
-        tables[tableIdx].setColumns(cols);
-        tables[tableIdx].setData(data);
-    });
+let testTable = {
+	cols: [
+		{title: 'A', field: 'a'},
+		{title: 'B', field: 'b'}
+	],
+	rows: [
+		{ a:1, b:2 },
+		{ a:3, b:4 }
+	]
 }
 
-//$(document).foundation();
+tabManager.addTab('Hard-coded Table', 'table', 'local', testTable);
+tabManager.addTab('Web API Call', 'table', 'fetch', 'https://jsonplaceholder.typicode.com/posts');
+tabManager.addTab('Hard-coded Text', 'text', 'local', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
+tabManager.render();
+
+ReactDOM.render(<Dialogue prompt="Let's begin! For your initial table/list, would you like to:"/>, document.querySelector('#dialogue_container'));
+
+const API_URL = 'https://spurcell.pythonanywhere.com/';
 
 let eventHandler = {
 	'eventMap': {
@@ -142,22 +193,24 @@ let tableManager = {
 		function push(filestr, name) {
 			let json_data = {
 				task_name: 'liquid_gui', // will vary with tasks
-				cmd_name: 'throwin'	
+				cmd_name: 'throwin_file',
+				file_name: name
 			};
-			// console.log(encodeURI('json_data=' + JSON.stringify(json_data) + '&file_contents=' + filestr));
+			let body = encodeURI('json_data=' + JSON.stringify(json_data) + '&file_contents=' + filestr);
+			console.log((body));
 			fetch(API_URL + 'cmd', {
 				method: 'POST',
-				// headers: {
-				//   'Accept': 'application/json, text/plain, */*',
-				//   'Content-Type': 'application/json'
-				// },
-				body: encodeURI('json_data=' + JSON.stringify(json_data) + '&file_contents=' + filestr)
+				headers: {
+				  'Content-Type': 'application/x-www-form-urlencoded'
+				},
+				body: body
 			})
 			.then(response => {
                 console.log(response);
-                return response.json();
+                return response.text();
             })
-			.catch(err => console.log('[Upload error] ' + err));
+			.catch(err => console.log('[Upload error] ' + err))
+			.then(json => console.log(json));
 			// .then(json => tableManager.setTable(table, json['col_list'], json['table_data']));
 		}
 

@@ -32,9 +32,17 @@ body
   position: relative
   right: 5px
 
-.tabcontainer::after
+#tab_container::after
   content: 'No files yet!'
-  
+  display: block
+  position: fixed
+  bottom: 50px
+  left: 0
+  width: calc(100% - 20px)
+  margin: 10px
+  z-index: -1
+  text-align: center
+  padding-bottom: 30vh
 
 .tabs
   position: fixed
@@ -44,7 +52,8 @@ body
   display: inline
   margin: 0
   font-size: 0
-
+  & *
+    font-size: initial
 .tab input
   display: none
 
@@ -67,7 +76,7 @@ body
   background: #fff
   bottom: 5px
 
-.tab .content
+.tab .throwin
   display: block
   position: fixed
   bottom: 50px
@@ -77,9 +86,11 @@ body
   z-index: 0
   border: 1px solid #bbb
 
-.tab input:checked ~ .content
+.tab input:checked ~ .throwin
   display: block
   z-index: 9
 
-.table
+.throwin > div
+  display: block
   height: 60vh
+  background: white

@@ -102,6 +102,8 @@ function (_React$Component3) {
   _createClass(Tab, [{
     key: "render",
     value: function render() {
+      var _this = this;
+
       var id = 'tab' + this.props.i;
       return React.createElement("div", {
         className: "tab"
@@ -111,6 +113,9 @@ function (_React$Component3) {
         name: "tabs",
         defaultChecked: this.props.isChecked
       }), React.createElement("label", {
+        onClick: function onClick() {
+          return tabManager.setActiveTab(_this.props.i);
+        },
         htmlFor: id
       }, this.props.tabName), React.createElement("div", {
         className: "throwin"
@@ -158,8 +163,11 @@ function (_React$Component4) {
 var tabManager = {
   data: [],
   activeTab: 1,
+  setActiveTab: function setActiveTab(i) {
+    this.activeTab = i;
+    console.log(this.activeTab);
+  },
   addTab: function addTab(name, contentType, contentSource, content) {
-    console.log(content);
     var n = this.data.length + 1;
     this.data.push({
       tabElement: React.createElement(Tab, {
@@ -193,29 +201,31 @@ var tabManager = {
         }
 
         if (t.src === 'fetch') {
-          var data = {
-            cols: [],
-            rows: []
-          };
           fetch(t.content).then(function (response) {
-            console.log(response);
             return response.json();
           }).then(function (json) {
-            return json.forEach(function (row) {
-              data.rows.push(row);
+            t.content = {
+              cols: [],
+              rows: []
+            };
+            t.src = 'local';
+            json.forEach(function (row) {
+              return t.content.rows.push(row);
             });
-          }).then(function () {
-            for (var item in data.rows[0]) {
-              data.cols.push({
+
+            for (var item in t.content.rows[0]) {
+              t.content.cols.push({
                 title: item,
-                field: item
+                field: item,
+                editor: 'input'
               });
             }
-          }).then(function () {
-            t.object.setColumns(data.cols);
-            t.object.setData(data.rows);
+
+            t.object.setColumns(t.content.cols);
+            t.object.setData(t.content.rows);
           });
         } else {
+          console.log(t.content);
           t.object.setColumns(t.content.cols);
           t.object.setData(t.content.rows);
         }
@@ -248,35 +258,34 @@ tabManager.render();
 ReactDOM.render(React.createElement(Dialogue, {
   prompt: "Let's begin! For your initial table/list, would you like to:"
 }), document.querySelector('#dialogue_container'));
-var API_URL = 'https://spurcell.pythonanywhere.com/';
-var eventHandler = {
-  'eventMap': {
-    'click .upload': 'tableManager.uploadEventHandler'
-  },
-  'init': function init() {
-    this.eventManager(tableManager, this.eventMap);
-  },
-  'eventManager': function eventManager(namespace, eventMap) {
-    $.each(eventsMap, function (eventTypeSelector, handler) {
-      var a = eventTypeSelector.split(' ');
-      var eventType = a[0];
-      var selector = a[1];
-      $(selector).off(eventType);
+var API_URL = 'https://spurcell.pythonanywhere.com/'; // let eventHandler = {
+// 	'eventMap': {
+// 		 'click .upload': 'tableManager.uploadEventHandler',
+// 	},
+// 	'init': function() {
+// 		this.eventManager(tableManager, this.eventMap);
+// 	},
+// 	'eventManager': function(namespace, eventMap) {
+// 		$.each(eventsMap, function(eventTypeSelector, handler) {
+// 			var a = eventTypeSelector.split(' ');
+// 			var eventType = a[0];
+// 			var selector = a[1];
+// 			$(selector).off(eventType);
+// 			if(handler.indexOf('.') > -1){
+// 				var submodule = handler.split('.')[0];
+// 				var submoduleHandler = handler.split('.')[1];
+// 				$(selector).on(eventType, function(event) {
+// 						namespace[submodule][submoduleHandler](event);
+// 				});
+// 			} else {
+// 					$(selector).on(eventType, function(event) {
+// 							namespace[handler](event);
+// 					});
+// 			}
+// 		});
+// 	}
+// };
 
-      if (handler.indexOf('.') > -1) {
-        var submodule = handler.split('.')[0];
-        var submoduleHandler = handler.split('.')[1];
-        $(selector).on(eventType, function (event) {
-          namespace[submodule][submoduleHandler](event);
-        });
-      } else {
-        $(selector).on(eventType, function (event) {
-          namespace[handler](event);
-        });
-      }
-    });
-  }
-};
 var tableManager = {
   'uploadEventHandler': function uploadEventHandler(upload) {
     $(upload).on('change', function (input) {
@@ -291,21 +300,31 @@ var tableManager = {
         cmd_name: 'throwin_file',
         file_name: name
       };
-      var body = encodeURI('json_data=' + JSON.stringify(json_data) + '&file_contents=' + filestr);
-      console.log(body);
       fetch(API_URL + 'cmd', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: body
+        body: encodeURI('json_data=' + JSON.stringify(json_data) + '&file_contents=' + filestr)
       }).then(function (response) {
-        console.log(response);
-        return response.text();
+        //console.log(response.text());
+        return response.json();
       }).catch(function (err) {
-        return console.log('[Upload error] ' + err);
+        return console.log('[UploadError] ' + err);
       }).then(function (json) {
-        return console.log(json);
+        console.log(json);
+        var content = {
+          cols: [],
+          rows: json.table_data
+        };
+        json.col_list.forEach(function (col) {
+          return content.cols.push({
+            title: col,
+            field: col
+          });
+        });
+        tabManager.addTab(name, 'table', 'local', content);
+        tabManager.render();
       }); // .then(json => tableManager.setTable(table, json['col_list'], json['table_data']));
     }
 
@@ -313,8 +332,13 @@ var tableManager = {
       var reader = new FileReader(),
           file = document.querySelector('#file').files[0];
 
+      if (!file) {
+        alert('Select a file from your computer');
+        return;
+      }
+
       reader.onload = function (e) {
-        console.log(e.target.result);
+        // console.log(e.target.result);
         push(e.target.result, file.name);
       };
 
@@ -332,20 +356,6 @@ var tableManager = {
     }).fail(function (error) {
       console.error('Error retrieving table: ', error);
     });
-  },
-  'setTable': function setTable(table, columns, data) {
-    var cols = [];
-
-    for (i in columns) {
-      cols.push({
-        title: columns[i].toUpperCase(),
-        field: columns[i]
-      });
-    }
-
-    console.log(cols, data);
-    tables[table].setColumns(cols);
-    tables[table].setData(data);
   }
 }; // var questionHandler = {
 // 	'questionMap': {
@@ -360,7 +370,5 @@ var tableManager = {
 // };
 
 document.querySelector('#load').addEventListener('click', function () {
-  //loadTableData('https://jsonplaceholder.typicode.com/users', 0);
-  tableManager.getTableFromRaw('file', 0); // loadTableData('https://jsonplaceholder.typicode.com/posts', 1);
-  // loadTableData('https://jsonplaceholder.typicode.com/comments', 2);
+  tableManager.getTableFromRaw('file');
 });

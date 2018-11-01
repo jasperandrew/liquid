@@ -8,7 +8,6 @@ body {
   border: 1px solid black;
   padding: 20px;
 }
-
 .dialogue .prompt {
   margin-top: 0;
 }
@@ -16,7 +15,6 @@ body {
 .option input {
   display: none;
 }
-
 .option label {
   display: inline-block;
   margin: 5px 0 0 40px;
@@ -24,16 +22,13 @@ body {
   padding: 5px 15px;
   border-radius: 5px;
 }
-
 .option label:hover {
   cursor: pointer;
   border-color: #888888;
 }
-
 .option input:checked ~ label {
   background: #9ae29a;
 }
-
 .option input:checked ~ label:before {
   content: "✔";
   position: relative;
@@ -66,11 +61,9 @@ body {
 .tab * {
   font-size: initial;
 }
-
-.tab input {
+.tab > input {
   display: none;
 }
-
 .tab label {
   position: relative;
   font-size: initial;
@@ -80,19 +73,16 @@ body {
   border: 1px solid #bbb;
   border-radius: 4px 4px 0 0;
 }
-
 .tab label:hover {
   color: #333;
   cursor: pointer;
   bottom: 2px;
 }
-
 .tab input:checked ~ label {
   color: #333;
   background: #fff;
   bottom: 5px;
 }
-
 .tab .throwin {
   display: block;
   position: fixed;
@@ -103,16 +93,15 @@ body {
   z-index: 0;
   border: 1px solid #bbb;
 }
-
-.tab input:checked ~ .throwin {
-  display: block;
-  z-index: 9;
-}
-
-.throwin > div {
+.tab .throwin > div {
   display: block;
   height: 60vh;
   background: white;
+}
+
+input:checked ~ .throwin {
+  display: block;
+  z-index: 9;
 }
 
 /*# sourceMappingURL=style.css.map */

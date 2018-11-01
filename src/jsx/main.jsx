@@ -1,7 +1,6 @@
 /**************************************************************************
  * JSX stuff
  */
-
 class Dialogue extends React.Component {
 	constructor(props) {
 		super(props);
@@ -47,7 +46,7 @@ class Tab extends React.Component {
 		return (
 			<div className='tab'>
 				<input type='radio' id={id} name='tabs' defaultChecked={this.props.isChecked}/>
-				<label htmlFor={id}>{this.props.tabName}</label>
+				<label onClick={() => tabManager.setActiveTab(this.props.i)} htmlFor={id}>{this.props.tabName}</label>
 				<div className='throwin'>
 					<Throwin type={this.props.type} i={this.props.i}/>
 				</div>
@@ -79,8 +78,13 @@ class TabContainer extends React.Component {
 let tabManager = {
 	data: [],
 	activeTab: 1,
+
+	setActiveTab: function(i) {
+		this.activeTab = i;
+		console.log(this.activeTab);
+	},
+
 	addTab: function(name, contentType, contentSource, content) {
-		console.log(content);
 		let n = this.data.length + 1;
 		this.data.push({
 			tabElement: <Tab key={n} i={n} isChecked={n === this.activeTab ? true : false} tabName={name} type={contentType}/>,
@@ -94,6 +98,7 @@ let tabManager = {
 			}
 		});
 	},
+
 	render: function() {
 		ReactDOM.render(<TabContainer/>, document.querySelector('#tab_container'));
 		this.data.forEach(tab => {
@@ -106,25 +111,25 @@ let tabManager = {
 					});
 				}
 				if(t.src === 'fetch'){
-					let data = { cols: [], rows: [] };
 					fetch(t.content)
 					.then(response => {
-						console.log(response);
 						return response.json();
 					})
-					.then(json => json.forEach(row => {
-						data.rows.push(row);
-					}))
-					.then(() => {
-						for(let item in data.rows[0]){
-							data.cols.push({ title:item, field:item });
+					.then(json => {
+						t.content = { cols: [], rows: [] };
+						t.src = 'local';
+
+						json.forEach(row => t.content.rows.push(row));
+
+						for(let item in t.content.rows[0]){
+							t.content.cols.push({ title:item, field:item, editor:'input' });
 						}
-					})
-					.then(() => {
-						t.object.setColumns(data.cols);
-						t.object.setData(data.rows);
+
+						t.object.setColumns(t.content.cols);
+						t.object.setData(t.content.rows);
 					});
 				}else{
+					console.log(t.content);
 					t.object.setColumns(t.content.cols);
 					t.object.setData(t.content.rows);
 				}
@@ -155,33 +160,33 @@ ReactDOM.render(<Dialogue prompt="Let's begin! For your initial table/list, woul
 
 const API_URL = 'https://spurcell.pythonanywhere.com/';
 
-let eventHandler = {
-	'eventMap': {
-		 'click .upload': 'tableManager.uploadEventHandler',
-	},
-	'init': function() {
-		this.eventManager(tableManager, this.eventMap);
-	},
-	'eventManager': function(namespace, eventMap) {
-		$.each(eventsMap, function(eventTypeSelector, handler) {
-			var a = eventTypeSelector.split(' ');
-			var eventType = a[0];
-			var selector = a[1];
-			$(selector).off(eventType);
-			if(handler.indexOf('.') > -1){
-				var submodule = handler.split('.')[0];
-				var submoduleHandler = handler.split('.')[1];
-				$(selector).on(eventType, function(event) {
-						namespace[submodule][submoduleHandler](event);
-				});
-			} else {
-					$(selector).on(eventType, function(event) {
-							namespace[handler](event);
-					});
-			}
-		});
-	}
-};
+// let eventHandler = {
+// 	'eventMap': {
+// 		 'click .upload': 'tableManager.uploadEventHandler',
+// 	},
+// 	'init': function() {
+// 		this.eventManager(tableManager, this.eventMap);
+// 	},
+// 	'eventManager': function(namespace, eventMap) {
+// 		$.each(eventsMap, function(eventTypeSelector, handler) {
+// 			var a = eventTypeSelector.split(' ');
+// 			var eventType = a[0];
+// 			var selector = a[1];
+// 			$(selector).off(eventType);
+// 			if(handler.indexOf('.') > -1){
+// 				var submodule = handler.split('.')[0];
+// 				var submoduleHandler = handler.split('.')[1];
+// 				$(selector).on(eventType, function(event) {
+// 						namespace[submodule][submoduleHandler](event);
+// 				});
+// 			} else {
+// 					$(selector).on(eventType, function(event) {
+// 							namespace[handler](event);
+// 					});
+// 			}
+// 		});
+// 	}
+// };
 
 let tableManager = {
 	'uploadEventHandler': function(upload) {
@@ -196,29 +201,43 @@ let tableManager = {
 				cmd_name: 'throwin_file',
 				file_name: name
 			};
-			let body = encodeURI('json_data=' + JSON.stringify(json_data) + '&file_contents=' + filestr);
-			console.log((body));
+
 			fetch(API_URL + 'cmd', {
 				method: 'POST',
 				headers: {
 				  'Content-Type': 'application/x-www-form-urlencoded'
 				},
-				body: body
+				body: encodeURI('json_data=' + JSON.stringify(json_data) + '&file_contents=' + filestr)
 			})
 			.then(response => {
-                console.log(response);
-                return response.text();
-            })
-			.catch(err => console.log('[Upload error] ' + err))
-			.then(json => console.log(json));
+				//console.log(response.text());
+				return response.json()
+			})
+			.catch(err => console.log('[UploadError] ' + err))
+			.then(json => {
+				console.log(json);
+				let content = {
+					cols: [],
+					rows: json.table_data
+				};
+				json.col_list.forEach(col => content.cols.push({ title:col, field:col }));
+
+				tabManager.addTab(name, 'table', 'local', content);
+				tabManager.render();
+			});
 			// .then(json => tableManager.setTable(table, json['col_list'], json['table_data']));
 		}
 
 		if(source === 'file'){
 			let reader = new FileReader(),
 				file = document.querySelector('#file').files[0];
+			if(!file){
+				alert('Select a file from your computer');
+				return;
+			}
+
 			reader.onload = e => {
-                console.log(e.target.result);
+                // console.log(e.target.result);
                 push(e.target.result, file.name);
             }
 			reader.readAsText(file);
@@ -235,13 +254,6 @@ let tableManager = {
 			}).fail(function(error) {
 				console.error('Error retrieving table: ', error);
 			});
-	},
-	'setTable': function(table, columns, data) {
-        let cols = [];
-        for(i in columns) cols.push({ title:columns[i].toUpperCase(), field:columns[i] });
-        console.log(cols, data);
-		tables[table].setColumns(cols);
-		tables[table].setData(data);
 	}
 };
 
@@ -258,8 +270,5 @@ let tableManager = {
 // };
 
 document.querySelector('#load').addEventListener('click', function(){
-    //loadTableData('https://jsonplaceholder.typicode.com/users', 0);
-    tableManager.getTableFromRaw('file', 0);
-    // loadTableData('https://jsonplaceholder.typicode.com/posts', 1);
-    // loadTableData('https://jsonplaceholder.typicode.com/comments', 2);
+    tableManager.getTableFromRaw('file');
 });

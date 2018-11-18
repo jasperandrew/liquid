@@ -1,7 +1,7 @@
 /************************************************************\
 *                         JSX CLASSES                        *
 \************************************************************/
-//// Dialogue question/answer stuff ////
+//////////// Dialogue question/answer stuff ////////////
 class Option extends React.Component {
 	constructor(props) {
 		super(props);
@@ -35,7 +35,7 @@ class Dialogue extends React.Component {
 	}
 }
 
-//// Throwin/tab layout stuff ////
+//////////// Throwin/tab layout stuff ////////////
 class Throwin extends React.Component {
 	constructor(props) {
 		super(props);

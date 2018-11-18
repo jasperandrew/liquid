@@ -2,38 +2,38 @@
 *                           GLOBALS                          *
 \************************************************************/
 const API_URL = 'https://spurcell.pythonanywhere.com/cmd';
-
+const INIT_DIALOGUE = {
+	prompt: 'Initial',
+	id: null,
+	data: null,
+	options: [
+		{
+			jsxElement: <Option key={1} i={1} isDefault={0} optText='Upload a file from your computer' optId=''/>,
+			isDefault: 0,
+			optText: 'Upload a file from your computer',
+			optId: '',
+		},
+		{
+			jsxElement: <Option key={2} i={2} isDefault={0} optText='Call a web API or database' optId=''/>,
+			isDefault: 0,
+			optText: 'Call a web API or database',
+			optId: '',
+		}
+	]
+};
 
 /************************************************************\
 *                         LIQUID APP                         *
 \************************************************************/
 let Liquid = {
 	initialize() {
-		this.dialogueManager.history.push({
-			prompt: 'Initial',
-			id: null,
-			data: null,
-			options: [
-				{
-					jsxElement: <Option key={1} i={1} isDefault={0} optText='Upload a file from your computer' optId=''/>,
-					isDefault: 0,
-					optText: 'Upload a file from your computer',
-					optId: '',
-				},
-				{
-					jsxElement: <Option key={2} i={2} isDefault={0} optText='Call a web API or database' optId=''/>,
-					isDefault: 0,
-					optText: 'Call a web API or database',
-					optId: '',
-				}
-			]
-		});
+		this.dialogueManager.history.push(INIT_DIALOGUE);
 		this.eventHandler.initialize();
-		this.renderAll();
-		console.log('Liquid initialized!');
+		this.render();
+		console.info('Liquid initialized!');
 	},
 
-	renderAll() {
+	render() {
 		this.dialogueManager.render();
 		this.tabManager.render();
 	},
@@ -55,20 +55,34 @@ let Liquid = {
 			}
 		}
 
-		console.log(url,options.body);
+		// console.log(url,options.body);
 
 		return fetch(url, options)
 		.then(response => response.text())
 		.catch(err => {
-			console.log('[RequestError] ' + err);
-			return { error: err };
+			console.error('[Liquid.httpRequest] ' + err);
+			return { error: '[Liquid.httpRequest] ' + err };
 		});
 	},
 
-	handleResponse: function(responseJSON) {
-		if(responseJSON['reply_type'] === 'user_question'){
-			this.dialogueManager.newQuestion(responseJSON);
+	handleResponse: function(response_txt) {
+		let json;
+		try {
+			json = JSON.parse(response_txt);
+		} catch(e) {
+			console.log(response_txt,e);
 		}
+		
+		json['reply_contents'].forEach(data => {
+			switch(data){
+				case 'table_data':
+					this.tabManager.handleTableData(json.table_data); break;
+				case 'user_question':
+					this.dialogueManager.handleQuestionData(json.user_question); break;
+				default:
+					console.error('[Liquid.handleResponse] unrecognized reply type: ' + data);
+			}
+		});
 	},
 
 	//// Manages question/answer dialogue ////
@@ -91,27 +105,32 @@ let Liquid = {
 				'json_data': JSON.stringify(json_data)
 			})
 			.then(json => {
-				console.log(json);
+				console.log(JSON.stringify(json));
 			});
 			// this.command_map[ans_id]();
 		},
 
-		newQuestion(responseJSON) {
+		handleQuestionData(json) {
+			console.log(json);
+			this.newQuestion(json.qst_text, json.qst_id, json.qst_data, json.answ_cands)
+			this.render();
+		},
+
+		newQuestion(text, id, data, answ_cands) {
 			let options = [];
-			for(let i in responseJSON['answ_cands']){
-				let opt = responseJSON['answ_cands'][i];
+			for(let i in answ_cands){
+				let opt = answ_cands[i];
 				options.push({
-					jsxElement: <Option key={i+1} i={i+1} isDefault={0} optText={opt['answ_text']} optId={opt['answ_id']}/>,
+					jsxElement: <Option key={i+1} i={i+1} isDefault={0} optText={opt.answ_text} optId={opt.answ_id}/>,
 					isDefault: 0,
-					optText: opt['answ_text'],
-					optId: opt['answ_id'],
+					opt_text: opt.answ_text,
+					opt_id: opt.answ_id,
 				});
 			}
-
 			this.history.unshift({
-				prompt: responseJSON['qst_text'],
-				id: responseJSON['qst_id'],
-				data: responseJSON['qst_data'],
+				prompt: text,
+				id: id,
+				data: data,
 				options: options
 			});
 		},
@@ -124,12 +143,13 @@ let Liquid = {
 	//// Manages throwin/tab layout ////
 	tabManager: {
 		data: [], // All tabs
-		activeTab: 1, // Currently active tab
+		active_tab: 1, // Currently active tab
 		
 		addTab(name, contentType, contentSource, content) {
+			console.log('asd');
 			let n = this.data.length + 1;
 			this.data.push({
-				jsxElement: <Tab key={n} i={n} isChecked={n === this.activeTab ? true : false} tabName={name} type={contentType}/>,
+				jsxElement: <Tab key={n} i={n} isChecked={n === this.active_tab ? true : false} tabName={name} type={contentType}/>,
 				throwin: {
 					name: name,
 					id: '#t' + n,
@@ -139,6 +159,16 @@ let Liquid = {
 					object: null
 				}
 			});
+		},
+
+		handleTableData(json) {
+			let content = {
+				cols: [],
+				rows: json.tbl_rows
+			};
+			json.tbl_cols.forEach(col => content.cols.push({ title:col, field:col }));
+			this.addTab(json.node_name, 'table', 'local', content);
+			this.render();
 		},
 	
 		render() {
@@ -181,7 +211,7 @@ let Liquid = {
 		},
 
 		setActiveTab(i) {
-			this.activeTab = i;
+			this.active_tab = i;
 		}
 	},
 
@@ -208,26 +238,11 @@ let Liquid = {
 					cmd_name: 'throwin_file',
 					file_name: file.name
 				};
-	
 				Liquid.httpRequest(API_URL, {
 					'json_data': JSON.stringify(json_data),
 					'file_contents': e.target.result
 				})
-				.then(json => {
-					json = JSON.parse(json);
-					console.log(json);
-					let content = {
-						cols: [],
-						rows: json.table_data
-					};
-					json.col_list.forEach(col => content.cols.push({ title:col, field:col }));
-	
-					Liquid.tabManager.addTab(file.name, 'table', 'local', content);
-					Liquid.tabManager.render();
-
-					Liquid.dialogueManager.newQuestion(json);
-					Liquid.dialogueManager.render();
-				});	
+				.then(response => { Liquid.handleResponse(response) });
 			}
 			reader.readAsText(file);
 		}
@@ -254,28 +269,24 @@ let Liquid = {
 	}
 };
 
-document.querySelector('#load').addEventListener('click', function(){
-    ;
-});
-
 // console.log({
 // 	reply_contents: ['user_question', 'table_data'], // An array containing the other sections contained in the response
 // 	user_question: { // All of the data pertaining to a new user question
 // 		qst_prompt: 'Question prompt',
 // 		qst_id: 'qst1',
-// 		qst_opts: [
+// 		ans_cands: [
 // 			{
-// 				opt_text: 'Option 1',
-// 				opt_id: 'opt1'
+// 				ands_text: 'Option 1',
+// 				ans_id: 'opt1'
 // 			},{
-// 				opt_text: 'Option 2',
-// 				opt_id: 'opt2'
+// 				ans_text: 'Option 2',
+// 				ans_id: 'opt2'
 // 			}
 // 		]
 // 	},
 // 	table_data: { // All of the data pertaining to a table
 // 		new_tbl: true, // Whether or not this table is a new table or an updated table
-// 		tbl_name: 'table1.tsv', // The name of the table
+// 		node_name: 'table1.tsv', // The name of the table
 // 		tbl_cols: [ // Column data, in order
 // 			{
 // 				title: 'Column 1', // The "pretty" name for the column. Can just be the same as the field.
@@ -296,3 +307,4 @@ document.querySelector('#load').addEventListener('click', function(){
 // 		]
 // 	}
 // });
+

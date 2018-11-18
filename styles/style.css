@@ -98,6 +98,10 @@ body {
   height: 60vh;
   background: white;
 }
+.tab .throwin .text {
+  white-space: pre;
+  overflow-x: scroll;
+}
 
 input:checked ~ .throwin {
   display: block;

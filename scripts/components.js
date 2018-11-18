@@ -21,7 +21,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 /************************************************************\
 *                         JSX CLASSES                        *
 \************************************************************/
-//// Dialogue question/answer stuff ////
+//////////// Dialogue question/answer stuff ////////////
 var Option =
 /*#__PURE__*/
 function (_React$Component) {
@@ -84,7 +84,7 @@ function (_React$Component2) {
   }]);
 
   return Dialogue;
-}(React.Component); //// Throwin/tab layout stuff ////
+}(React.Component); //////////// Throwin/tab layout stuff ////////////
 
 
 var Throwin =

@@ -4,45 +4,46 @@
 *                           GLOBALS                          *
 \************************************************************/
 var API_URL = 'https://spurcell.pythonanywhere.com/cmd';
+var INIT_DIALOGUE = {
+  prompt: 'Initial',
+  id: null,
+  data: null,
+  options: [{
+    jsxElement: React.createElement(Option, {
+      key: 1,
+      i: 1,
+      isDefault: 0,
+      optText: "Upload a file from your computer",
+      optId: ""
+    }),
+    isDefault: 0,
+    optText: 'Upload a file from your computer',
+    optId: ''
+  }, {
+    jsxElement: React.createElement(Option, {
+      key: 2,
+      i: 2,
+      isDefault: 0,
+      optText: "Call a web API or database",
+      optId: ""
+    }),
+    isDefault: 0,
+    optText: 'Call a web API or database',
+    optId: ''
+  }]
+};
 /************************************************************\
 *                         LIQUID APP                         *
 \************************************************************/
 
 var Liquid = {
   initialize: function initialize() {
-    this.dialogueManager.history.push({
-      prompt: 'Initial',
-      id: null,
-      data: null,
-      options: [{
-        jsxElement: React.createElement(Option, {
-          key: 1,
-          i: 1,
-          isDefault: 0,
-          optText: "Upload a file from your computer",
-          optId: ""
-        }),
-        isDefault: 0,
-        optText: 'Upload a file from your computer',
-        optId: ''
-      }, {
-        jsxElement: React.createElement(Option, {
-          key: 2,
-          i: 2,
-          isDefault: 0,
-          optText: "Call a web API or database",
-          optId: ""
-        }),
-        isDefault: 0,
-        optText: 'Call a web API or database',
-        optId: ''
-      }]
-    });
+    this.dialogueManager.history.push(INIT_DIALOGUE);
     this.eventHandler.initialize();
-    this.renderAll();
-    console.log('Liquid initialized!');
+    this.render();
+    console.info('Liquid initialized!');
   },
-  renderAll: function renderAll() {
+  render: function render() {
     this.dialogueManager.render();
     this.tabManager.render();
   },
@@ -62,22 +63,45 @@ var Liquid = {
         if (options.body !== '') options.body += '&';
         options.body += field + '=' + data[field];
       }
-    }
+    } // console.log(url,options.body);
 
-    console.log(url, options.body);
+
     return fetch(url, options).then(function (response) {
       return response.text();
     }).catch(function (err) {
-      console.log('[RequestError] ' + err);
+      console.error('[Liquid.httpRequest] ' + err);
       return {
-        error: err
+        error: '[Liquid.httpRequest] ' + err
       };
     });
   },
-  handleResponse: function handleResponse(responseJSON) {
-    if (responseJSON['reply_type'] === 'user_question') {
-      this.dialogueManager.newQuestion(responseJSON);
+  handleResponse: function handleResponse(response_txt) {
+    var _this = this;
+
+    var json;
+
+    try {
+      json = JSON.parse(response_txt);
+    } catch (e) {
+      console.log(response_txt, e);
     }
+
+    json['reply_contents'].forEach(function (data) {
+      switch (data) {
+        case 'table_data':
+          _this.tabManager.handleTableData(json.table_data);
+
+          break;
+
+        case 'user_question':
+          _this.dialogueManager.handleQuestionData(json.user_question);
+
+          break;
+
+        default:
+          console.error('[Liquid.handleResponse] unrecognized reply type: ' + data);
+      }
+    });
   },
   //// Manages question/answer dialogue ////
   dialogueManager: {
@@ -99,32 +123,37 @@ var Liquid = {
       Liquid.httpRequest(API_URL, {
         'json_data': JSON.stringify(json_data)
       }).then(function (json) {
-        console.log(json);
+        console.log(JSON.stringify(json));
       }); // this.command_map[ans_id]();
     },
-    newQuestion: function newQuestion(responseJSON) {
+    handleQuestionData: function handleQuestionData(json) {
+      console.log(json);
+      this.newQuestion(json.qst_text, json.qst_id, json.qst_data, json.answ_cands);
+      this.render();
+    },
+    newQuestion: function newQuestion(text, id, data, answ_cands) {
       var options = [];
 
-      for (var i in responseJSON['answ_cands']) {
-        var opt = responseJSON['answ_cands'][i];
+      for (var i in answ_cands) {
+        var opt = answ_cands[i];
         options.push({
           jsxElement: React.createElement(Option, {
             key: i + 1,
             i: i + 1,
             isDefault: 0,
-            optText: opt['answ_text'],
-            optId: opt['answ_id']
+            optText: opt.answ_text,
+            optId: opt.answ_id
           }),
           isDefault: 0,
-          optText: opt['answ_text'],
-          optId: opt['answ_id']
+          opt_text: opt.answ_text,
+          opt_id: opt.answ_id
         });
       }
 
       this.history.unshift({
-        prompt: responseJSON['qst_text'],
-        id: responseJSON['qst_id'],
-        data: responseJSON['qst_data'],
+        prompt: text,
+        id: id,
+        data: data,
         options: options
       });
     },
@@ -138,15 +167,16 @@ var Liquid = {
   tabManager: {
     data: [],
     // All tabs
-    activeTab: 1,
+    active_tab: 1,
     // Currently active tab
     addTab: function addTab(name, contentType, contentSource, content) {
+      console.log('asd');
       var n = this.data.length + 1;
       this.data.push({
         jsxElement: React.createElement(Tab, {
           key: n,
           i: n,
-          isChecked: n === this.activeTab ? true : false,
+          isChecked: n === this.active_tab ? true : false,
           tabName: name,
           type: contentType
         }),
@@ -159,6 +189,20 @@ var Liquid = {
           object: null
         }
       });
+    },
+    handleTableData: function handleTableData(json) {
+      var content = {
+        cols: [],
+        rows: json.tbl_rows
+      };
+      json.tbl_cols.forEach(function (col) {
+        return content.cols.push({
+          title: col,
+          field: col
+        });
+      });
+      this.addTab(json.node_name, 'table', 'local', content);
+      this.render();
     },
     render: function render() {
       ReactDOM.render(React.createElement(TabContainer, null), document.querySelector('#tab_container'));
@@ -209,7 +253,7 @@ var Liquid = {
       });
     },
     setActiveTab: function setActiveTab(i) {
-      this.activeTab = i;
+      this.active_tab = i;
     }
   },
   //// Manages user-created file uploads ////
@@ -240,23 +284,8 @@ var Liquid = {
         Liquid.httpRequest(API_URL, {
           'json_data': JSON.stringify(json_data),
           'file_contents': e.target.result
-        }).then(function (json) {
-          json = JSON.parse(json);
-          console.log(json);
-          var content = {
-            cols: [],
-            rows: json.table_data
-          };
-          json.col_list.forEach(function (col) {
-            return content.cols.push({
-              title: col,
-              field: col
-            });
-          });
-          Liquid.tabManager.addTab(file.name, 'table', 'local', content);
-          Liquid.tabManager.render();
-          Liquid.dialogueManager.newQuestion(json);
-          Liquid.dialogueManager.render();
+        }).then(function (response) {
+          Liquid.handleResponse(response);
         });
       };
 
@@ -268,14 +297,14 @@ var Liquid = {
       'click|#load': 'uploadManager.uploadFromFile'
     },
     initialize: function initialize() {
-      var _this = this;
+      var _this2 = this;
 
       var _loop = function _loop(event) {
         var a = event.split('|'),
             action = a[0],
             target = a[1],
             elem = document.querySelector(target),
-            b = _this.event_map[event].split('.'),
+            b = _this2.event_map[event].split('.'),
             command = function command(e) {
           Liquid[b[0]][b[1]](e);
         };
@@ -289,27 +318,24 @@ var Liquid = {
       }
     }
   }
-};
-document.querySelector('#load').addEventListener('click', function () {
-  ;
-}); // console.log({
+}; // console.log({
 // 	reply_contents: ['user_question', 'table_data'], // An array containing the other sections contained in the response
 // 	user_question: { // All of the data pertaining to a new user question
 // 		qst_prompt: 'Question prompt',
 // 		qst_id: 'qst1',
-// 		qst_opts: [
+// 		ans_cands: [
 // 			{
-// 				opt_text: 'Option 1',
-// 				opt_id: 'opt1'
+// 				ands_text: 'Option 1',
+// 				ans_id: 'opt1'
 // 			},{
-// 				opt_text: 'Option 2',
-// 				opt_id: 'opt2'
+// 				ans_text: 'Option 2',
+// 				ans_id: 'opt2'
 // 			}
 // 		]
 // 	},
 // 	table_data: { // All of the data pertaining to a table
 // 		new_tbl: true, // Whether or not this table is a new table or an updated table
-// 		tbl_name: 'table1.tsv', // The name of the table
+// 		node_name: 'table1.tsv', // The name of the table
 // 		tbl_cols: [ // Column data, in order
 // 			{
 // 				title: 'Column 1', // The "pretty" name for the column. Can just be the same as the field.

@@ -26,6 +26,8 @@ const INIT_DIALOGUE = {
 *                         LIQUID APP                         *
 \************************************************************/
 let Liquid = {
+	curr_task: 'liquid_gui',
+
 	initialize() {
 		this.dialogueManager.history.push(INIT_DIALOGUE);
 		this.eventHandler.initialize();
@@ -38,7 +40,19 @@ let Liquid = {
 		this.tabManager.render();
 	},
 
-	httpRequest(url, data) {
+	getAllTasks() {
+		this.httpRequest({
+			json_data: {
+				task_name: Liquid.curr_task, // will vary with tasks
+				cmd_name: 'get_tasks_for_user'
+			}
+		})
+		.then(text => {
+			console.log(text);
+		});
+	},
+
+	httpRequest(data) {
 		let options = null;
 		if(data !== undefined){
 			options = {
@@ -51,13 +65,13 @@ let Liquid = {
 
 			for(let field in data){
 				if(options.body !== '') options.body += '&';
-				options.body += field + '=' + data[field];
+				options.body += field + '=' + (typeof(data[field]) === 'object' ? JSON.stringify(data[field]) : data[field]);
 			}
 		}
 
-		// console.log(url,options.body);
+		console.log(options.body);
 
-		return fetch(url, options)
+		return fetch(API_URL, options)
 		.then(response => response.text())
 		.catch(err => {
 			console.error('[Liquid.httpRequest] ' + err);
@@ -96,13 +110,14 @@ let Liquid = {
 		handleAnswer(ans_id) {
 			if(ans_id === '' || ans_id === undefined) return;
 			let json_data = {
-				task_name: 'liquid_gui', // will vary with tasks
+				task_name: Liquid.curr_task, // will vary with tasks
 				cmd_name: 'user_answer',
-				answ_id: ans_id
+				answ_id: ans_id,
+				qst_opaque_data: this.history[this.curr_pos].data
 			};
 
-			Liquid.httpRequest(API_URL, {
-				'json_data': JSON.stringify(json_data)
+			Liquid.httpRequest({
+				json_data: json_data
 			})
 			.then(json => {
 				console.log(JSON.stringify(json));
@@ -111,8 +126,8 @@ let Liquid = {
 		},
 
 		handleQuestionData(json) {
-			console.log(json);
-			this.newQuestion(json.qst_text, json.qst_id, json.qst_data, json.answ_cands)
+			this.newQuestion(json.qst_text, json.qst_id, json.qst_opaque_data, json.answ_cands);
+			console.log(this.history[0]);
 			this.render();
 		},
 
@@ -146,7 +161,6 @@ let Liquid = {
 		active_tab: 1, // Currently active tab
 		
 		addTab(name, contentType, contentSource, content) {
-			console.log('asd');
 			let n = this.data.length + 1;
 			this.data.push({
 				jsxElement: <Tab key={n} i={n} isChecked={n === this.active_tab ? true : false} tabName={name} type={contentType}/>,
@@ -234,11 +248,11 @@ let Liquid = {
 
 			reader.onload = e => {
 				let json_data = {
-					task_name: 'liquid_gui', // will vary with tasks
+					task_name: Liquid.curr_task, // will vary with tasks
 					cmd_name: 'throwin_file',
 					file_name: file.name
 				};
-				Liquid.httpRequest(API_URL, {
+				Liquid.httpRequest({
 					'json_data': JSON.stringify(json_data),
 					'file_contents': e.target.result
 				})

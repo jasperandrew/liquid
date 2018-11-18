@@ -1,5 +1,7 @@
 "use strict";
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 /************************************************************\
 *                           GLOBALS                          *
 \************************************************************/
@@ -37,6 +39,7 @@ var INIT_DIALOGUE = {
 \************************************************************/
 
 var Liquid = {
+  curr_task: 'liquid_gui',
   initialize: function initialize() {
     this.dialogueManager.history.push(INIT_DIALOGUE);
     this.eventHandler.initialize();
@@ -47,7 +50,18 @@ var Liquid = {
     this.dialogueManager.render();
     this.tabManager.render();
   },
-  httpRequest: function httpRequest(url, data) {
+  getAllTasks: function getAllTasks() {
+    this.httpRequest({
+      json_data: {
+        task_name: Liquid.curr_task,
+        // will vary with tasks
+        cmd_name: 'get_tasks_for_user'
+      }
+    }).then(function (text) {
+      console.log(text);
+    });
+  },
+  httpRequest: function httpRequest(data) {
     var options = null;
 
     if (data !== undefined) {
@@ -61,12 +75,12 @@ var Liquid = {
 
       for (var field in data) {
         if (options.body !== '') options.body += '&';
-        options.body += field + '=' + data[field];
+        options.body += field + '=' + (_typeof(data[field]) === 'object' ? JSON.stringify(data[field]) : data[field]);
       }
-    } // console.log(url,options.body);
+    }
 
-
-    return fetch(url, options).then(function (response) {
+    console.log(options.body);
+    return fetch(API_URL, options).then(function (response) {
       return response.text();
     }).catch(function (err) {
       console.error('[Liquid.httpRequest] ' + err);
@@ -115,20 +129,21 @@ var Liquid = {
     handleAnswer: function handleAnswer(ans_id) {
       if (ans_id === '' || ans_id === undefined) return;
       var json_data = {
-        task_name: 'liquid_gui',
+        task_name: Liquid.curr_task,
         // will vary with tasks
         cmd_name: 'user_answer',
-        answ_id: ans_id
+        answ_id: ans_id,
+        qst_opaque_data: this.history[this.curr_pos].data
       };
-      Liquid.httpRequest(API_URL, {
-        'json_data': JSON.stringify(json_data)
+      Liquid.httpRequest({
+        json_data: json_data
       }).then(function (json) {
         console.log(JSON.stringify(json));
       }); // this.command_map[ans_id]();
     },
     handleQuestionData: function handleQuestionData(json) {
-      console.log(json);
-      this.newQuestion(json.qst_text, json.qst_id, json.qst_data, json.answ_cands);
+      this.newQuestion(json.qst_text, json.qst_id, json.qst_opaque_data, json.answ_cands);
+      console.log(this.history[0]);
       this.render();
     },
     newQuestion: function newQuestion(text, id, data, answ_cands) {
@@ -170,7 +185,6 @@ var Liquid = {
     active_tab: 1,
     // Currently active tab
     addTab: function addTab(name, contentType, contentSource, content) {
-      console.log('asd');
       var n = this.data.length + 1;
       this.data.push({
         jsxElement: React.createElement(Tab, {
@@ -276,12 +290,12 @@ var Liquid = {
 
       reader.onload = function (e) {
         var json_data = {
-          task_name: 'liquid_gui',
+          task_name: Liquid.curr_task,
           // will vary with tasks
           cmd_name: 'throwin_file',
           file_name: file.name
         };
-        Liquid.httpRequest(API_URL, {
+        Liquid.httpRequest({
           'json_data': JSON.stringify(json_data),
           'file_contents': e.target.result
         }).then(function (response) {

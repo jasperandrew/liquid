@@ -32,6 +32,17 @@ var INIT_DIALOGUE = {
     isDefault: 0,
     optText: 'Call a web API or database',
     optId: ''
+  }, {
+    jsxElement: React.createElement(Option, {
+      key: 3,
+      i: 3,
+      isDefault: 0,
+      optText: "Call a web API or database",
+      optId: ""
+    }),
+    isDefault: 0,
+    optText: 'Call a web API or database',
+    optId: ''
   }]
 };
 /************************************************************\
@@ -77,9 +88,9 @@ var Liquid = {
         if (options.body !== '') options.body += '&';
         options.body += field + '=' + (_typeof(data[field]) === 'object' ? JSON.stringify(data[field]) : data[field]);
       }
-    }
+    } // console.log(options.body);
 
-    console.log(options.body);
+
     return fetch(API_URL, options).then(function (response) {
       return response.text();
     }).catch(function (err) {
@@ -108,7 +119,7 @@ var Liquid = {
           break;
 
         case 'user_question':
-          _this.dialogueManager.handleQuestionData(json.user_question);
+          _this.dialogueManager.handleUserQuestion(json.user_question);
 
           break;
 
@@ -137,13 +148,12 @@ var Liquid = {
       };
       Liquid.httpRequest({
         json_data: json_data
-      }).then(function (json) {
-        console.log(JSON.stringify(json));
+      }).then(function (res_text) {
+        console.log(res_text);
       }); // this.command_map[ans_id]();
     },
-    handleQuestionData: function handleQuestionData(json) {
+    handleUserQuestion: function handleUserQuestion(json) {
       this.newQuestion(json.qst_text, json.qst_id, json.qst_opaque_data, json.answ_cands);
-      console.log(this.history[0]);
       this.render();
     },
     newQuestion: function newQuestion(text, id, data, answ_cands) {
@@ -279,14 +289,8 @@ var Liquid = {
       if (!file || file === undefined) {
         alert('Select a file from your computer');
         return;
-      }
+      } // let file_type = file.name.split('.').pop();
 
-      var file_type = file.name.split('.').pop();
-
-      if (file_type !== 'tsv') {
-        alert('Don\'t currently support .' + file_type + ' files, just .tsv');
-        return;
-      }
 
       reader.onload = function (e) {
         var json_data = {
@@ -308,7 +312,7 @@ var Liquid = {
   },
   eventHandler: {
     event_map: {
-      'click|#load': 'uploadManager.uploadFromFile'
+      'change|#file': 'uploadManager.uploadFromFile'
     },
     initialize: function initialize() {
       var _this2 = this;

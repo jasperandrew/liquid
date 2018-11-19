@@ -26,8 +26,8 @@ babel_config='{
 
 build () {
 	echo "[Util] Building files..."
-	npx babel src/jsx/ -d scripts/
-	npx sass src/sass/:styles/
+	npx babel src/jsx/ -d docs/scripts/
+	npx sass src/sass/:docs/styles/
 }
 
 server () {
@@ -42,16 +42,16 @@ start () {
 	echo "[Util] Watching files for updates..."
 	trap "kill 0" EXIT
 	npx http-server
-	npx babel --verbose -w src/jsx/ -d scripts/ &
-	npx sass --watch src/sass/:styles/ &
+	npx babel --verbose -w src/jsx/ -d docs/scripts/ &
+	npx sass --watch src/sass/:docs/styles/ &
 	wait
 }
 
 watch () {
 	echo "[Util] Watching files for updates..."
 	trap "kill 0" EXIT
-	npx babel --verbose -w src/jsx/ -d scripts/ &
-	npx sass --watch src/sass/:styles/ &
+	npx babel --verbose -w src/jsx/ -d docs/scripts/ &
+	npx sass --watch src/sass/:docs/styles/ &
 	wait
 }
 

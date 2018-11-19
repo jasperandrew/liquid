@@ -18,6 +18,12 @@ const INIT_DIALOGUE = {
 			isDefault: 0,
 			optText: 'Call a web API or database',
 			optId: '',
+		},
+		{
+			jsxElement: <Option key={3} i={3} isDefault={0} optText='Call a web API or database' optId=''/>,
+			isDefault: 0,
+			optText: 'Call a web API or database',
+			optId: '',
 		}
 	]
 };
@@ -69,7 +75,7 @@ let Liquid = {
 			}
 		}
 
-		console.log(options.body);
+		// console.log(options.body);
 
 		return fetch(API_URL, options)
 		.then(response => response.text())
@@ -92,7 +98,7 @@ let Liquid = {
 				case 'table_data':
 					this.tabManager.handleTableData(json.table_data); break;
 				case 'user_question':
-					this.dialogueManager.handleQuestionData(json.user_question); break;
+					this.dialogueManager.handleUserQuestion(json.user_question); break;
 				default:
 					console.error('[Liquid.handleResponse] unrecognized reply type: ' + data);
 			}
@@ -119,15 +125,14 @@ let Liquid = {
 			Liquid.httpRequest({
 				json_data: json_data
 			})
-			.then(json => {
-				console.log(JSON.stringify(json));
+			.then(res_text => {
+				console.log(res_text);
 			});
 			// this.command_map[ans_id]();
 		},
 
-		handleQuestionData(json) {
+		handleUserQuestion(json) {
 			this.newQuestion(json.qst_text, json.qst_id, json.qst_opaque_data, json.answ_cands);
-			console.log(this.history[0]);
 			this.render();
 		},
 
@@ -240,11 +245,7 @@ let Liquid = {
 				return;
 			}
 
-			let file_type = file.name.split('.').pop();
-			if(file_type !== 'tsv'){
-				alert('Don\'t currently support .' + file_type + ' files, just .tsv');
-				return;
-			}
+			// let file_type = file.name.split('.').pop();
 
 			reader.onload = e => {
 				let json_data = {
@@ -264,7 +265,7 @@ let Liquid = {
 
 	eventHandler: {
 		event_map: {
-			 'click|#load': 'uploadManager.uploadFromFile'
+			 'change|#file': 'uploadManager.uploadFromFile'
 		},
 
 		initialize() {

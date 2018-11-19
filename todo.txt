@@ -14,3 +14,7 @@
 - "This appears to be the final out of this task.  Would you like me to execute the full task now?" >> yes.
 - Server executes and returns the expanded report as text with name "report" and file_type = report. 
 - It is displayed and downloaded.
+
+- new task, tasks on sidebar
+- hide/lock question once clicked
+- upload on select

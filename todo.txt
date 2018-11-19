@@ -1,5 +1,3 @@
-- limit filetypes
-
 - Let's begin.  Choose 'wizard' interview or just start loading input and output files with the load button below.
 - loads countries.tsv
 - liquid asks: "Is this this you initial file?" yes / no / help me decide >> yes
@@ -17,4 +15,3 @@
 
 - new task, tasks on sidebar
 - hide/lock question once clicked
-- upload on select

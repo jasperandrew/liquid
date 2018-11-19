@@ -7,7 +7,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 \************************************************************/
 var API_URL = 'https://spurcell.pythonanywhere.com/cmd';
 var INIT_DIALOGUE = {
-  prompt: 'Initial',
+  prompt: 'Initial (placeholder)',
   id: null,
   data: null,
   options: [{
@@ -25,17 +25,6 @@ var INIT_DIALOGUE = {
     jsxElement: React.createElement(Option, {
       key: 2,
       i: 2,
-      isDefault: 0,
-      optText: "Call a web API or database",
-      optId: ""
-    }),
-    isDefault: 0,
-    optText: 'Call a web API or database',
-    optId: ''
-  }, {
-    jsxElement: React.createElement(Option, {
-      key: 3,
-      i: 3,
       isDefault: 0,
       optText: "Call a web API or database",
       optId: ""
@@ -118,6 +107,11 @@ var Liquid = {
 
           break;
 
+        case 'text_file':
+          _this.tabManager.handleTextFile(json.text_file);
+
+          break;
+
         case 'user_question':
           _this.dialogueManager.handleUserQuestion(json.user_question);
 
@@ -194,7 +188,7 @@ var Liquid = {
     // All tabs
     active_tab: 1,
     // Currently active tab
-    addTab: function addTab(name, contentType, contentSource, content) {
+    addTab: function addTab(name, ext, source, content) {
       var n = this.data.length + 1;
       this.data.push({
         jsxElement: React.createElement(Tab, {
@@ -202,17 +196,31 @@ var Liquid = {
           i: n,
           isChecked: n === this.active_tab ? true : false,
           tabName: name,
-          type: contentType
+          format: this.getFormat(ext)
         }),
         throwin: {
           name: name,
+          ext: ext,
           id: '#t' + n,
-          type: contentType,
-          src: contentSource,
+          src: source,
+          format: this.getFormat(ext),
           content: content,
           object: null
         }
       });
+    },
+    getFormat: function getFormat(extension) {
+      switch (extension) {
+        case 'tsv':
+          return 'table';
+
+        case 'txt':
+        case 'sql':
+          return 'text';
+
+        default:
+          return 'text';
+      }
     },
     handleTableData: function handleTableData(json) {
       var content = {
@@ -225,7 +233,11 @@ var Liquid = {
           field: col
         });
       });
-      this.addTab(json.node_name, 'table', 'local', content);
+      this.addTab(json.node_name, 'tsv', 'local', content);
+      this.render();
+    },
+    handleTextFile: function handleTextFile(json) {
+      this.addTab(json.node_name, json.file_extension, 'local', json.file_contents);
       this.render();
     },
     render: function render() {
@@ -233,7 +245,7 @@ var Liquid = {
       this.data.forEach(function (tab) {
         var t = tab.throwin;
 
-        if (t.type === 'table') {
+        if (t.format === 'table') {
           if (!t.object) {
             t.object = new Tabulator(t.id, {
               layout: 'fitData',
@@ -271,7 +283,7 @@ var Liquid = {
             t.object.setColumns(t.content.cols);
             t.object.setData(t.content.rows);
           }
-        } else if (t.type === 'text') {
+        } else if (t.format === 'text') {
           document.querySelector(t.id).innerHTML = t.content;
         }
       });

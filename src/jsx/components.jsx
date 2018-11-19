@@ -43,7 +43,7 @@ class Throwin extends React.Component {
 
 	render() {
 		return (
-			<div className={this.props.type} id={'t' + this.props.i}></div>
+			<div className={this.props.format} id={'t' + this.props.i}></div>
 		);
 	}
 }
@@ -61,7 +61,7 @@ class Tab extends React.Component {
 				<input type='radio' id={id} name='tabs' defaultChecked={this.props.isChecked}/>
 				<label onClick={() => Liquid.tabManager.setActiveTab(this.props.i)} htmlFor={id}>{this.props.tabName}</label>
 				<div className='throwin'>
-					<Throwin type={this.props.type} i={this.props.i}/>
+					<Throwin format={this.props.format} i={this.props.i}/>
 				</div>
 			</div>
 		);

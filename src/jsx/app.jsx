@@ -3,7 +3,7 @@
 \************************************************************/
 const API_URL = 'https://spurcell.pythonanywhere.com/cmd';
 const INIT_DIALOGUE = {
-	prompt: 'Initial',
+	prompt: 'Initial (placeholder)',
 	id: null,
 	data: null,
 	options: [
@@ -15,12 +15,6 @@ const INIT_DIALOGUE = {
 		},
 		{
 			jsxElement: <Option key={2} i={2} isDefault={0} optText='Call a web API or database' optId=''/>,
-			isDefault: 0,
-			optText: 'Call a web API or database',
-			optId: '',
-		},
-		{
-			jsxElement: <Option key={3} i={3} isDefault={0} optText='Call a web API or database' optId=''/>,
 			isDefault: 0,
 			optText: 'Call a web API or database',
 			optId: '',
@@ -97,6 +91,8 @@ let Liquid = {
 			switch(data){
 				case 'table_data':
 					this.tabManager.handleTableData(json.table_data); break;
+				case 'text_file':
+					this.tabManager.handleTextFile(json.text_file); break;
 				case 'user_question':
 					this.dialogueManager.handleUserQuestion(json.user_question); break;
 				default:
@@ -165,19 +161,32 @@ let Liquid = {
 		data: [], // All tabs
 		active_tab: 1, // Currently active tab
 		
-		addTab(name, contentType, contentSource, content) {
+		addTab(name, ext, source, content) {
 			let n = this.data.length + 1;
 			this.data.push({
-				jsxElement: <Tab key={n} i={n} isChecked={n === this.active_tab ? true : false} tabName={name} type={contentType}/>,
+				jsxElement: <Tab key={n} i={n} isChecked={n === this.active_tab ? true : false} tabName={name} format={this.getFormat(ext)}/>,
 				throwin: {
 					name: name,
+					ext: ext,
 					id: '#t' + n,
-					type: contentType,
-					src: contentSource,
+					src: source,
+					format: this.getFormat(ext),
 					content: content,
 					object: null
 				}
 			});
+		},
+
+		getFormat(extension) {
+			switch(extension){
+				case 'tsv':
+					return 'table';
+				case 'txt':
+				case 'sql':
+					return 'text';
+				default:
+					return 'text';
+			}
 		},
 
 		handleTableData(json) {
@@ -186,7 +195,12 @@ let Liquid = {
 				rows: json.tbl_rows
 			};
 			json.tbl_cols.forEach(col => content.cols.push({ title:col, field:col }));
-			this.addTab(json.node_name, 'table', 'local', content);
+			this.addTab(json.node_name, 'tsv', 'local', content);
+			this.render();
+		},
+
+		handleTextFile(json) {
+			this.addTab(json.node_name, json.file_extension, 'local', json.file_contents);
 			this.render();
 		},
 	
@@ -194,7 +208,7 @@ let Liquid = {
 			ReactDOM.render(<TabContainer/>, document.querySelector('#tab_container'));
 			this.data.forEach(tab => {
 				let t = tab.throwin;
-				if(t.type === 'table'){
+				if(t.format === 'table'){
 					if(!t.object){
 						t.object = new Tabulator(t.id, {
 							layout:'fitData',
@@ -223,7 +237,7 @@ let Liquid = {
 						t.object.setColumns(t.content.cols);
 						t.object.setData(t.content.rows);
 					}
-				}else if(t.type === 'text'){
+				}else if(t.format === 'text'){
 					document.querySelector(t.id).innerHTML = t.content;
 				}
 			});
@@ -253,6 +267,7 @@ let Liquid = {
 					cmd_name: 'throwin_file',
 					file_name: file.name
 				};
+
 				Liquid.httpRequest({
 					'json_data': JSON.stringify(json_data),
 					'file_contents': e.target.result

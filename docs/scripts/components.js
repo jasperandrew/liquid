@@ -102,7 +102,7 @@ function (_React$Component3) {
     key: "render",
     value: function render() {
       return React.createElement("div", {
-        className: this.props.type,
+        className: this.props.format,
         id: 't' + this.props.i
       });
     }
@@ -143,7 +143,7 @@ function (_React$Component4) {
       }, this.props.tabName), React.createElement("div", {
         className: "throwin"
       }, React.createElement(Throwin, {
-        type: this.props.type,
+        format: this.props.format,
         i: this.props.i
       })));
     }

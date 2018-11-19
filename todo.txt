@@ -15,3 +15,4 @@
 
 - new task, tasks on sidebar
 - hide/lock question once clicked
+- get rid of text next to file browse button

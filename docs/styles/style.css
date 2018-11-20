@@ -2,10 +2,47 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans|Ubuntu+Mono");
 body {
   font-family: "Open Sans";
+  padding: 20px;
+}
+
+#top {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#throwin_file {
+  display: none;
+}
+
+label[for=throwin_file] {
+  flex-grow: 0;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  border: 1px solid black;
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+  background-color: #356fea;
+  color: white;
+  font-size: 1.3em;
+  line-height: 1.7em;
+  cursor: pointer;
+}
+label[for=throwin_file]:hover {
+  background-color: #487bea;
+}
+label[for=throwin_file]:active {
+  background-color: #2c58b7;
+}
+
+#dialogue_container {
+  flex-grow: 1;
 }
 
 .dialogue {
   border: 1px solid black;
+  border-radius: 10px 0 0 10px;
   padding: 20px;
 }
 .dialogue .prompt {

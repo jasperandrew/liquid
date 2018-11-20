@@ -134,7 +134,7 @@ function (_React$Component4) {
         type: "radio",
         id: id,
         name: "tabs",
-        defaultChecked: this.props.isChecked
+        defaultChecked: this.props.i === Liquid.tabManager.active_tab ? true : false
       }), React.createElement("label", {
         onClick: function onClick() {
           return Liquid.tabManager.setActiveTab(_this2.props.i);

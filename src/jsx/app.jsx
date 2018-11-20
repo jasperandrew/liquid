@@ -164,7 +164,7 @@ let Liquid = {
 		addTab(name, ext, source, content) {
 			let n = this.data.length + 1;
 			this.data.push({
-				jsxElement: <Tab key={n} i={n} isChecked={n === this.active_tab ? true : false} tabName={name} format={this.getFormat(ext)}/>,
+				jsxElement: <Tab key={n} i={n} tabName={name} format={this.getFormat(ext)}/>,
 				throwin: {
 					name: name,
 					ext: ext,
@@ -175,6 +175,8 @@ let Liquid = {
 					object: null
 				}
 			});
+			this.active_tab = this.data.length;
+			this.render();
 		},
 
 		getFormat(extension) {
@@ -196,12 +198,10 @@ let Liquid = {
 			};
 			json.tbl_cols.forEach(col => content.cols.push({ title:col, field:col }));
 			this.addTab(json.node_name, 'tsv', 'local', content);
-			this.render();
 		},
 
 		handleTextFile(json) {
 			this.addTab(json.node_name, json.file_extension, 'local', json.file_contents);
-			this.render();
 		},
 	
 		render() {
@@ -252,7 +252,7 @@ let Liquid = {
 	uploadManager: {
 		uploadFromFile() {
 			let reader = new FileReader(),
-				file = document.querySelector('#file').files[0];
+				file = document.querySelector('#throwin_file').files[0];
 			
 			if(!file || file === undefined){
 				alert('Select a file from your computer');
@@ -280,7 +280,7 @@ let Liquid = {
 
 	eventHandler: {
 		event_map: {
-			 'change|#file': 'uploadManager.uploadFromFile'
+			 'change|#throwin_file': 'uploadManager.uploadFromFile'
 		},
 
 		initialize() {

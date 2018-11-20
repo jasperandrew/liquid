@@ -58,7 +58,7 @@ class Tab extends React.Component {
 
 		return (
 			<div className='tab'>
-				<input type='radio' id={id} name='tabs' defaultChecked={this.props.isChecked}/>
+				<input type='radio' id={id} name='tabs' defaultChecked={this.props.i === Liquid.tabManager.active_tab ? true : false}/>
 				<label onClick={() => Liquid.tabManager.setActiveTab(this.props.i)} htmlFor={id}>{this.props.tabName}</label>
 				<div className='throwin'>
 					<Throwin format={this.props.format} i={this.props.i}/>

@@ -194,7 +194,6 @@ var Liquid = {
         jsxElement: React.createElement(Tab, {
           key: n,
           i: n,
-          isChecked: n === this.active_tab ? true : false,
           tabName: name,
           format: this.getFormat(ext)
         }),
@@ -208,6 +207,8 @@ var Liquid = {
           object: null
         }
       });
+      this.active_tab = this.data.length;
+      this.render();
     },
     getFormat: function getFormat(extension) {
       switch (extension) {
@@ -234,11 +235,9 @@ var Liquid = {
         });
       });
       this.addTab(json.node_name, 'tsv', 'local', content);
-      this.render();
     },
     handleTextFile: function handleTextFile(json) {
       this.addTab(json.node_name, json.file_extension, 'local', json.file_contents);
-      this.render();
     },
     render: function render() {
       ReactDOM.render(React.createElement(TabContainer, null), document.querySelector('#tab_container'));
@@ -296,7 +295,7 @@ var Liquid = {
   uploadManager: {
     uploadFromFile: function uploadFromFile() {
       var reader = new FileReader(),
-          file = document.querySelector('#file').files[0];
+          file = document.querySelector('#throwin_file').files[0];
 
       if (!file || file === undefined) {
         alert('Select a file from your computer');
@@ -324,7 +323,7 @@ var Liquid = {
   },
   eventHandler: {
     event_map: {
-      'change|#file': 'uploadManager.uploadFromFile'
+      'change|#throwin_file': 'uploadManager.uploadFromFile'
     },
     initialize: function initialize() {
       var _this2 = this;

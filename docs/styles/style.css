@@ -2,48 +2,64 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans|Ubuntu+Mono");
 body {
   font-family: "Open Sans";
-  padding: 20px;
 }
 
-#top {
-  display: flex;
-  justify-content: flex-end;
+nav {
+  position: fixed;
+  left: -210px;
+  top: 0;
+  background-color: #c9d5ef;
+  width: 230px;
+  height: 100vh;
+  z-index: 3;
+  box-shadow: 1px 0 2px 0 rgba(0, 0, 0, 0.15);
+  transition: left 0.2s, box-shadow 0.5s;
+}
+nav:after, nav:before {
+  content: "";
+  display: block;
+  position: absolute;
+  right: 7px;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 5px solid #000;
+  opacity: 0.4;
+  transition: opacity 0.3s;
+}
+nav:before {
+  top: 25vh;
+}
+nav:after {
+  top: 75vh;
+}
+nav:hover {
+  left: 0;
+  box-shadow: 1px 0 4px 0 rgba(0, 0, 0, 0.3);
+}
+nav:hover:after, nav:hover:before {
+  opacity: 0;
 }
 
-#throwin_file {
-  display: none;
-}
-
-label[for=throwin_file] {
-  flex-grow: 0;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  padding: 20px;
-  border: 1px solid black;
-  border-left: none;
-  border-radius: 0 10px 10px 0;
-  background-color: #356fea;
-  color: white;
-  font-size: 1.3em;
-  line-height: 1.7em;
-  cursor: pointer;
-}
-label[for=throwin_file]:hover {
-  background-color: #487bea;
-}
-label[for=throwin_file]:active {
-  background-color: #2c58b7;
-}
-
-#dialogue_container {
-  flex-grow: 1;
+main {
+  box-sizing: border-box;
+  padding: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: calc(100% - 20px);
+  height: 100vh;
 }
 
 .dialogue {
-  border: 1px solid black;
-  border-radius: 10px 0 0 10px;
+  position: absolute;
+  top: 0;
+  width: calc(calc(100% - 20px) - 60px);
+  background: #eee;
+  border-radius: 10px;
   padding: 20px;
+  margin: 20px;
 }
 .dialogue .prompt {
   margin-top: 0;
@@ -55,13 +71,14 @@ label[for=throwin_file]:active {
 .option label {
   display: inline-block;
   margin: 5px 0 0 40px;
-  border: 1px solid #bbb;
+  border: 1px solid #ddd;
   padding: 5px 15px;
   border-radius: 5px;
+  background: #f8f8f8;
 }
 .option label:hover {
   cursor: pointer;
-  border-color: #888888;
+  background: #fff;
 }
 .option input:checked ~ label {
   background: #9ae29a;
@@ -70,6 +87,31 @@ label[for=throwin_file]:active {
   content: "✔";
   position: relative;
   right: 5px;
+}
+
+#throwin_file {
+  display: none;
+}
+
+label[for=throwin_file] {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+  font-size: 1.3em;
+  line-height: 1.7em;
+  cursor: pointer;
+  background: #356fea;
+}
+label[for=throwin_file]:hover {
+  background-color: #487bea;
+}
+label[for=throwin_file]:active {
+  background-color: #2c58b7;
 }
 
 #tab_container::after {
@@ -86,8 +128,10 @@ label[for=throwin_file]:active {
 }
 
 .tabs {
-  position: fixed;
+  position: absolute;
   bottom: 7px;
+  left: 20px;
+  width: calc(100% - 20px);
 }
 
 .tab {
@@ -122,11 +166,10 @@ label[for=throwin_file]:active {
 }
 .tab .throwin {
   display: block;
-  position: fixed;
+  position: absolute;
   bottom: 50px;
   left: 0;
   width: calc(100% - 20px);
-  margin: 10px;
   z-index: 0;
   border: 1px solid #bbb;
 }
@@ -137,9 +180,12 @@ label[for=throwin_file]:active {
 }
 .tab .throwin .text {
   white-space: pre;
-  overflow-x: scroll;
+  overflow-x: auto;
   font-family: "Ubuntu Mono", monospace;
   padding: 10px;
+}
+.tab .throwin .table {
+  height: calc(60vh + 20px);
 }
 
 input:checked ~ .throwin {

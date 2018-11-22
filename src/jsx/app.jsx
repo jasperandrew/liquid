@@ -25,7 +25,7 @@ const INIT_DIALOGUE = {
 /************************************************************\
 *                         LIQUID APP                         *
 \************************************************************/
-let Liquid = {
+const Liquid = {
 	curr_task: 'liquid_gui',
 
 	initialize() {
@@ -280,14 +280,14 @@ let Liquid = {
 
 	eventHandler: {
 		event_map: {
-			 'change|#throwin_file': 'uploadManager.uploadFromFile'
+			 '#throwin_file|change': 'uploadManager.uploadFromFile'
 		},
 
 		initialize() {
 			for(let event in this.event_map){
 				let a = event.split('|'),
-				action = a[0],
-				target = a[1],
+				target = a[0],
+				action = a[1],
 				elem = document.querySelector(target),
 				b = this.event_map[event].split('.'),
 				command = e => { Liquid[b[0]][b[1]](e); };
@@ -298,43 +298,3 @@ let Liquid = {
 		}
 	}
 };
-
-// console.log({
-// 	reply_contents: ['user_question', 'table_data'], // An array containing the other sections contained in the response
-// 	user_question: { // All of the data pertaining to a new user question
-// 		qst_prompt: 'Question prompt',
-// 		qst_id: 'qst1',
-// 		ans_cands: [
-// 			{
-// 				ands_text: 'Option 1',
-// 				ans_id: 'opt1'
-// 			},{
-// 				ans_text: 'Option 2',
-// 				ans_id: 'opt2'
-// 			}
-// 		]
-// 	},
-// 	table_data: { // All of the data pertaining to a table
-// 		new_tbl: true, // Whether or not this table is a new table or an updated table
-// 		node_name: 'table1.tsv', // The name of the table
-// 		tbl_cols: [ // Column data, in order
-// 			{
-// 				title: 'Column 1', // The "pretty" name for the column. Can just be the same as the field.
-// 				field: 'col1' // The actual name of the field in the row data
-// 			},{
-// 				title: 'Column 2',
-// 				field: 'col2'
-// 			}
-// 		],
-// 		tbl_rows: [ // Row data, exactly the same as 'table_data' in the current spec
-// 			{
-// 				col1: 'row1 col1',
-// 				col2: 'row1 col2'
-// 			},{
-// 				col1: 'row2 col1',
-// 				col2: 'row2 col2'
-// 			}
-// 		]
-// 	}
-// });
-

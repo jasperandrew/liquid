@@ -3,21 +3,21 @@
 \************************************************************/
 const API_URL = 'https://spurcell.pythonanywhere.com/cmd';
 const INIT_DIALOGUE = {
-	prompt: 'Initial (placeholder)',
+	prompt: 'Let\'s begin.  Choose the \'wizard\' interview or just start throwing in input and output files with the blue button.',
 	id: null,
 	data: null,
 	options: [
 		{
-			jsxElement: <Option key={1} i={1} isDefault={0} optText='Upload a file from your computer' optId=''/>,
+			jsxElement: <Option key={1} i={1} isDefault={0} optText='Start the interview wizard' optId='wizard'/>,
 			isDefault: 0,
-			optText: 'Upload a file from your computer',
-			optId: '',
+			optText: 'Start the interview wizard',
+			optId: 'wizard',
 		},
 		{
-			jsxElement: <Option key={2} i={2} isDefault={0} optText='Call a web API or database' optId=''/>,
+			jsxElement: <Option key={2} i={2} isDefault={0} optText='Upload ("Throw in") a file from your computer' optId='upload'/>,
 			isDefault: 0,
-			optText: 'Call a web API or database',
-			optId: '',
+			optText: 'Upload ("Throw in") a file from your computer',
+			optId: 'upload',
 		}
 	]
 };
@@ -27,8 +27,25 @@ const INIT_DIALOGUE = {
 \************************************************************/
 const Liquid = {
 	curr_task: 'liquid_gui',
+	debug: true,
+
+	debugLog(txt) {
+		if(this.debug){
+			console.log(txt);
+		}
+	},
 
 	initialize() {
+		this.httpRequest({
+			json_data: {
+				task_name: Liquid.curr_task, // will vary with tasks
+				cmd_name: 'new_task'
+			}
+		})
+		.then(text => {
+			Liquid.debugLog('[new_task] ' + text);
+		});
+
 		this.dialogueManager.history.push(INIT_DIALOGUE);
 		this.eventHandler.initialize();
 		this.render();
@@ -48,7 +65,7 @@ const Liquid = {
 			}
 		})
 		.then(text => {
-			console.log(text);
+			Liquid.debugLog(text);
 		});
 	},
 
@@ -69,7 +86,7 @@ const Liquid = {
 			}
 		}
 
-		// console.log(options.body);
+		// Liquid.debugLog(options.body);
 
 		return fetch(API_URL, options)
 		.then(response => response.text())
@@ -84,7 +101,7 @@ const Liquid = {
 		try {
 			json = JSON.parse(response_txt);
 		} catch(e) {
-			console.log(response_txt,e);
+			Liquid.debugLog(response_txt,e);
 		}
 		
 		json['reply_contents'].forEach(data => {
@@ -122,8 +139,12 @@ const Liquid = {
 				json_data: json_data
 			})
 			.then(res_text => {
-				console.log(res_text);
+				Liquid.debugLog('['+ans_id+'] ' + res_text);
 			});
+
+			switch(ans_id){
+				case 'upload': document.querySelector('label[for="throwin_file"]').click();
+			}
 			// this.command_map[ans_id]();
 		},
 
@@ -219,7 +240,7 @@ const Liquid = {
 						fetch(t.content)
 						.then(res => res.json())
 						.then(json => {
-							// console.log(json);
+							// Liquid.debugLog(json);
 							t.content = { cols: [], rows: [] };
 							t.src = 'local';
 	
@@ -233,7 +254,7 @@ const Liquid = {
 							t.object.setData(t.content.rows);
 						});
 					}else{
-						// console.log(t.content);
+						// Liquid.debugLog(t.content);
 						t.object.setColumns(t.content.cols);
 						t.object.setData(t.content.rows);
 					}

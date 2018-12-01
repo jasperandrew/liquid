@@ -7,7 +7,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 \************************************************************/
 var API_URL = 'https://spurcell.pythonanywhere.com/cmd';
 var INIT_DIALOGUE = {
-  prompt: 'Initial (placeholder)',
+  prompt: 'Let\'s begin.  Choose the \'wizard\' interview or just start throwing in input and output files with the blue button.',
   id: null,
   data: null,
   options: [{
@@ -15,23 +15,23 @@ var INIT_DIALOGUE = {
       key: 1,
       i: 1,
       isDefault: 0,
-      optText: "Upload a file from your computer",
-      optId: ""
+      optText: "Start the interview wizard",
+      optId: "wizard"
     }),
     isDefault: 0,
-    optText: 'Upload a file from your computer',
-    optId: ''
+    optText: 'Start the interview wizard',
+    optId: 'wizard'
   }, {
     jsxElement: React.createElement(Option, {
       key: 2,
       i: 2,
       isDefault: 0,
-      optText: "Call a web API or database",
-      optId: ""
+      optText: "Upload (\"Throw in\") a file from your computer",
+      optId: "upload"
     }),
     isDefault: 0,
-    optText: 'Call a web API or database',
-    optId: ''
+    optText: 'Upload ("Throw in") a file from your computer',
+    optId: 'upload'
   }]
 };
 /************************************************************\
@@ -40,7 +40,22 @@ var INIT_DIALOGUE = {
 
 var Liquid = {
   curr_task: 'liquid_gui',
+  debug: true,
+  debugLog: function debugLog(txt) {
+    if (this.debug) {
+      console.log(txt);
+    }
+  },
   initialize: function initialize() {
+    this.httpRequest({
+      json_data: {
+        task_name: Liquid.curr_task,
+        // will vary with tasks
+        cmd_name: 'new_task'
+      }
+    }).then(function (text) {
+      Liquid.debugLog('[new_task] ' + text);
+    });
     this.dialogueManager.history.push(INIT_DIALOGUE);
     this.eventHandler.initialize();
     this.render();
@@ -58,7 +73,7 @@ var Liquid = {
         cmd_name: 'get_tasks_for_user'
       }
     }).then(function (text) {
-      console.log(text);
+      Liquid.debugLog(text);
     });
   },
   httpRequest: function httpRequest(data) {
@@ -77,7 +92,7 @@ var Liquid = {
         if (options.body !== '') options.body += '&';
         options.body += field + '=' + (_typeof(data[field]) === 'object' ? JSON.stringify(data[field]) : data[field]);
       }
-    } // console.log(options.body);
+    } // Liquid.debugLog(options.body);
 
 
     return fetch(API_URL, options).then(function (response) {
@@ -97,7 +112,7 @@ var Liquid = {
     try {
       json = JSON.parse(response_txt);
     } catch (e) {
-      console.log(response_txt, e);
+      Liquid.debugLog(response_txt, e);
     }
 
     json['reply_contents'].forEach(function (data) {
@@ -143,8 +158,14 @@ var Liquid = {
       Liquid.httpRequest({
         json_data: json_data
       }).then(function (res_text) {
-        console.log(res_text);
-      }); // this.command_map[ans_id]();
+        Liquid.debugLog('[' + ans_id + '] ' + res_text);
+      });
+
+      switch (ans_id) {
+        case 'upload':
+          document.querySelector('label[for="throwin_file"]').click();
+      } // this.command_map[ans_id]();
+
     },
     handleUserQuestion: function handleUserQuestion(json) {
       this.newQuestion(json.qst_text, json.qst_id, json.qst_opaque_data, json.answ_cands);
@@ -256,7 +277,7 @@ var Liquid = {
             fetch(t.content).then(function (res) {
               return res.json();
             }).then(function (json) {
-              // console.log(json);
+              // Liquid.debugLog(json);
               t.content = {
                 cols: [],
                 rows: []
@@ -278,7 +299,7 @@ var Liquid = {
               t.object.setData(t.content.rows);
             });
           } else {
-            // console.log(t.content);
+            // Liquid.debugLog(t.content);
             t.object.setColumns(t.content.cols);
             t.object.setData(t.content.rows);
           }

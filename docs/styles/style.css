@@ -50,7 +50,7 @@ main {
   position: fixed;
   right: 0;
   top: 0;
-  width: calc(100% - 20px);
+  width: 100%;
   height: 100vh;
   background: #fff;
 }
@@ -58,9 +58,10 @@ main {
 .dialogue {
   position: absolute;
   top: 0;
-  width: calc(100% - 20px);
+  width: 100%;
   background: #fff;
   padding: 20px;
+  border-bottom: 1px solid #ddd;
 }
 .dialogue .prompt {
   margin-top: 0;

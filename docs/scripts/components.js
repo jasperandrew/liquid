@@ -71,15 +71,16 @@ function (_React$Component2) {
   _createClass(Dialogue, [{
     key: "render",
     value: function render() {
-      var options = [];
-      Liquid.dialogueManager.history[0].options.forEach(function (opt) {
-        options.push(opt.jsxElement);
+      var opts = Liquid.dialogueManager.history[0].options,
+          opts_jsx = [];
+      if (opts !== null) opts.forEach(function (opt) {
+        opts_jsx.push(opt.jsxElement);
       });
       return React.createElement("div", {
         className: "dialogue"
       }, React.createElement("p", {
         className: "prompt"
-      }, this.props.prompt), options);
+      }, this.props.prompt), opts_jsx);
     }
   }]);
 

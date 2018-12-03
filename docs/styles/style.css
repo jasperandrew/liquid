@@ -62,6 +62,7 @@ main {
   background: #fff;
   padding: 20px;
   border-bottom: 1px solid #ddd;
+  min-height: 113px;
 }
 .dialogue .prompt {
   margin-top: 0;

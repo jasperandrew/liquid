@@ -21,6 +21,12 @@ const INIT_DIALOGUE = {
 		}
 	]
 };
+const WAIT_DIALOGUE = {
+	prompt: 'Throw in the next file using the Throw-In button.',
+	id: null,
+	data: null,
+	options: null
+};
 
 /************************************************************\
 *                         LIQUID APP                         *
@@ -140,6 +146,11 @@ const Liquid = {
 			})
 			.then(res_text => {
 				Liquid.debugLog('['+ans_id+'] ' + res_text);
+
+				if(res_text === 'OK'){
+					this.history.unshift(WAIT_DIALOGUE);
+					this.render();
+				}
 			});
 
 			switch(ans_id){
@@ -149,7 +160,10 @@ const Liquid = {
 		},
 
 		handleUserQuestion(json) {
-			this.newQuestion(json.qst_text, json.qst_id, json.qst_opaque_data, json.answ_cands);
+			if(!json.error)
+				this.newQuestion(json.qst_text, json.qst_id, json.qst_opaque_data, json.answ_cands);
+			else
+				this.newQuestion(json.error, null, null, null);
 			this.render();
 		},
 

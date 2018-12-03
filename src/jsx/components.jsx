@@ -23,13 +23,16 @@ class Dialogue extends React.Component {
 	}
 
 	render() {
-		let options = [];
-		Liquid.dialogueManager.history[0].options.forEach(opt => { options.push(opt.jsxElement); });
+		let opts = Liquid.dialogueManager.history[0].options,
+			opts_jsx = [];
+
+		if(opts !== null)
+			opts.forEach(opt => { opts_jsx.push(opt.jsxElement); });
 
 		return (
 			<div className='dialogue'>
 				<p className='prompt'>{this.props.prompt}</p>
-				{options}
+				{opts_jsx}
 			</div>
 		);
 	}

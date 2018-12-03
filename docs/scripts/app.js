@@ -34,6 +34,12 @@ var INIT_DIALOGUE = {
     optId: 'upload'
   }]
 };
+var WAIT_DIALOGUE = {
+  prompt: 'Throw in the next file using the Throw-In button.',
+  id: null,
+  data: null,
+  options: null
+};
 /************************************************************\
 *                         LIQUID APP                         *
 \************************************************************/
@@ -147,6 +153,8 @@ var Liquid = {
       '': function _() {}
     },
     handleAnswer: function handleAnswer(ans_id) {
+      var _this2 = this;
+
       if (ans_id === '' || ans_id === undefined) return;
       var json_data = {
         task_name: Liquid.curr_task,
@@ -159,6 +167,12 @@ var Liquid = {
         json_data: json_data
       }).then(function (res_text) {
         Liquid.debugLog('[' + ans_id + '] ' + res_text);
+
+        if (res_text === 'OK') {
+          _this2.history.unshift(WAIT_DIALOGUE);
+
+          _this2.render();
+        }
       });
 
       switch (ans_id) {
@@ -168,7 +182,7 @@ var Liquid = {
 
     },
     handleUserQuestion: function handleUserQuestion(json) {
-      this.newQuestion(json.qst_text, json.qst_id, json.qst_opaque_data, json.answ_cands);
+      if (!json.error) this.newQuestion(json.qst_text, json.qst_id, json.qst_opaque_data, json.answ_cands);else this.newQuestion(json.error, null, null, null);
       this.render();
     },
     newQuestion: function newQuestion(text, id, data, answ_cands) {
@@ -347,14 +361,14 @@ var Liquid = {
       '#throwin_file|change': 'uploadManager.uploadFromFile'
     },
     initialize: function initialize() {
-      var _this2 = this;
+      var _this3 = this;
 
       var _loop = function _loop(event) {
         var a = event.split('|'),
             target = a[0],
             action = a[1],
             elem = document.querySelector(target),
-            b = _this2.event_map[event].split('.'),
+            b = _this3.event_map[event].split('.'),
             command = function command(e) {
           Liquid[b[0]][b[1]](e);
         };

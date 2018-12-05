@@ -113,6 +113,7 @@ var Liquid = {
   handleResponse: function handleResponse(response_txt) {
     var _this = this;
 
+    if (response_txt === 'OK') return;
     var json;
 
     try {
@@ -121,7 +122,11 @@ var Liquid = {
       Liquid.debugLog(response_txt, e);
     }
 
+    console.log('JSON', json);
+    this.dialogueManager.handleUserQuestion(json.user_question);
     json['reply_contents'].forEach(function (data) {
+      console.log(data);
+
       switch (data) {
         case 'table_data':
           _this.tabManager.handleTableData(json.table_data);
@@ -134,8 +139,7 @@ var Liquid = {
           break;
 
         case 'user_question':
-          _this.dialogueManager.handleUserQuestion(json.user_question);
-
+          /* 	this.dialogueManager.handleUserQuestion(json.user_question); */
           break;
 
         default:
@@ -155,6 +159,12 @@ var Liquid = {
     handleAnswer: function handleAnswer(ans_id) {
       var _this2 = this;
 
+      switch (ans_id) {
+        case 'upload':
+          document.querySelector('label[for="throwin_file"]').click();
+          return;
+      }
+
       if (ans_id === '' || ans_id === undefined) return;
       var json_data = {
         task_name: Liquid.curr_task,
@@ -166,23 +176,29 @@ var Liquid = {
       Liquid.httpRequest({
         json_data: json_data
       }).then(function (res_text) {
-        Liquid.debugLog('[' + ans_id + '] ' + res_text);
-
+        // Liquid.debugLog('['+ans_id+'] ' + res_text);
         if (res_text === 'OK') {
           _this2.history.unshift(WAIT_DIALOGUE);
 
           _this2.render();
         }
-      });
 
-      switch (ans_id) {
-        case 'upload':
-          document.querySelector('label[for="throwin_file"]').click();
-      } // this.command_map[ans_id]();
-
+        Liquid.handleResponse(res_text);
+      }); // this.command_map[ans_id]();
     },
     handleUserQuestion: function handleUserQuestion(json) {
-      if (!json.error) this.newQuestion(json.qst_text, json.qst_id, json.qst_opaque_data, json.answ_cands);else this.newQuestion(json.error, null, null, null);
+      console.log('QUESTION', json);
+
+      if (json === undefined) {
+        this.history.unshift(WAIT_DIALOGUE);
+      } else {
+        if (!json.error) {
+          this.newQuestion(json.qst_text, json.qst_id, json.qst_opaque_data, json.answ_cands);
+        } else {
+          this.newQuestion(json.error, null, null, null);
+        }
+      }
+
       this.render();
     },
     newQuestion: function newQuestion(text, id, data, answ_cands) {
@@ -225,11 +241,12 @@ var Liquid = {
     // Currently active tab
     addTab: function addTab(name, ext, source, content) {
       var n = this.data.length + 1;
+      var short_name = name.split('/').pop();
       this.data.push({
         jsxElement: React.createElement(Tab, {
           key: n,
           i: n,
-          tabName: name,
+          tabName: short_name,
           format: this.getFormat(ext)
         }),
         throwin: {

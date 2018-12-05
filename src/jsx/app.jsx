@@ -103,21 +103,26 @@ const Liquid = {
 	},
 
 	handleResponse: function(response_txt) {
+		if(response_txt === 'OK') return;
 		let json;
 		try {
 			json = JSON.parse(response_txt);
 		} catch(e) {
 			Liquid.debugLog(response_txt,e);
 		}
-		
+		console.log('JSON',json);
+
+		this.dialogueManager.handleUserQuestion(json.user_question);
+
 		json['reply_contents'].forEach(data => {
+			console.log(data);
 			switch(data){
 				case 'table_data':
 					this.tabManager.handleTableData(json.table_data); break;
 				case 'text_file':
 					this.tabManager.handleTextFile(json.text_file); break;
 				case 'user_question':
-					this.dialogueManager.handleUserQuestion(json.user_question); break;
+				/* 	this.dialogueManager.handleUserQuestion(json.user_question); */break;
 				default:
 					console.error('[Liquid.handleResponse] unrecognized reply type: ' + data);
 			}
@@ -133,6 +138,10 @@ const Liquid = {
 		},
 
 		handleAnswer(ans_id) {
+			switch(ans_id){
+				case 'upload':
+					document.querySelector('label[for="throwin_file"]').click(); return;
+			}
 			if(ans_id === '' || ans_id === undefined) return;
 			let json_data = {
 				task_name: Liquid.curr_task, // will vary with tasks
@@ -145,25 +154,29 @@ const Liquid = {
 				json_data: json_data
 			})
 			.then(res_text => {
-				Liquid.debugLog('['+ans_id+'] ' + res_text);
+				// Liquid.debugLog('['+ans_id+'] ' + res_text);
 
 				if(res_text === 'OK'){
 					this.history.unshift(WAIT_DIALOGUE);
 					this.render();
 				}
+				Liquid.handleResponse(res_text);
 			});
 
-			switch(ans_id){
-				case 'upload': document.querySelector('label[for="throwin_file"]').click();
-			}
 			// this.command_map[ans_id]();
 		},
 
 		handleUserQuestion(json) {
-			if(!json.error)
-				this.newQuestion(json.qst_text, json.qst_id, json.qst_opaque_data, json.answ_cands);
-			else
-				this.newQuestion(json.error, null, null, null);
+			console.log('QUESTION', json);
+			if(json === undefined){
+				this.history.unshift(WAIT_DIALOGUE);
+			}else{
+				if(!json.error){
+					this.newQuestion(json.qst_text, json.qst_id, json.qst_opaque_data, json.answ_cands);
+				}else{
+					this.newQuestion(json.error, null, null, null);
+				}
+			}
 			this.render();
 		},
 
@@ -198,8 +211,9 @@ const Liquid = {
 		
 		addTab(name, ext, source, content) {
 			let n = this.data.length + 1;
+			let short_name = name.split('/').pop();
 			this.data.push({
-				jsxElement: <Tab key={n} i={n} tabName={name} format={this.getFormat(ext)}/>,
+				jsxElement: <Tab key={n} i={n} tabName={short_name} format={this.getFormat(ext)}/>,
 				throwin: {
 					name: name,
 					ext: ext,

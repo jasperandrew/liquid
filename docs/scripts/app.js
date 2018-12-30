@@ -40,47 +40,50 @@ var WAIT_DIALOGUE = {
   data: null,
   options: null
 };
+var debug = {
+  on: true,
+  log: function log(msg) {
+    if (this.on) console.log(msg);
+  },
+  error: function error(msg) {
+    if (this.on) console.error(msg);
+  },
+  warn: function warn(msg) {
+    if (this.on) console.warn(msg);
+  },
+  info: function info(msg) {
+    if (this.on) console.info(msg);
+  }
+};
 /************************************************************\
 *                         LIQUID APP                         *
 \************************************************************/
 
 var Liquid = {
   curr_task: 'liquid_gui',
-  debug: true,
-  debugLog: function debugLog(txt) {
-    if (this.debug) {
-      console.log(txt);
-    }
-  },
   initialize: function initialize() {
+    if (debug.on) debug.warn('Debug logs are on!');
     this.httpRequest({
       json_data: {
         task_name: Liquid.curr_task,
         // will vary with tasks
-        cmd_name: 'new_task'
+        cmd_name: 'new_task',
+        overwrite: true
       }
     }).then(function (text) {
-      Liquid.debugLog('[new_task] ' + text);
+      debug.log('[new_task] ' + text);
     });
     this.dialogueManager.history.push(INIT_DIALOGUE);
-    this.eventHandler.initialize();
     this.render();
-    console.info('Liquid initialized!');
+    this.eventHandler.initialize();
+    debug.info('Liquid initialized!');
   },
   render: function render() {
     this.dialogueManager.render();
     this.tabManager.render();
-  },
-  getAllTasks: function getAllTasks() {
-    this.httpRequest({
-      json_data: {
-        task_name: Liquid.curr_task,
-        // will vary with tasks
-        cmd_name: 'get_tasks_for_user'
-      }
-    }).then(function (text) {
-      Liquid.debugLog(text);
-    });
+    this.menu.render(); //this.menu.updateTaskList(1);
+
+    debug.info('Liquid rendered!');
   },
   httpRequest: function httpRequest(data) {
     var options = null;
@@ -98,7 +101,7 @@ var Liquid = {
         if (options.body !== '') options.body += '&';
         options.body += field + '=' + (_typeof(data[field]) === 'object' ? JSON.stringify(data[field]) : data[field]);
       }
-    } // Liquid.debugLog(options.body);
+    } // debug.log(options.body);
 
 
     return fetch(API_URL, options).then(function (response) {
@@ -119,14 +122,13 @@ var Liquid = {
     try {
       json = JSON.parse(response_txt);
     } catch (e) {
-      Liquid.debugLog(response_txt, e);
+      console.error(response_txt, e);
     }
 
-    console.log('JSON', json);
+    debug.log('JSON');
+    debug.log(json);
     this.dialogueManager.handleUserQuestion(json.user_question);
     json['reply_contents'].forEach(function (data) {
-      console.log(data);
-
       switch (data) {
         case 'table_data':
           _this.tabManager.handleTableData(json.table_data);
@@ -176,7 +178,7 @@ var Liquid = {
       Liquid.httpRequest({
         json_data: json_data
       }).then(function (res_text) {
-        // Liquid.debugLog('['+ans_id+'] ' + res_text);
+        // debug.log('['+ans_id+'] ' + res_text);
         if (res_text === 'OK') {
           _this2.history.unshift(WAIT_DIALOGUE);
 
@@ -187,7 +189,8 @@ var Liquid = {
       }); // this.command_map[ans_id]();
     },
     handleUserQuestion: function handleUserQuestion(json) {
-      console.log('QUESTION', json);
+      debug.log('QUESTION');
+      debug.log(json);
 
       if (json === undefined) {
         this.history.unshift(WAIT_DIALOGUE);
@@ -308,7 +311,7 @@ var Liquid = {
             fetch(t.content).then(function (res) {
               return res.json();
             }).then(function (json) {
-              // Liquid.debugLog(json);
+              // debug.log(json);
               t.content = {
                 cols: [],
                 rows: []
@@ -330,7 +333,7 @@ var Liquid = {
               t.object.setData(t.content.rows);
             });
           } else {
-            // Liquid.debugLog(t.content);
+            // debug.log(t.content);
             t.object.setColumns(t.content.cols);
             t.object.setData(t.content.rows);
           }
@@ -375,7 +378,8 @@ var Liquid = {
   },
   eventHandler: {
     event_map: {
-      '#throwin_file|change': 'uploadManager.uploadFromFile'
+      '#throwin_file|change': 'uploadManager.uploadFromFile',
+      '#task_list h2|click': 'menu.updateTaskList'
     },
     initialize: function initialize() {
       var _this3 = this;
@@ -397,6 +401,28 @@ var Liquid = {
       for (var event in this.event_map) {
         _loop(event);
       }
+    }
+  },
+  menu: {
+    task_list: ['these', 'are', 'placeholders'],
+    updateTaskList: function updateTaskList(render) {
+      var _this4 = this;
+
+      Liquid.httpRequest({
+        json_data: {
+          task_name: Liquid.curr_task,
+          // will vary with tasks
+          cmd_name: 'get_tasks_for_user'
+        }
+      }).then(function (text) {
+        var json = JSON.parse(text);
+        debug.log(json);
+        _this4.task_list = json.user_task_list;
+        if (render) _this4.render();
+      });
+    },
+    render: function render() {
+      ReactDOM.render(React.createElement(Menu, null), document.querySelector('nav')); //this.updateTaskList();
     }
   }
 };

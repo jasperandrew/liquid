@@ -70,6 +70,7 @@ elif [[ $# -eq 1 ]]; then
 
 	if [[ $1 == "build" ]]; then build
 	elif [[ $1 == "start" ]]; then start
+	elif [[ $1 == "server" ]]; then server
 	elif [[ $1 == "watch" ]]; then watch
 	elif [[ $1 == "install" ]]; then install
 	else echo "[Error] Invalid argument"; help

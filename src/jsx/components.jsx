@@ -87,3 +87,39 @@ class TabContainer extends React.Component {
 		);
 	}
 }
+
+//////////// Menu stuff ////////////
+class TaskList extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		let tasks = [];
+		Liquid.menu.task_list.forEach((task,i=0) => { tasks.push(<li key={i++}>{task}</li>); });
+		return (
+			<div id="task_list">
+				<h2>Tasks</h2>
+				<ul>
+					{tasks}
+				</ul>
+			</div>
+		);
+	}
+
+}
+
+class Menu extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		return (
+			<div id="menu_container">
+				<h1>Liquid</h1>
+				<TaskList/>
+			</div>
+		);
+	}
+}

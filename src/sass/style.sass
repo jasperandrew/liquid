@@ -4,17 +4,19 @@ body
 	font-family: "Open Sans"
 
 $nav-width: 230px
-$nav-clsd: 20px
+$nav-pad: 20px
+$nav-cls: 20px
 nav
 	position: fixed
-	left: $nav-clsd - $nav-width
+	left: 0 - $nav-width - 2 * $nav-pad + $nav-cls
 	top: 0
 	background-color: #c9d5ef
 	width: $nav-width
 	height: 100vh
 	z-index: 3
-	box-shadow: 1px 0 2px 0 rgba(0,0,0,0.15)
-	transition: left 0.2s, box-shadow 0.5s
+	box-shadow: 1px 0 4px 0 rgba(0,0,0,0.15)
+	transition: left 0.1s, box-shadow 0.5s
+	padding: 20px
 	&:after,
 	&:before
 		content: ''
@@ -34,17 +36,62 @@ nav
 		top: 75vh
 
 	&:hover
+		left: 0 - $nav-width - 2 * $nav-pad + $nav-cls + 3px
+		box-shadow: 1px 0 4px 0 rgba(0,0,0,0.4)
+		cursor: pointer
+	&.open
 		left: 0
-		box-shadow: 1px 0 4px 0 rgba(0,0,0,0.3)
+		box-shadow: 1px 0 4px 0 rgba(0,0,0,0.4)
+		cursor: default
 		&:after, &:before
 			opacity: 0
+
+	h1
+		text-transform: uppercase
+		font-size: 3em
+		text-align: center
+		margin: 10px 0 30px 0
+		line-height: 100%
+		opacity: 0.5
+		color: #fff
 	
-	.tasks
-		&:before
-			content: 'Tasks'
+	#task_list
+		h2
+			text-transform: uppercase
+			pointer-events: none
+			margin: 0
+			&:after
+				content: '⭮'
+				transform: rotate(75deg)
+				display: inline-block
+				font-size: 0.7em
+				position: relative
+				left: 7px
+				bottom: 1px
+				opacity: 0.3
+				cursor: pointer
+				pointer-events: all
+		ul
+			margin-top: 5px
+			list-style: none
 
+.screen
+	z-index: 1
+	display: block
+	position: fixed
+	top: 0
+	left: 0
+	width: 100vw
+	height: 100vh
+	background: black
+	opacity: 0
+	transition: 0.3s ease-in-out
+	&.open
+		opacity: 0.15
+	&.hidden
+		display: none
 
-$main-width: 100%//calc(100% - #{$nav-clsd})
+$main-width: calc(100% - #{$nav-cls})
 main
 	box-sizing: border-box
 	padding: 0

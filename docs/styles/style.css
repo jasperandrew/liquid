@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Open+Sans|Ubuntu+Mono");
 body {
   font-family: "Open Sans";
@@ -5,14 +6,15 @@ body {
 
 nav {
   position: fixed;
-  left: -210px;
+  left: -250px;
   top: 0;
   background-color: #c9d5ef;
   width: 230px;
   height: 100vh;
   z-index: 3;
-  box-shadow: 1px 0 2px 0 rgba(0, 0, 0, 0.15);
-  transition: left 0.2s, box-shadow 0.5s;
+  box-shadow: 1px 0 4px 0 rgba(0, 0, 0, 0.15);
+  transition: left 0.1s, box-shadow 0.5s;
+  padding: 20px;
 }
 nav:after, nav:before {
   content: "";
@@ -34,14 +36,66 @@ nav:after {
   top: 75vh;
 }
 nav:hover {
-  left: 0;
-  box-shadow: 1px 0 4px 0 rgba(0, 0, 0, 0.3);
+  left: -247px;
+  box-shadow: 1px 0 4px 0 rgba(0, 0, 0, 0.4);
+  cursor: pointer;
 }
-nav:hover:after, nav:hover:before {
+nav.open {
+  left: 0;
+  box-shadow: 1px 0 4px 0 rgba(0, 0, 0, 0.4);
+  cursor: default;
+}
+nav.open:after, nav.open:before {
   opacity: 0;
 }
-nav .tasks:before {
-  content: "Tasks";
+nav h1 {
+  text-transform: uppercase;
+  font-size: 3em;
+  text-align: center;
+  margin: 10px 0 30px 0;
+  line-height: 100%;
+  opacity: 0.5;
+  color: #fff;
+}
+nav #task_list h2 {
+  text-transform: uppercase;
+  pointer-events: none;
+  margin: 0;
+}
+nav #task_list h2:after {
+  content: "⭮";
+  transform: rotate(75deg);
+  display: inline-block;
+  font-size: 0.7em;
+  position: relative;
+  left: 7px;
+  bottom: 1px;
+  opacity: 0.3;
+  cursor: pointer;
+  pointer-events: all;
+}
+nav #task_list ul {
+  margin-top: 5px;
+  list-style: none;
+}
+
+.screen {
+  z-index: 1;
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  opacity: 0;
+  transition: 0.3s ease-in-out;
+}
+.screen.open {
+  opacity: 0.15;
+}
+.screen.hidden {
+  display: none;
 }
 
 main {
@@ -50,7 +104,7 @@ main {
   position: fixed;
   right: 0;
   top: 0;
-  width: 100%;
+  width: calc(100% - 20px);
   height: 100vh;
   background: #fff;
 }
@@ -58,7 +112,7 @@ main {
 .dialogue {
   position: absolute;
   top: 0;
-  width: 100%;
+  width: calc(100% - 20px);
   background: #fff;
   padding: 20px;
   border-bottom: 1px solid #ddd;

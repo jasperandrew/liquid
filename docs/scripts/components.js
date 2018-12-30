@@ -178,4 +178,58 @@ function (_React$Component5) {
   }]);
 
   return TabContainer;
+}(React.Component); //////////// Menu stuff ////////////
+
+
+var TaskList =
+/*#__PURE__*/
+function (_React$Component6) {
+  _inherits(TaskList, _React$Component6);
+
+  function TaskList(props) {
+    _classCallCheck(this, TaskList);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(TaskList).call(this, props));
+  }
+
+  _createClass(TaskList, [{
+    key: "render",
+    value: function render() {
+      var tasks = [];
+      Liquid.menu.task_list.forEach(function (task) {
+        var i = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+        tasks.push(React.createElement("li", {
+          key: i++
+        }, task));
+      });
+      return React.createElement("div", {
+        id: "task_list"
+      }, React.createElement("h2", null, "Tasks"), React.createElement("ul", null, tasks));
+    }
+  }]);
+
+  return TaskList;
+}(React.Component);
+
+var Menu =
+/*#__PURE__*/
+function (_React$Component7) {
+  _inherits(Menu, _React$Component7);
+
+  function Menu(props) {
+    _classCallCheck(this, Menu);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(Menu).call(this, props));
+  }
+
+  _createClass(Menu, [{
+    key: "render",
+    value: function render() {
+      return React.createElement("div", {
+        id: "menu_container"
+      }, React.createElement("h1", null, "Liquid"), React.createElement(TaskList, null));
+    }
+  }]);
+
+  return Menu;
 }(React.Component);

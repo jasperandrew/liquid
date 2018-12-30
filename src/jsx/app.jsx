@@ -28,51 +28,45 @@ const WAIT_DIALOGUE = {
 	options: null
 };
 
+const debug = {
+	on: true,
+	log(msg)  { if(this.on) console.log(msg) },
+	error(msg){ if(this.on) console.error(msg) },
+	warn(msg) { if(this.on) console.warn(msg) },
+	info(msg) { if(this.on) console.info(msg) },
+}
+
 /************************************************************\
 *                         LIQUID APP                         *
 \************************************************************/
 const Liquid = {
 	curr_task: 'liquid_gui',
-	debug: true,
-
-	debugLog(txt) {
-		if(this.debug){
-			console.log(txt);
-		}
-	},
 
 	initialize() {
+		if(debug.on) debug.warn('Debug logs are on!');
 		this.httpRequest({
 			json_data: {
 				task_name: Liquid.curr_task, // will vary with tasks
-				cmd_name: 'new_task'
+				cmd_name: 'new_task',
+				overwrite: true
 			}
 		})
 		.then(text => {
-			Liquid.debugLog('[new_task] ' + text);
+			debug.log('[new_task] ' + text);
 		});
 
 		this.dialogueManager.history.push(INIT_DIALOGUE);
-		this.eventHandler.initialize();
 		this.render();
-		console.info('Liquid initialized!');
+		this.eventHandler.initialize();
+		debug.info('Liquid initialized!');
 	},
 
 	render() {
 		this.dialogueManager.render();
 		this.tabManager.render();
-	},
-
-	getAllTasks() {
-		this.httpRequest({
-			json_data: {
-				task_name: Liquid.curr_task, // will vary with tasks
-				cmd_name: 'get_tasks_for_user'
-			}
-		})
-		.then(text => {
-			Liquid.debugLog(text);
-		});
+		this.menu.render();
+		//this.menu.updateTaskList(1);
+		debug.info('Liquid rendered!');
 	},
 
 	httpRequest(data) {
@@ -92,7 +86,7 @@ const Liquid = {
 			}
 		}
 
-		// Liquid.debugLog(options.body);
+		// debug.log(options.body);
 
 		return fetch(API_URL, options)
 		.then(response => response.text())
@@ -108,14 +102,14 @@ const Liquid = {
 		try {
 			json = JSON.parse(response_txt);
 		} catch(e) {
-			Liquid.debugLog(response_txt,e);
+			console.error(response_txt,e);
 		}
-		console.log('JSON',json);
+		debug.log('JSON');
+		debug.log(json);
 
 		this.dialogueManager.handleUserQuestion(json.user_question);
 
 		json['reply_contents'].forEach(data => {
-			console.log(data);
 			switch(data){
 				case 'table_data':
 					this.tabManager.handleTableData(json.table_data); break;
@@ -154,7 +148,7 @@ const Liquid = {
 				json_data: json_data
 			})
 			.then(res_text => {
-				// Liquid.debugLog('['+ans_id+'] ' + res_text);
+				// debug.log('['+ans_id+'] ' + res_text);
 
 				if(res_text === 'OK'){
 					this.history.unshift(WAIT_DIALOGUE);
@@ -167,7 +161,8 @@ const Liquid = {
 		},
 
 		handleUserQuestion(json) {
-			console.log('QUESTION', json);
+			debug.log('QUESTION');
+			debug.log(json);
 			if(json === undefined){
 				this.history.unshift(WAIT_DIALOGUE);
 			}else{
@@ -268,7 +263,7 @@ const Liquid = {
 						fetch(t.content)
 						.then(res => res.json())
 						.then(json => {
-							// Liquid.debugLog(json);
+							// debug.log(json);
 							t.content = { cols: [], rows: [] };
 							t.src = 'local';
 	
@@ -282,7 +277,7 @@ const Liquid = {
 							t.object.setData(t.content.rows);
 						});
 					}else{
-						// Liquid.debugLog(t.content);
+						// debug.log(t.content);
 						t.object.setColumns(t.content.cols);
 						t.object.setData(t.content.rows);
 					}
@@ -329,7 +324,8 @@ const Liquid = {
 
 	eventHandler: {
 		event_map: {
-			 '#throwin_file|change': 'uploadManager.uploadFromFile'
+			 '#throwin_file|change': 'uploadManager.uploadFromFile',
+			 '#task_list h2|click': 'menu.updateTaskList'
 		},
 
 		initialize() {
@@ -344,6 +340,30 @@ const Liquid = {
 				elem.removeEventListener(action, command);
 				elem.addEventListener(action, command);
 			}
+		}
+	},
+
+	menu: {
+		task_list: ['these', 'are', 'placeholders'],
+
+		updateTaskList(render) {
+			Liquid.httpRequest({
+				json_data: {
+					task_name: Liquid.curr_task, // will vary with tasks
+					cmd_name: 'get_tasks_for_user'
+				}
+			})
+			.then(text => {
+				let json = JSON.parse(text);
+				debug.log(json);
+				this.task_list = json.user_task_list;
+				if(render) this.render();
+			});
+		},
+
+		render() {
+			ReactDOM.render(<Menu/>, document.querySelector('nav'));	
+			//this.updateTaskList();
 		}
 	}
 };

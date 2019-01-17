@@ -365,9 +365,10 @@ var Liquid = {
           cmd_name: 'throwin_file',
           file_name: file.name
         };
+        var encoded_result = encodeURIComponent(e.target.result);
         Liquid.httpRequest({
           'json_data': JSON.stringify(json_data),
-          'file_contents': e.target.result
+          'file_contents': encoded_result
         }).then(function (response) {
           Liquid.handleResponse(response);
         });

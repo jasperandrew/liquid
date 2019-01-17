@@ -312,9 +312,11 @@ const Liquid = {
 					file_name: file.name
 				};
 
+				let encoded_result = encodeURIComponent(e.target.result);
+
 				Liquid.httpRequest({
 					'json_data': JSON.stringify(json_data),
-					'file_contents': e.target.result
+					'file_contents': encoded_result
 				})
 				.then(response => { Liquid.handleResponse(response) });
 			}

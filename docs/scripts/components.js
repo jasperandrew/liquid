@@ -102,10 +102,19 @@ function (_React$Component3) {
   _createClass(Throwin, [{
     key: "render",
     value: function render() {
-      return React.createElement("div", {
-        className: this.props.format,
-        id: 't' + this.props.i
-      });
+      switch (this.props.format) {
+        // case 'json_select':
+        // 	return (
+        // 		<div className={this.props.format} id={'t' + this.props.i}></div>
+        // 	);
+        // case 'text':
+        // case 'table':
+        default:
+          return React.createElement("div", {
+            className: this.props.format,
+            id: 't' + this.props.i
+          });
+      }
     }
   }]);
 

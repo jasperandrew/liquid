@@ -28,14 +28,6 @@ const WAIT_DIALOGUE = {
 	options: null
 };
 
-const debug = {
-	on: true,
-	log(msg)  { if(this.on) console.log(msg) },
-	error(msg){ if(this.on) console.error(msg) },
-	warn(msg) { if(this.on) console.warn(msg) },
-	info(msg) { if(this.on) console.info(msg) },
-}
-
 /************************************************************\
 *                         LIQUID APP                         *
 \************************************************************/
@@ -43,7 +35,6 @@ const Liquid = {
 	curr_task: 'liquid_gui',
 
 	initialize() {
-		if(debug.on) debug.warn('Debug logs are on!');
 		this.httpRequest({
 			json_data: {
 				task_name: Liquid.curr_task, // will vary with tasks
@@ -52,13 +43,13 @@ const Liquid = {
 			}
 		})
 		.then(text => {
-			debug.log('[new_task] ' + text);
+			console.log('[new_task] ' + text);
 		});
 
 		this.dialogueManager.history.push(INIT_DIALOGUE);
 		this.render();
 		this.eventHandler.initialize();
-		debug.info('Liquid initialized!');
+		console.info('Liquid initialized!');
 	},
 
 	render() {
@@ -66,10 +57,11 @@ const Liquid = {
 		this.tabManager.render();
 		this.menu.render();
 		//this.menu.updateTaskList(1);
-		debug.info('Liquid rendered!');
+		console.info('Liquid rendered!');
 	},
 
 	httpRequest(data) {
+		console.log('DATA',data);
 		let options = null;
 		if(data !== undefined){
 			options = {
@@ -82,11 +74,11 @@ const Liquid = {
 
 			for(let field in data){
 				if(options.body !== '') options.body += '&';
-				options.body += field + '=' + (typeof(data[field]) === 'object' ? JSON.stringify(data[field]) : data[field]);
+				options.body += field + '=' + encodeURIComponent(typeof(data[field]) === 'object' ? JSON.stringify(data[field]) : data[field]);
 			}
 		}
 
-		// debug.log(options.body);
+		console.log(options.body);
 
 		return fetch(API_URL, options)
 		.then(response => response.text())
@@ -104,19 +96,20 @@ const Liquid = {
 		} catch(e) {
 			console.error(response_txt,e);
 		}
-		debug.log('JSON');
-		debug.log(json);
+		console.log('JSON',json);
 
-		this.dialogueManager.handleUserQuestion(json.user_question);
+		//this.dialogueManager.handleUserQuestion(json.user_question);
 
 		json['reply_contents'].forEach(data => {
 			switch(data){
+				case 'status_ok': 
+					/* Handle change/hide dialogue */ console.log('OK'); break;
 				case 'table_data':
 					this.tabManager.handleTableData(json.table_data); break;
 				case 'text_file':
 					this.tabManager.handleTextFile(json.text_file); break;
 				case 'user_question':
-				/* 	this.dialogueManager.handleUserQuestion(json.user_question); */break;
+					this.dialogueManager.handleUserQuestion(json.user_question); break;
 				default:
 					console.error('[Liquid.handleResponse] unrecognized reply type: ' + data);
 			}
@@ -144,13 +137,16 @@ const Liquid = {
 				qst_opaque_data: this.history[this.curr_pos].data
 			};
 
+			console.log('ANSWER',json_data);
+
 			Liquid.httpRequest({
 				json_data: json_data
 			})
 			.then(res_text => {
-				// debug.log('['+ans_id+'] ' + res_text);
+				console.log('JSON_DATA',res_text);
+				let res_json = JSON.parse(res_text);
 
-				if(res_text === 'OK'){
+				if(res_json.status_ok.status === 'OK'){
 					this.history.unshift(WAIT_DIALOGUE);
 					this.render();
 				}
@@ -161,8 +157,7 @@ const Liquid = {
 		},
 
 		handleUserQuestion(json) {
-			debug.log('QUESTION');
-			debug.log(json);
+			console.log('QUESTION',json);
 			if(json === undefined){
 				this.history.unshift(WAIT_DIALOGUE);
 			}else{
@@ -225,11 +220,12 @@ const Liquid = {
 
 		getFormat(extension) {
 			switch(extension){
+				case 'json_select':
+					return 'json_select';
 				case 'tsv':
 					return 'table';
-				case 'txt':
-				case 'sql':
-					return 'text';
+				// case 'txt':
+				// case 'sql':
 				default:
 					return 'text';
 			}
@@ -263,7 +259,7 @@ const Liquid = {
 						fetch(t.content)
 						.then(res => res.json())
 						.then(json => {
-							// debug.log(json);
+							// console.log(json);
 							t.content = { cols: [], rows: [] };
 							t.src = 'local';
 	
@@ -277,12 +273,21 @@ const Liquid = {
 							t.object.setData(t.content.rows);
 						});
 					}else{
-						// debug.log(t.content);
+						// console.log(t.content);
 						t.object.setColumns(t.content.cols);
 						t.object.setData(t.content.rows);
 					}
 				}else if(t.format === 'text'){
 					document.querySelector(t.id).innerHTML = t.content;
+				}else if(t.format === 'json_select'){
+					let html = '';
+					for(let key in t.content){
+						html += '<label for="json_select_' + key + '">' + 
+									'<input type="checkbox" keyname="'+key+'"id="json_select_'+key+'">' +
+									'<span>' + key + '</span>' +
+								'</label><br/>';
+					}
+					document.querySelector(t.id).innerHTML = html;
 				}
 			});
 		},
@@ -312,10 +317,10 @@ const Liquid = {
 					file_name: file.name
 				};
 
-				let encoded_result = encodeURIComponent(e.target.result);
+				let encoded_result = (e.target.result);
 
 				Liquid.httpRequest({
-					'json_data': JSON.stringify(json_data),
+					'json_data': (JSON.stringify(json_data)),
 					'file_contents': encoded_result
 				})
 				.then(response => { Liquid.handleResponse(response) });
@@ -348,7 +353,7 @@ const Liquid = {
 	menu: {
 		task_list: ['these', 'are', 'placeholders'],
 
-		updateTaskList(render) {
+		updateTaskList(do_render) {
 			Liquid.httpRequest({
 				json_data: {
 					task_name: Liquid.curr_task, // will vary with tasks
@@ -357,9 +362,9 @@ const Liquid = {
 			})
 			.then(text => {
 				let json = JSON.parse(text);
-				debug.log(json);
+				console.log('updateTaskList',json);
 				this.task_list = json.user_task_list;
-				if(render) this.render();
+				if(do_render) this.render();
 			});
 		},
 

@@ -45,9 +45,18 @@ class Throwin extends React.Component {
 	}
 
 	render() {
-		return (
-			<div className={this.props.format} id={'t' + this.props.i}></div>
-		);
+		switch(this.props.format){
+			// case 'json_select':
+			// 	return (
+			// 		<div className={this.props.format} id={'t' + this.props.i}></div>
+			// 	);
+			// case 'text':
+			// case 'table':
+			default:
+				return (
+					<div className={this.props.format} id={'t' + this.props.i}></div>
+				);
+		}
 	}
 }
 

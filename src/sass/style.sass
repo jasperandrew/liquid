@@ -179,7 +179,7 @@ label[for="throwin_file"]
 	> input
 		display: none
 
-	label
+	> label
 		position: relative
 		font-size: initial
 		box-sizing: border-box
@@ -188,15 +188,15 @@ label[for="throwin_file"]
 		border: 1px solid #bbb
 		border-left: none
 		background: #fff
-	&:first-child label
+	&:first-child > label
 		border-left: 1px solid #bbb
 
-	label:hover
+	> label:hover
 		color: #333
 		cursor: pointer
 		// bottom: 2px
 
-	input:checked ~ label
+	> input:checked ~ label
 		color: #333
 		// bottom: 4px
 		border-top: 3px solid #6890e8
@@ -223,6 +223,26 @@ label[for="throwin_file"]
 			padding: 10px
 		& .table
 			height: calc(60vh + 20px)
+		& .json_select
+			padding: 10px
+			> label
+				padding: 0
+				display: inline-block
+				input
+					display: none
+				span
+					opacity: 0.4
+					cursor: pointer
+					&:before
+						content: '☐ '
+				input:checked ~ span
+					opacity: 1
+					&:before
+						content: '☑ '
+				&:hover
+					span, input:checked ~ span
+						opacity: 0.7
+			
 input:checked ~ .throwin
 	display: block
 	z-index: 9

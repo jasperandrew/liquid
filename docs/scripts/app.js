@@ -40,21 +40,6 @@ var WAIT_DIALOGUE = {
   data: null,
   options: null
 };
-var debug = {
-  on: true,
-  log: function log(msg) {
-    if (this.on) console.log(msg);
-  },
-  error: function error(msg) {
-    if (this.on) console.error(msg);
-  },
-  warn: function warn(msg) {
-    if (this.on) console.warn(msg);
-  },
-  info: function info(msg) {
-    if (this.on) console.info(msg);
-  }
-};
 /************************************************************\
 *                         LIQUID APP                         *
 \************************************************************/
@@ -62,7 +47,6 @@ var debug = {
 var Liquid = {
   curr_task: 'liquid_gui',
   initialize: function initialize() {
-    if (debug.on) debug.warn('Debug logs are on!');
     this.httpRequest({
       json_data: {
         task_name: Liquid.curr_task,
@@ -71,21 +55,22 @@ var Liquid = {
         overwrite: true
       }
     }).then(function (text) {
-      debug.log('[new_task] ' + text);
+      console.log('[new_task] ' + text);
     });
     this.dialogueManager.history.push(INIT_DIALOGUE);
     this.render();
     this.eventHandler.initialize();
-    debug.info('Liquid initialized!');
+    console.info('Liquid initialized!');
   },
   render: function render() {
     this.dialogueManager.render();
     this.tabManager.render();
     this.menu.render(); //this.menu.updateTaskList(1);
 
-    debug.info('Liquid rendered!');
+    console.info('Liquid rendered!');
   },
   httpRequest: function httpRequest(data) {
+    console.log('DATA', data);
     var options = null;
 
     if (data !== undefined) {
@@ -99,11 +84,11 @@ var Liquid = {
 
       for (var field in data) {
         if (options.body !== '') options.body += '&';
-        options.body += field + '=' + (_typeof(data[field]) === 'object' ? JSON.stringify(data[field]) : data[field]);
+        options.body += field + '=' + encodeURIComponent(_typeof(data[field]) === 'object' ? JSON.stringify(data[field]) : data[field]);
       }
-    } // debug.log(options.body);
+    }
 
-
+    console.log(options.body);
     return fetch(API_URL, options).then(function (response) {
       return response.text();
     }).catch(function (err) {
@@ -125,11 +110,15 @@ var Liquid = {
       console.error(response_txt, e);
     }
 
-    debug.log('JSON');
-    debug.log(json);
-    this.dialogueManager.handleUserQuestion(json.user_question);
+    console.log('JSON', json); //this.dialogueManager.handleUserQuestion(json.user_question);
+
     json['reply_contents'].forEach(function (data) {
       switch (data) {
+        case 'status_ok':
+          /* Handle change/hide dialogue */
+          console.log('OK');
+          break;
+
         case 'table_data':
           _this.tabManager.handleTableData(json.table_data);
 
@@ -141,7 +130,8 @@ var Liquid = {
           break;
 
         case 'user_question':
-          /* 	this.dialogueManager.handleUserQuestion(json.user_question); */
+          _this.dialogueManager.handleUserQuestion(json.user_question);
+
           break;
 
         default:
@@ -175,11 +165,14 @@ var Liquid = {
         answ_id: ans_id,
         qst_opaque_data: this.history[this.curr_pos].data
       };
+      console.log('ANSWER', json_data);
       Liquid.httpRequest({
         json_data: json_data
       }).then(function (res_text) {
-        // debug.log('['+ans_id+'] ' + res_text);
-        if (res_text === 'OK') {
+        console.log('JSON_DATA', res_text);
+        var res_json = JSON.parse(res_text);
+
+        if (res_json.status_ok.status === 'OK') {
           _this2.history.unshift(WAIT_DIALOGUE);
 
           _this2.render();
@@ -189,8 +182,7 @@ var Liquid = {
       }); // this.command_map[ans_id]();
     },
     handleUserQuestion: function handleUserQuestion(json) {
-      debug.log('QUESTION');
-      debug.log(json);
+      console.log('QUESTION', json);
 
       if (json === undefined) {
         this.history.unshift(WAIT_DIALOGUE);
@@ -267,12 +259,13 @@ var Liquid = {
     },
     getFormat: function getFormat(extension) {
       switch (extension) {
+        case 'json_select':
+          return 'json_select';
+
         case 'tsv':
           return 'table';
-
-        case 'txt':
-        case 'sql':
-          return 'text';
+        // case 'txt':
+        // case 'sql':
 
         default:
           return 'text';
@@ -311,7 +304,7 @@ var Liquid = {
             fetch(t.content).then(function (res) {
               return res.json();
             }).then(function (json) {
-              // debug.log(json);
+              // console.log(json);
               t.content = {
                 cols: [],
                 rows: []
@@ -333,12 +326,20 @@ var Liquid = {
               t.object.setData(t.content.rows);
             });
           } else {
-            // debug.log(t.content);
+            // console.log(t.content);
             t.object.setColumns(t.content.cols);
             t.object.setData(t.content.rows);
           }
         } else if (t.format === 'text') {
           document.querySelector(t.id).innerHTML = t.content;
+        } else if (t.format === 'json_select') {
+          var html = '';
+
+          for (var key in t.content) {
+            html += '<label for="json_select_' + key + '">' + '<input type="checkbox" keyname="' + key + '"id="json_select_' + key + '">' + '<span>' + key + '</span>' + '</label><br/>';
+          }
+
+          document.querySelector(t.id).innerHTML = html;
         }
       });
     },
@@ -365,7 +366,7 @@ var Liquid = {
           cmd_name: 'throwin_file',
           file_name: file.name
         };
-        var encoded_result = encodeURIComponent(e.target.result);
+        var encoded_result = e.target.result;
         Liquid.httpRequest({
           'json_data': JSON.stringify(json_data),
           'file_contents': encoded_result
@@ -406,7 +407,7 @@ var Liquid = {
   },
   menu: {
     task_list: ['these', 'are', 'placeholders'],
-    updateTaskList: function updateTaskList(render) {
+    updateTaskList: function updateTaskList(do_render) {
       var _this4 = this;
 
       Liquid.httpRequest({
@@ -417,9 +418,9 @@ var Liquid = {
         }
       }).then(function (text) {
         var json = JSON.parse(text);
-        debug.log(json);
+        console.log('updateTaskList', json);
         _this4.task_list = json.user_task_list;
-        if (render) _this4.render();
+        if (do_render) _this4.render();
       });
     },
     render: function render() {

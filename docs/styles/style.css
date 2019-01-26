@@ -246,20 +246,27 @@ label[for=throwin_file]:active {
   height: calc(60vh + 20px);
 }
 .tab .throwin .json_select {
+  overflow-x: auto;
   padding: 10px;
 }
 .tab .throwin .json_select > label {
   padding: 0;
   display: inline-block;
 }
+.tab .throwin .json_select > label:last-of-type {
+  margin-bottom: 5px;
+}
 .tab .throwin .json_select > label input {
   display: none;
 }
-.tab .throwin .json_select > label span {
+.tab .throwin .json_select > label > span {
   opacity: 0.4;
   cursor: pointer;
 }
-.tab .throwin .json_select > label span:before {
+.tab .throwin .json_select > label > span span {
+  display: none;
+}
+.tab .throwin .json_select > label > span:before {
   content: "☐ ";
 }
 .tab .throwin .json_select > label input:checked ~ span {
@@ -268,8 +275,11 @@ label[for=throwin_file]:active {
 .tab .throwin .json_select > label input:checked ~ span:before {
   content: "☑ ";
 }
-.tab .throwin .json_select > label:hover span, .tab .throwin .json_select > label:hover input:checked ~ span {
+.tab .throwin .json_select > label:hover > span, .tab .throwin .json_select > label:hover input:checked ~ span {
   opacity: 0.7;
+}
+.tab .throwin .json_select > label:hover > span span, .tab .throwin .json_select > label:hover input:checked ~ span span {
+  display: inline;
 }
 
 input:checked ~ .throwin {

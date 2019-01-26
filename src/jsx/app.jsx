@@ -43,7 +43,7 @@ const Liquid = {
 			}
 		})
 		.then(text => {
-			console.log('[new_task] ' + text);
+			console.log('[new_task] ' + JSON.parse(text).status_ok.status);
 		});
 
 		this.dialogueManager.history.push(INIT_DIALOGUE);
@@ -61,7 +61,7 @@ const Liquid = {
 	},
 
 	httpRequest(data) {
-		console.log('DATA',data);
+		console.log('DATA-OUT',data);
 		let options = null;
 		if(data !== undefined){
 			options = {
@@ -78,8 +78,6 @@ const Liquid = {
 			}
 		}
 
-		console.log(options.body);
-
 		return fetch(API_URL, options)
 		.then(response => response.text())
 		.catch(err => {
@@ -89,14 +87,13 @@ const Liquid = {
 	},
 
 	handleResponse: function(response_txt) {
-		if(response_txt === 'OK') return;
 		let json;
 		try {
 			json = JSON.parse(response_txt);
 		} catch(e) {
 			console.error(response_txt,e);
 		}
-		console.log('JSON',json);
+		console.log('DATA-IN',json);
 
 		//this.dialogueManager.handleUserQuestion(json.user_question);
 
@@ -108,6 +105,8 @@ const Liquid = {
 					this.tabManager.handleTableData(json.table_data); break;
 				case 'text_file':
 					this.tabManager.handleTextFile(json.text_file); break;
+				case 'api_json':
+					this.tabManager.handleJSON(json.api_json, true); break;
 				case 'user_question':
 					this.dialogueManager.handleUserQuestion(json.user_question); break;
 				default:
@@ -143,12 +142,13 @@ const Liquid = {
 				json_data: json_data
 			})
 			.then(res_text => {
-				console.log('JSON_DATA',res_text);
 				let res_json = JSON.parse(res_text);
 
-				if(res_json.status_ok.status === 'OK'){
-					this.history.unshift(WAIT_DIALOGUE);
-					this.render();
+				if(res_json.reply_contents.indexOf('status_ok') !== -1){
+					if(res_json.status_ok.status === 'OK'){
+						this.history.unshift(WAIT_DIALOGUE);
+						this.render();	
+					}
 				}
 				Liquid.handleResponse(res_text);
 			});
@@ -241,7 +241,20 @@ const Liquid = {
 		},
 
 		handleTextFile(json) {
+			try {
+				console.log('CONTENTS.JSON',JSON.parse(json.file_contents));
+			} catch(e) {
+				console.error('not json');
+			}
 			this.addTab(json.node_name, json.file_extension, 'local', json.file_contents);
+		},
+
+		handleJSON(data, selection) {
+			console.log(data);
+			this.addTab(data.node_name, 'json', 'local', JSON.stringify(data.json, null, 2));
+			if(selection){
+				this.addTab(data.node_name+'_select', 'json_select', 'local', data.json_vars);
+			}
 		},
 	
 		render() {
@@ -284,7 +297,7 @@ const Liquid = {
 					for(let key in t.content){
 						html += '<label for="json_select_' + key + '">' + 
 									'<input type="checkbox" keyname="'+key+'"id="json_select_'+key+'">' +
-									'<span>' + key + '</span>' +
+									'<span>' + key + '<span> => ' + t.content[key] + '</span></span>' +
 								'</label><br/>';
 					}
 					document.querySelector(t.id).innerHTML = html;

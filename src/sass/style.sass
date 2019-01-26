@@ -224,15 +224,20 @@ label[for="throwin_file"]
 		& .table
 			height: calc(60vh + 20px)
 		& .json_select
+			overflow-x: auto
 			padding: 10px
 			> label
 				padding: 0
 				display: inline-block
+				&:last-of-type
+					margin-bottom: 5px
 				input
 					display: none
-				span
+				> span
 					opacity: 0.4
 					cursor: pointer
+					span
+						display: none
 					&:before
 						content: '☐ '
 				input:checked ~ span
@@ -240,8 +245,10 @@ label[for="throwin_file"]
 					&:before
 						content: '☑ '
 				&:hover
-					span, input:checked ~ span
+					> span, input:checked ~ span
 						opacity: 0.7
+						span
+							display: inline
 			
 input:checked ~ .throwin
 	display: block

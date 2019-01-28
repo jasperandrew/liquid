@@ -43,7 +43,7 @@ const Liquid = {
 			}
 		})
 		.then(text => {
-			console.log('[new_task] ' + JSON.parse(text).status_ok.status);
+			console.log('[NEW-TASK] ' + JSON.parse(text).status_ok.status);
 		});
 
 		this.dialogueManager.history.push(INIT_DIALOGUE);
@@ -61,7 +61,7 @@ const Liquid = {
 	},
 
 	httpRequest(data) {
-		console.log('DATA-OUT',data);
+		console.log('[DATA-OUT]',data);
 		let options = null;
 		if(data !== undefined){
 			options = {
@@ -77,6 +77,7 @@ const Liquid = {
 				options.body += field + '=' + encodeURIComponent(typeof(data[field]) === 'object' ? JSON.stringify(data[field]) : data[field]);
 			}
 		}
+		// console.log('DATA-OUT-ENCODED',options.body);
 
 		return fetch(API_URL, options)
 		.then(response => response.text())
@@ -93,14 +94,14 @@ const Liquid = {
 		} catch(e) {
 			console.error(response_txt,e);
 		}
-		console.log('DATA-IN',json);
+		console.log('[DATA-IN]',json);
 
 		//this.dialogueManager.handleUserQuestion(json.user_question);
 
 		json['reply_contents'].forEach(data => {
 			switch(data){
 				case 'status_ok': 
-					/* Handle change/hide dialogue */ console.log('OK'); break;
+					/* Handle change/hide dialogue */ console.log('STATUS-OK'); break;
 				case 'table_data':
 					this.tabManager.handleTableData(json.table_data); break;
 				case 'text_file':
@@ -136,7 +137,7 @@ const Liquid = {
 				qst_opaque_data: this.history[this.curr_pos].data
 			};
 
-			console.log('ANSWER',json_data);
+			console.log('ANSWER-OUT',json_data);
 
 			Liquid.httpRequest({
 				json_data: json_data
@@ -157,7 +158,7 @@ const Liquid = {
 		},
 
 		handleUserQuestion(json) {
-			console.log('QUESTION',json);
+			console.log('QUESTION-IN',json);
 			if(json === undefined){
 				this.history.unshift(WAIT_DIALOGUE);
 			}else{
@@ -296,7 +297,7 @@ const Liquid = {
 					let html = '';
 					for(let key in t.content){
 						html += '<label for="json_select_' + key + '">' + 
-									'<input type="checkbox" keyname="'+key+'"id="json_select_'+key+'">' +
+									'<input type="checkbox" keyname="'+key+'" keyval="'+t.content[key]+'" id="json_select_'+key+'">' +
 									'<span>' + key + '<span> => ' + t.content[key] + '</span></span>' +
 								'</label><br/>';
 					}
@@ -307,6 +308,27 @@ const Liquid = {
 
 		setActiveTab(i) {
 			this.active_tab = i;
+		},
+
+		submitJSONvars(tab_i) {
+			let selected = {};
+			document.querySelectorAll('.throwin #t' + tab_i + ' input:checked').forEach(input => {
+				selected[input.attributes['keyname'].value] = input.attributes['keyval'].value;
+			});
+			console.log(selected);
+
+			let json_data = {
+				task_name: Liquid.curr_task,
+				cmd_name: 'user_input',
+				input_type: 'json_vars_selection',
+				json_vars_selection: selected,
+				qst_opaque_data: Liquid.dialogueManager.history[Liquid.dialogueManager.curr_pos].data
+			}
+
+			Liquid.httpRequest({
+				json_data: json_data
+			})
+			.then(response => { Liquid.handleResponse(response) });
 		}
 	},
 

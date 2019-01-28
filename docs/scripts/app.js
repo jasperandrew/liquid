@@ -55,7 +55,7 @@ var Liquid = {
         overwrite: true
       }
     }).then(function (text) {
-      console.log('[new_task] ' + JSON.parse(text).status_ok.status);
+      console.log('[NEW-TASK] ' + JSON.parse(text).status_ok.status);
     });
     this.dialogueManager.history.push(INIT_DIALOGUE);
     this.render();
@@ -70,7 +70,7 @@ var Liquid = {
     console.info('Liquid rendered!');
   },
   httpRequest: function httpRequest(data) {
-    console.log('DATA-OUT', data);
+    console.log('[DATA-OUT]', data);
     var options = null;
 
     if (data !== undefined) {
@@ -86,7 +86,8 @@ var Liquid = {
         if (options.body !== '') options.body += '&';
         options.body += field + '=' + encodeURIComponent(_typeof(data[field]) === 'object' ? JSON.stringify(data[field]) : data[field]);
       }
-    }
+    } // console.log('DATA-OUT-ENCODED',options.body);
+
 
     return fetch(API_URL, options).then(function (response) {
       return response.text();
@@ -108,13 +109,13 @@ var Liquid = {
       console.error(response_txt, e);
     }
 
-    console.log('DATA-IN', json); //this.dialogueManager.handleUserQuestion(json.user_question);
+    console.log('[DATA-IN]', json); //this.dialogueManager.handleUserQuestion(json.user_question);
 
     json['reply_contents'].forEach(function (data) {
       switch (data) {
         case 'status_ok':
           /* Handle change/hide dialogue */
-          console.log('OK');
+          console.log('STATUS-OK');
           break;
 
         case 'table_data':
@@ -168,7 +169,7 @@ var Liquid = {
         answ_id: ans_id,
         qst_opaque_data: this.history[this.curr_pos].data
       };
-      console.log('ANSWER', json_data);
+      console.log('ANSWER-OUT', json_data);
       Liquid.httpRequest({
         json_data: json_data
       }).then(function (res_text) {
@@ -186,7 +187,7 @@ var Liquid = {
       }); // this.command_map[ans_id]();
     },
     handleUserQuestion: function handleUserQuestion(json) {
-      console.log('QUESTION', json);
+      console.log('QUESTION-IN', json);
 
       if (json === undefined) {
         this.history.unshift(WAIT_DIALOGUE);
@@ -354,7 +355,7 @@ var Liquid = {
           var html = '';
 
           for (var key in t.content) {
-            html += '<label for="json_select_' + key + '">' + '<input type="checkbox" keyname="' + key + '"id="json_select_' + key + '">' + '<span>' + key + '<span> => ' + t.content[key] + '</span></span>' + '</label><br/>';
+            html += '<label for="json_select_' + key + '">' + '<input type="checkbox" keyname="' + key + '" keyval="' + t.content[key] + '" id="json_select_' + key + '">' + '<span>' + key + '<span> => ' + t.content[key] + '</span></span>' + '</label><br/>';
           }
 
           document.querySelector(t.id).innerHTML = html;
@@ -363,6 +364,25 @@ var Liquid = {
     },
     setActiveTab: function setActiveTab(i) {
       this.active_tab = i;
+    },
+    submitJSONvars: function submitJSONvars(tab_i) {
+      var selected = {};
+      document.querySelectorAll('.throwin #t' + tab_i + ' input:checked').forEach(function (input) {
+        selected[input.attributes['keyname'].value] = input.attributes['keyval'].value;
+      });
+      console.log(selected);
+      var json_data = {
+        task_name: Liquid.curr_task,
+        cmd_name: 'user_input',
+        input_type: 'json_vars_selection',
+        json_vars_selection: selected,
+        qst_opaque_data: Liquid.dialogueManager.history[Liquid.dialogueManager.curr_pos].data
+      };
+      Liquid.httpRequest({
+        json_data: json_data
+      }).then(function (response) {
+        Liquid.handleResponse(response);
+      });
     }
   },
   //// Manages user-created file uploads ////

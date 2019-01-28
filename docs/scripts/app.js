@@ -358,6 +358,7 @@ var Liquid = {
             html += '<label for="json_select_' + key + '">' + '<input type="checkbox" keyname="' + key + '" keyval="' + t.content[key] + '" id="json_select_' + key + '">' + '<span>' + key + '<span> => ' + t.content[key] + '</span></span>' + '</label><br/>';
           }
 
+          html += '<button onclick="Liquid.tabManager.submitJSONvars(\'' + t.id + '\')">Submit</button>';
           document.querySelector(t.id).innerHTML = html;
         }
       });
@@ -365,9 +366,9 @@ var Liquid = {
     setActiveTab: function setActiveTab(i) {
       this.active_tab = i;
     },
-    submitJSONvars: function submitJSONvars(tab_i) {
+    submitJSONvars: function submitJSONvars(tab_selector) {
       var selected = {};
-      document.querySelectorAll('.throwin #t' + tab_i + ' input:checked').forEach(function (input) {
+      document.querySelectorAll('.throwin ' + tab_selector + ' input:checked').forEach(function (input) {
         selected[input.attributes['keyname'].value] = input.attributes['keyval'].value;
       });
       console.log(selected);

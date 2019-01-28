@@ -281,6 +281,11 @@ label[for=throwin_file]:active {
 .tab .throwin .json_select > label:hover > span span, .tab .throwin .json_select > label:hover input:checked ~ span span {
   display: inline;
 }
+.tab .throwin .json_select button {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+}
 
 input:checked ~ .throwin {
   display: block;

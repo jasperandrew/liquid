@@ -209,6 +209,7 @@ const Liquid = {
 					name: name,
 					ext: ext,
 					id: '#t' + n,
+					n: n,
 					src: source,
 					format: this.getFormat(ext),
 					content: content,
@@ -266,7 +267,8 @@ const Liquid = {
 					if(!t.object){
 						t.object = new Tabulator(t.id, {
 							layout:'fitData',
-							placeholder:'Loading...'
+							placeholder:'Loading...',
+							movableColumns: true
 						});
 					}
 					if(t.src === 'fetch'){
@@ -287,7 +289,12 @@ const Liquid = {
 							t.object.setData(t.content.rows);
 						});
 					}else{
-						// console.log(t.content);
+						console.log(t.content);
+						for(let i in t.content.cols){
+							t.content.cols[i].editor = true;
+							t.content.cols[i].headerFilter = true;
+						}
+						console.log(t.content);
 						t.object.setColumns(t.content.cols);
 						t.object.setData(t.content.rows);
 					}
@@ -301,7 +308,8 @@ const Liquid = {
 									'<span>' + key + '<span> => ' + t.content[key] + '</span></span>' +
 								'</label><br/>';
 					}
-					html += '<button onclick="Liquid.tabManager.submitJSONvars(\'' + t.id + '\')">Submit</button>';
+					html += '<input type="button" id="json_submit_' + t.n + '" onclick="Liquid.tabManager.submitJSONvars(\'' + t.id + '\')" />';
+					html += '<label for="json_submit_'+t.n+'">Submit</label>';
 					document.querySelector(t.id).innerHTML = html;
 				}
 			});

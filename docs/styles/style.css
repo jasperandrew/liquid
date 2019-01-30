@@ -281,10 +281,28 @@ label[for=throwin_file]:active {
 .tab .throwin .json_select > label:hover > span span, .tab .throwin .json_select > label:hover input:checked ~ span span {
   display: inline;
 }
-.tab .throwin .json_select button {
+.tab .throwin .json_select input[type=button] {
+  display: none;
+}
+.tab .throwin .json_select label[for^=json_submit] {
   position: absolute;
   top: 20px;
   right: 35px;
+  background-color: #3ec435;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.tab .throwin .json_select label[for^=json_submit]:hover {
+  filter: brightness(0.9);
+}
+.tab .throwin .json_select label[for^=json_submit]:active {
+  filter: brightness(0.8);
+}
+.tab .throwin .json_select label[for^=json_submit]:before {
+  content: "✓ ";
+  font-weight: bold;
 }
 
 input:checked ~ .throwin {

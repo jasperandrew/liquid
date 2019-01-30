@@ -1,18 +1,2 @@
-- Let's begin.  Choose 'wizard' interview or just start loading input and output files with the load button below.
-- loads countries.tsv
-- liquid asks: "Is this this you initial file?" yes / no / help me decide >> yes
-- load attrib_handles.tsv 
-- server returns the table data for attrib_handles, and also a question: 
-- "This appears to be be intended for joining with 'countries.tsv' on the field 'country_code'.  Is that correct? >> yes
-- server ruturns the joined table for display.  Name is countries_join_attrib_handles
-- Load new_mau.sql
-- "This is appears to be an SQL Select statment.  Would you like to execute it no on the database 'MAU_DB'?  >> yes
-- server mocks up the db call, and send to client the table with name "new_mau_results" and it is displayed in a tab. 
-- Load report.txt
-- "This appears to be the final out of this task.  Would you like me to execute the full task now?" >> yes.
-- Server executes and returns the expanded report as text with name "report" and file_type = report. 
-- It is displayed and downloaded.
-
 - new task, tasks on sidebar
-- hide/lock question once clicked
-- get rid of text next to file browse button
+- lock question once clicked

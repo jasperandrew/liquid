@@ -238,7 +238,14 @@ const Liquid = {
 				cols: [],
 				rows: json.tbl_rows
 			};
-			json.tbl_cols.forEach(col => content.cols.push({ title:col, field:col }));
+			if(typeof(json.tbl_cols[0]) === "string"){
+				json.tbl_cols.forEach(col => content.cols.push({ title:col, field:col, editor:true, headerFilter:true }));
+				console.log('asd');
+			}else{
+				content.cols = json.tbl_cols;
+				console.log('zxc');
+			}
+
 			this.addTab(json.node_name, 'tsv', 'local', content);
 		},
 
@@ -289,12 +296,6 @@ const Liquid = {
 							t.object.setData(t.content.rows);
 						});
 					}else{
-						console.log(t.content);
-						for(let i in t.content.cols){
-							t.content.cols[i].editor = true;
-							t.content.cols[i].headerFilter = true;
-						}
-						console.log(t.content);
 						t.object.setColumns(t.content.cols);
 						t.object.setData(t.content.rows);
 					}

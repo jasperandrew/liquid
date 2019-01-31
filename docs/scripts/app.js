@@ -284,18 +284,16 @@ var Liquid = {
       };
 
       if (typeof json.tbl_cols[0] === "string") {
+        // Temporary check to see if cols are string or object
         json.tbl_cols.forEach(function (col) {
           return content.cols.push({
             title: col,
             field: col,
-            editor: true,
-            headerFilter: true
+            editor: true
           });
         });
-        console.log('asd');
       } else {
         content.cols = json.tbl_cols;
-        console.log('zxc');
       }
 
       this.addTab(json.node_name, 'tsv', 'local', content);

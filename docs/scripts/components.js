@@ -102,19 +102,62 @@ function (_React$Component3) {
   _createClass(Throwin, [{
     key: "render",
     value: function render() {
+      var _this2 = this;
+
+      var innerHTML = [];
+
       switch (this.props.format) {
-        // case 'json_select':
-        // 	return (
-        // 		<div className={this.props.format} id={'t' + this.props.i}></div>
-        // 	);
-        // case 'text':
+        case 'json_select':
+          var k = 1;
+
+          for (var name in this.props.content) {
+            var val = this.props.content[name].toString();
+            if (val.length > 70) val = val.slice(0, 70) + ' . . .';
+            innerHTML.push(React.createElement("label", {
+              key: k++,
+              htmlFor: 'json_select_' + name
+            }, React.createElement("input", {
+              type: "checkbox",
+              keyname: name.toString(),
+              keyval: val,
+              id: 'json_select_' + name
+            }), React.createElement("span", null, name, React.createElement("span", null, '=>' + val))));
+            innerHTML.push(React.createElement("br", {
+              key: k++
+            }));
+          }
+
+          innerHTML.push(React.createElement("input", {
+            key: k++,
+            type: "button",
+            id: 'json_submit_' + this.props.i,
+            onClick: function onClick() {
+              return Liquid.tabManager.submitJSONvars('#t' + _this2.props.i);
+            }
+          }));
+          innerHTML.push(React.createElement("label", {
+            key: k++,
+            htmlFor: 'json_submit_' + this.props.i
+          }, "Submit"));
+          break;
+
+        case 'text':
+          innerHTML.push(React.createElement("span", {
+            key: "1",
+            dangerouslySetInnerHTML: {
+              __html: this.props.content
+            }
+          }));
+          break;
         // case 'table':
+
         default:
-          return React.createElement("div", {
-            className: this.props.format,
-            id: 't' + this.props.i
-          });
       }
+
+      return React.createElement("div", {
+        className: this.props.format,
+        id: 't' + this.props.i
+      }, innerHTML);
     }
   }]);
 
@@ -135,7 +178,7 @@ function (_React$Component4) {
   _createClass(Tab, [{
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var id = 'tab' + this.props.i;
       return React.createElement("div", {
@@ -147,14 +190,15 @@ function (_React$Component4) {
         defaultChecked: this.props.i === Liquid.tabManager.active_tab ? true : false
       }), React.createElement("label", {
         onClick: function onClick() {
-          return Liquid.tabManager.setActiveTab(_this2.props.i);
+          return Liquid.tabManager.setActiveTab(_this3.props.i);
         },
         htmlFor: id
       }, this.props.tabName), React.createElement("div", {
         className: "throwin"
       }, React.createElement(Throwin, {
         format: this.props.format,
-        i: this.props.i
+        i: this.props.i,
+        content: this.props.content
       })));
     }
   }]);

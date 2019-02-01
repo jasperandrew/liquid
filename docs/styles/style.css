@@ -260,7 +260,7 @@ label[for=throwin_file]:active {
   display: none;
 }
 .tab .throwin .json_select > label > span {
-  opacity: 0.4;
+  opacity: 0.5;
   cursor: pointer;
 }
 .tab .throwin .json_select > label > span span {

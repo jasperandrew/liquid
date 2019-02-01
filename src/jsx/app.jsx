@@ -77,7 +77,6 @@ const Liquid = {
 				options.body += field + '=' + encodeURIComponent(typeof(data[field]) === 'object' ? JSON.stringify(data[field]) : data[field]);
 			}
 		}
-		// console.log('DATA-OUT-ENCODED',options.body);
 
 		return fetch(API_URL, options)
 		.then(response => response.text())
@@ -92,11 +91,11 @@ const Liquid = {
 		try {
 			json = JSON.parse(response_txt);
 		} catch(e) {
-			console.error(response_txt,e);
+			console.error('[Error] Non-JSON response received:\n\n' + response_txt);
+			alert('[Error] Non-JSON response received:\n\n' + response_txt);
+			return;
 		}
 		console.log('[DATA-IN]',json);
-
-		//this.dialogueManager.handleUserQuestion(json.user_question);
 
 		json['reply_contents'].forEach(data => {
 			switch(data){
@@ -137,7 +136,7 @@ const Liquid = {
 				qst_opaque_data: this.history[this.curr_pos].data
 			};
 
-			console.log('ANSWER-OUT',json_data);
+			// console.log('[ANSWER-OUT]',json_data);
 
 			Liquid.httpRequest({
 				json_data: json_data
@@ -158,7 +157,7 @@ const Liquid = {
 		},
 
 		handleUserQuestion(json) {
-			console.log('QUESTION-IN',json);
+			// console.log('[QUESTION-IN]',json);
 			if(json === undefined){
 				this.history.unshift(WAIT_DIALOGUE);
 			}else{
@@ -204,12 +203,11 @@ const Liquid = {
 			let n = this.data.length + 1;
 			let short_name = name.split('/').pop();
 			this.data.push({
-				jsxElement: <Tab key={n} i={n} tabName={short_name} format={this.getFormat(ext)}/>,
+				jsxElement: <Tab key={n} i={n} tabName={short_name} format={this.getFormat(ext)} content={content}/>,
 				throwin: {
 					name: name,
 					ext: ext,
 					id: '#t' + n,
-					n: n,
 					src: source,
 					format: this.getFormat(ext),
 					content: content,
@@ -248,16 +246,10 @@ const Liquid = {
 		},
 
 		handleTextFile(json) {
-			try {
-				console.log('CONTENTS.JSON',JSON.parse(json.file_contents));
-			} catch(e) {
-				console.error('not json');
-			}
 			this.addTab(json.node_name, json.file_extension, 'local', json.file_contents);
 		},
 
 		handleJSON(data, selection) {
-			console.log(data);
 			this.addTab(data.node_name, 'json', 'local', JSON.stringify(data.json, null, 2));
 			if(selection){
 				this.addTab(data.node_name+'_select', 'json_select', 'local', data.json_vars);
@@ -297,19 +289,6 @@ const Liquid = {
 						t.object.setColumns(t.content.cols);
 						t.object.setData(t.content.rows);
 					}
-				}else if(t.format === 'text'){
-					document.querySelector(t.id).innerHTML = t.content;
-				}else if(t.format === 'json_select'){
-					let html = '';
-					for(let key in t.content){
-						html += '<label for="json_select_' + key + '">' + 
-									'<input type="checkbox" keyname="'+key+'" keyval="'+t.content[key]+'" id="json_select_'+key+'">' +
-									'<span>' + key + '<span> => ' + t.content[key] + '</span></span>' +
-								'</label><br/>';
-					}
-					html += '<input type="button" id="json_submit_' + t.n + '" onclick="Liquid.tabManager.submitJSONvars(\'' + t.id + '\')" />';
-					html += '<label for="json_submit_'+t.n+'">Submit</label>';
-					document.querySelector(t.id).innerHTML = html;
 				}
 			});
 		},
@@ -323,7 +302,6 @@ const Liquid = {
 			document.querySelectorAll('.throwin ' + tab_selector + ' input:checked').forEach(input => {
 				selected[input.attributes['keyname'].value] = input.attributes['keyval'].value;
 			});
-			console.log(selected);
 
 			let json_data = {
 				task_name: Liquid.curr_task,

@@ -45,18 +45,34 @@ class Throwin extends React.Component {
 	}
 
 	render() {
+		let innerHTML = [];
 		switch(this.props.format){
-			// case 'json_select':
-			// 	return (
-			// 		<div className={this.props.format} id={'t' + this.props.i}></div>
-			// 	);
-			// case 'text':
+			case 'json_select':
+				let k = 1;
+				for(let name in this.props.content){
+					let val = this.props.content[name].toString();
+					if(val.length > 70) val = val.slice(0,70) + ' . . .';
+					
+					innerHTML.push(
+						<label key={k++} htmlFor={'json_select_'+name}>
+							<input type='checkbox' keyname={name.toString()} keyval={val} id={'json_select_'+name} />
+							<span>{name}<span>{'=>'+val}</span></span>
+						</label>
+					);
+					innerHTML.push(<br key={k++}/>);
+				}
+				innerHTML.push(<input key={k++} type='button' id={'json_submit_'+this.props.i} onClick={() => Liquid.tabManager.submitJSONvars('#t'+this.props.i)} />);
+				innerHTML.push(<label key={k++} htmlFor={'json_submit_'+this.props.i}>Submit</label>);
+				break;
+
+			case 'text':
+				innerHTML.push(<span key='1' dangerouslySetInnerHTML={{__html: this.props.content}}></span>);
+				break;
 			// case 'table':
 			default:
-				return (
-					<div className={this.props.format} id={'t' + this.props.i}></div>
-				);
 		}
+
+		return <div className={this.props.format} id={'t' + this.props.i}>{innerHTML}</div>;
 	}
 }
 
@@ -73,7 +89,7 @@ class Tab extends React.Component {
 				<input type='radio' id={id} name='tabs' defaultChecked={this.props.i === Liquid.tabManager.active_tab ? true : false}/>
 				<label onClick={() => Liquid.tabManager.setActiveTab(this.props.i)} htmlFor={id}>{this.props.tabName}</label>
 				<div className='throwin'>
-					<Throwin format={this.props.format} i={this.props.i}/>
+					<Throwin format={this.props.format} i={this.props.i} content={this.props.content}/>
 				</div>
 			</div>
 		);

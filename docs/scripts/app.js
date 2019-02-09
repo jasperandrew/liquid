@@ -404,11 +404,39 @@ var Liquid = {
       };
 
       reader.readAsText(file);
+    },
+    uploadFromText: function uploadFromText() {
+      var text = prompt('Type or paste content here');
+
+      if (text === null | text === '') {
+        console.log('Text input canceled');
+        return;
+      }
+
+      var name = prompt('Give this file a name');
+
+      if (name === null | name === '') {
+        console.log('Name input canceled');
+        return;
+      }
+
+      var json_data = {
+        task_name: Liquid.curr_task,
+        cmd_name: 'throwin_text',
+        file_contents: text,
+        node_name: name
+      };
+      Liquid.httpRequest({
+        'json_data': JSON.stringify(json_data)
+      }).then(function (response) {
+        Liquid.handleResponse(response);
+      });
     }
   },
   eventHandler: {
     event_map: {
       '#throwin_file|change': 'uploadManager.uploadFromFile',
+      '#throwin_text|click': 'uploadManager.uploadFromText',
       '#task_list h2|click': 'menu.updateTaskList'
     },
     initialize: function initialize() {

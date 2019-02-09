@@ -19,6 +19,12 @@ babel_config='{
 	]
 }'
 
+# directory config
+js_src="src/jsx/"
+js_out="docs/scripts/"
+css_src="src/sass/"
+css_out="docs/styles/"
+serve_dir="docs/"
 
 #--------------------------------------------#
 #               Some functions               #
@@ -26,14 +32,22 @@ babel_config='{
 
 build () {
 	echo "[Util] Building files..."
-	npx babel src/jsx/ -d docs/scripts/
-	npx sass src/sass/:docs/styles/
+	npx babel $js_src -d $js_out
+	npx sass $css_src:$css_out
 }
 
 server () {
 	echo "[Util] Starting server..."
 	trap "kill 0" EXIT
-	npx http-server
+	npx http-server $serve_dir
+	wait
+}
+
+watch () {
+	echo "[Util] Watching files for updates..."
+	trap "kill 0" EXIT
+	npx babel --verbose -w $js_src -d $js_out &
+	npx sass --watch $css_src:$css_out &
 	wait
 }
 
@@ -41,17 +55,9 @@ start () {
 	echo "[Util] Starting server..."
 	echo "[Util] Watching files for updates..."
 	trap "kill 0" EXIT
-	npx http-server
-	npx babel --verbose -w src/jsx/ -d docs/scripts/ &
-	npx sass --watch src/sass/:docs/styles/ &
-	wait
-}
-
-watch () {
-	echo "[Util] Watching files for updates..."
-	trap "kill 0" EXIT
-	npx babel --verbose -w src/jsx/ -d docs/scripts/ &
-	npx sass --watch src/sass/:docs/styles/ &
+	npx http-server $serve_dir --silent &
+	npx babel --verbose -w $js_src -d $js_out &
+	npx sass --watch $css_src:$css_out &
 	wait
 }
 

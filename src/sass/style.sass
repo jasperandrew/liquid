@@ -131,26 +131,36 @@ main
 	input:checked ~ label
 		background: #b5c4e5
 
-#throwin_file
+#throwin_data
+	position: absolute
+	right: 20px
+	padding: 20px
+
+#throwin_data > *
+	display: block
+	text-align: center
+
+#throwin_data > input
 	display: none
 
-label[for="throwin_file"]
-	position: absolute
-	top: 20px
-	right: 20px
+#throwin_data > label
 	align-items: center
 	text-align: center
-	padding: 20px
+	padding: 10px
 	border: 1px solid #274fa5
 	color: white
-	font-size: 1.3em
-	line-height: 1.7em
+	font-size: 1.2em
+	line-height: 1.2em
 	cursor: pointer
 	background: #6e92dd
 	&:hover
 		filter: brightness(0.9)
 	&:active
 		filter: brightness(0.8)
+
+#throwin_data > span
+	font-size: 0.7em
+	margin: 5px 0
 
 #tab_container::after
 	content: 'No files yet!'
@@ -268,8 +278,18 @@ label[for="throwin_file"]
 					content: '✓ '
 					font-weight: bold
 				
-
-			
 input:checked ~ .throwin
 	display: block
 	z-index: 9
+
+/* Tabulator overrides */
+.tabulator
+	margin-bottom: 0
+
+.tabulator-cell
+	height: auto !important
+	font-size: 13px !important
+	&.tabulator-editing
+		padding-left: 3px !important
+		& input
+			font-size: 13px !important

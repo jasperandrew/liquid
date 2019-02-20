@@ -4,3 +4,4 @@
 - create throwin class with subclasses
 - find a different way to render color text (stop using dangerouslySetInnerHTML)
 - textbox input
+- tabs overlap with dialogue

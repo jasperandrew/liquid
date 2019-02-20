@@ -236,6 +236,7 @@ const Liquid = {
 				cols: [],
 				rows: json.tbl_rows
 			};
+			console.log(json);
 			if(typeof(json.tbl_cols[0]) === "string"){ // Temporary check to see if cols are string or object
 				json.tbl_cols.forEach(col => content.cols.push({ title:col, field:col, editor:true }));
 			}else{
@@ -265,7 +266,8 @@ const Liquid = {
 						t.object = new Tabulator(t.id, {
 							layout:'fitData',
 							placeholder:'Loading...',
-							movableColumns: true
+							movableColumns: true,
+							rowFormatter: t.content.formatter
 						});
 					}
 					if(t.src === 'fetch'){
@@ -421,3 +423,7 @@ const Liquid = {
 		}
 	}
 };
+
+function nestedTableTest() {
+	
+}

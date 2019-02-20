@@ -281,6 +281,7 @@ var Liquid = {
         cols: [],
         rows: json.tbl_rows
       };
+      console.log(json);
 
       if (typeof json.tbl_cols[0] === "string") {
         // Temporary check to see if cols are string or object
@@ -317,7 +318,8 @@ var Liquid = {
             t.object = new Tabulator(t.id, {
               layout: 'fitData',
               placeholder: 'Loading...',
-              movableColumns: true
+              movableColumns: true,
+              rowFormatter: t.content.formatter
             });
           }
 
@@ -484,3 +486,5 @@ var Liquid = {
     }
   }
 };
+
+function nestedTableTest() {}

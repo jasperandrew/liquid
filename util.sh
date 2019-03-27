@@ -8,8 +8,6 @@
 babel="@babel/core @babel/cli @babel/preset-env"
 react="react react-dom @babel/preset-react"
 sass="sass"
-http_server="http-server"
-
 
 # babel config file
 babel_config='{
@@ -25,62 +23,88 @@ js_out="docs/scripts/"
 css_src="src/sass/"
 css_out="docs/styles/"
 serve_dir="docs/"
+serve_port="7777"
+
+# test environment
+in_test=""
 
 #--------------------------------------------#
 #               Some functions               #
 #--------------------------------------------#
 
 build () {
-	echo "[Util] Building files..."
+	echo "[Info] Building files$in_test...\n"
 	npx babel $js_src -d $js_out
 	npx sass $css_src:$css_out
 }
 
-server () {
-	echo "[Util] Starting server..."
-	trap "kill 0" EXIT
-	npx http-server $serve_dir
-	wait
+help () {
+	echo "Jasper's Project Streamline Utility Script"
+	echo ""
 }
 
-watch () {
-	echo "[Util] Watching files for updates..."
+install () {
+	echo "[Info] Installing NPM modules...\n"
+    npm -D i $babel $react $sass
+	echo $babel_config > .babelrc
+}
+
+server () {
+	echo "[Info] Starting server$in_test...\n"
 	trap "kill 0" EXIT
-	npx babel --verbose -w $js_src -d $js_out &
-	npx sass --watch $css_src:$css_out &
+	cd $serve_dir && python3 -m http.server $serve_port
 	wait
 }
 
 start () {
-	echo "[Util] Starting server..."
-	echo "[Util] Watching files for updates..."
+	echo -e "[Info] Watching files and starting HTTP server$in_test...\n"
 	trap "kill 0" EXIT
-	npx http-server $serve_dir --silent &
+	cd $serve_dir && python3 -m http.server $serve_port &> /dev/null &
 	npx babel --verbose -w $js_src -d $js_out &
 	npx sass --watch $css_src:$css_out &
 	wait
 }
 
-install () {
-    npm -D i $babel $react $sass $http_server
-	echo $babel_config > .babelrc
+watch () {
+	echo "[Info] Watching files$in_test...\n"
+	trap "kill 0" EXIT
+	npx babel --verbose -w $js_src -d $js_out &
+	npx sass --watch $css_src:$css_out &
+	wait
 }
-
 
 #--------------------------------------------#
 #          Actually doing stuff now          #
 #--------------------------------------------#
 
-if [[ $# -eq 0 ]]; then help
-elif [[ $# -eq 1 ]]; then
+case "$#" in
 
-	if [[ $1 == "build" ]]; then build
-	elif [[ $1 == "start" ]]; then start
-	elif [[ $1 == "server" ]]; then server
-	elif [[ $1 == "watch" ]]; then watch
-	elif [[ $1 == "install" ]]; then install
-	else echo "[Error] Invalid argument"; help
+0) help ;;
+
+2)
+	if [[ $2 == "test" ]]; then
+		js_src="src/test/jsx/"
+		js_out="docs/test/scripts/"
+		css_src="src/test/sass/"
+		css_out="docs/test/styles/"
+		serve_dir="docs/test/"
+		in_test=" in test environment"
+
+	else echo "[Error] Invalid argument: $2"
 	fi
+;&
 
-else echo "[Error] Too many arguments"; help
-fi
+1)
+	if [[ $1 == "build" ]]; then build
+	elif [[ $1 == "help" ]]; then help
+	elif [[ $1 == "install" ]]; then install
+	elif [[ $1 == "server" ]]; then server
+	elif [[ $1 == "start" ]]; then start
+	elif [[ $1 == "watch" ]]; then watch
+	else echo "[Error] Invalid argument: $1"
+	fi
+;;
+
+*) echo "[Error] Too many arguments" ;;
+
+esac

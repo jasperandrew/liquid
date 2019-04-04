@@ -262,6 +262,10 @@ var Liquid = {
       this.active_tab = this.data.length;
       this.render();
     },
+    getTab: function getTab(n) {
+      if (this.data[n - 1]) return this.data[n - 1];
+      return false;
+    },
     getFormat: function getFormat(extension) {
       switch (extension) {
         case 'json_select':
@@ -480,6 +484,26 @@ var Liquid = {
         _this4.task_list = json.user_task_list;
         if (do_render) _this4.render();
       });
+    },
+    toggleCheckboxes: function toggleCheckboxes(n) {
+      var tab = Liquid.tabManager.getTab(n);
+
+      if (tab !== false) {
+        var tab_object = tab.throwin.object;
+        var check_col = tab_object.getColumn('checked');
+
+        if (check_col === false) {
+          tab_object.addColumn({
+            title: '✓',
+            field: 'checked',
+            editor: 'tick',
+            formatter: 'tickCross'
+          }, true);
+        } else {
+          check_col.delete();
+        } // console.log(Liquid.tabManager.data[n-1]);	
+
+      }
     },
     render: function render() {
       ReactDOM.render(React.createElement(Menu, null), document.querySelector('nav')); //this.updateTaskList();

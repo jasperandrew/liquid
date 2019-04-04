@@ -144,6 +144,7 @@ class Menu extends React.Component {
 			<div id="menu_container">
 				<h1>Liquid</h1>
 				<TaskList/>
+				<button onClick={() => Liquid.menu.toggleCheckboxes(1)}>Toggle Checkboxes</button>
 			</div>
 		);
 	}

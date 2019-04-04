@@ -218,6 +218,11 @@ const Liquid = {
 			this.render();
 		},
 
+		getTab(n) {
+			if(this.data[n-1]) return this.data[n-1];
+			return false;
+		},
+
 		getFormat(extension) {
 			switch(extension){
 				case 'json_select':
@@ -417,8 +422,22 @@ const Liquid = {
 			});
 		},
 
+		toggleCheckboxes(n) {
+			let tab = Liquid.tabManager.getTab(n);
+			if(tab !== false){
+				let tab_object = tab.throwin.object;
+				let check_col = tab_object.getColumn('checked');
+				if(check_col === false){
+					tab_object.addColumn({title:'✓',field:'checked',editor:'tick',formatter:'tickCross'},true);
+				}else{
+					check_col.delete();
+				}
+				// console.log(Liquid.tabManager.data[n-1]);	
+			}
+		},
+
 		render() {
-			ReactDOM.render(<Menu/>, document.querySelector('nav'));	
+			ReactDOM.render(<Menu/>, document.querySelector('nav'));
 			//this.updateTaskList();
 		}
 	}

@@ -207,7 +207,7 @@ const Liquid = {
 				throwin: {
 					name: name,
 					ext: ext,
-					id: '#t' + n,
+					i: n,
 					src: source,
 					format: this.getFormat(ext),
 					content: content,
@@ -268,12 +268,14 @@ const Liquid = {
 				let t = tab.throwin;
 				if(t.format === 'table'){
 					if(!t.object){
-						t.object = new Tabulator(t.id, {
+						t.object = new Tabulator('#t' + t.i, {
 							layout:'fitData',
 							placeholder:'Loading...',
 							movableColumns: true,
 							rowFormatter: t.content.formatter
 						});
+						//Liquid.menu.toggleCheckboxes(t.i);
+						window.setTimeout(() => t.object.addColumn({title:'select',field:'selection',editor:'tick',formatter:'tickCross'},true), 10);
 					}
 					if(t.src === 'fetch'){
 						fetch(t.content)
@@ -426,13 +428,15 @@ const Liquid = {
 			let tab = Liquid.tabManager.getTab(n);
 			if(tab !== false){
 				let tab_object = tab.throwin.object;
-				let check_col = tab_object.getColumn('checked');
+				let check_col = tab_object.getColumn('selection');
 				if(check_col === false){
-					tab_object.addColumn({title:'✓',field:'checked',editor:'tick',formatter:'tickCross'},true);
+					tab_object.addColumn({title:'select',field:'selection',editor:'tick',formatter:'tickCross'},true);
 				}else{
 					check_col.delete();
 				}
 				// console.log(Liquid.tabManager.data[n-1]);	
+			}else{
+				console.log('invalid  tab: '+n);
 			}
 		},
 
@@ -444,5 +448,32 @@ const Liquid = {
 };
 
 function nestedTableTest() {
+	
+}
+
+function sendTableData() {
+	let object = Liquid.tabManager.data[Liquid.tabManager.active_tab-1].throwin.object;
+	// console.log(object);
+	// console.log(object.columnManager.columns.map(col => col.definition));
+	// console.log(object.rowManager.rows.map(row => row.data));
+
+	let table = {
+		cols: object.columnManager.columns.map(col => col.definition),
+		rows: object.rowManager.rows.map(row => row.data)
+	}
+
+	let json_data = {
+		cmd_name: 'user_input',
+		input_type: 'checkbox_values',
+		tag_col_name: 'jaspers_faves',
+		tabulator_table: table,
+		task_name: 'dentists'
+	}
+
+	Liquid.httpRequest({
+		'json_data': JSON.stringify(json_data)
+	})
+	.then(response => { Liquid.handleResponse(response) });
+
 	
 }

@@ -252,7 +252,7 @@ var Liquid = {
         throwin: {
           name: name,
           ext: ext,
-          id: '#t' + n,
+          i: n,
           src: source,
           format: this.getFormat(ext),
           content: content,
@@ -319,12 +319,21 @@ var Liquid = {
 
         if (t.format === 'table') {
           if (!t.object) {
-            t.object = new Tabulator(t.id, {
+            t.object = new Tabulator('#t' + t.i, {
               layout: 'fitData',
               placeholder: 'Loading...',
               movableColumns: true,
               rowFormatter: t.content.formatter
-            });
+            }); //Liquid.menu.toggleCheckboxes(t.i);
+
+            window.setTimeout(function () {
+              return t.object.addColumn({
+                title: 'select',
+                field: 'selection',
+                editor: 'tick',
+                formatter: 'tickCross'
+              }, true);
+            }, 10);
           }
 
           if (t.src === 'fetch') {
@@ -490,12 +499,12 @@ var Liquid = {
 
       if (tab !== false) {
         var tab_object = tab.throwin.object;
-        var check_col = tab_object.getColumn('checked');
+        var check_col = tab_object.getColumn('selection');
 
         if (check_col === false) {
           tab_object.addColumn({
-            title: '✓',
-            field: 'checked',
+            title: 'select',
+            field: 'selection',
             editor: 'tick',
             formatter: 'tickCross'
           }, true);
@@ -503,6 +512,8 @@ var Liquid = {
           check_col.delete();
         } // console.log(Liquid.tabManager.data[n-1]);	
 
+      } else {
+        console.log('invalid  tab: ' + n);
       }
     },
     render: function render() {
@@ -512,3 +523,30 @@ var Liquid = {
 };
 
 function nestedTableTest() {}
+
+function sendTableData() {
+  var object = Liquid.tabManager.data[Liquid.tabManager.active_tab - 1].throwin.object; // console.log(object);
+  // console.log(object.columnManager.columns.map(col => col.definition));
+  // console.log(object.rowManager.rows.map(row => row.data));
+
+  var table = {
+    cols: object.columnManager.columns.map(function (col) {
+      return col.definition;
+    }),
+    rows: object.rowManager.rows.map(function (row) {
+      return row.data;
+    })
+  };
+  var json_data = {
+    cmd_name: 'user_input',
+    input_type: 'checkbox_values',
+    tag_col_name: 'jaspers_faves',
+    tabulator_table: table,
+    task_name: 'dentists'
+  };
+  Liquid.httpRequest({
+    'json_data': JSON.stringify(json_data)
+  }).then(function (response) {
+    Liquid.handleResponse(response);
+  });
+}

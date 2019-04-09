@@ -280,11 +280,15 @@ function (_React$Component7) {
     value: function render() {
       return React.createElement("div", {
         id: "menu_container"
-      }, React.createElement("h1", null, "Liquid"), React.createElement(TaskList, null), React.createElement("button", {
+      }, React.createElement("h1", null, "Liquid"), React.createElement(TaskList, null), React.createElement("h2", null, "Testing Buttons"), React.createElement("button", {
         onClick: function onClick() {
-          return Liquid.menu.toggleCheckboxes(1);
+          return Liquid.menu.toggleCheckboxes(Liquid.tabManager.active_tab);
         }
-      }, "Toggle Checkboxes"));
+      }, "Toggle Checkboxes"), React.createElement("button", {
+        onClick: function onClick() {
+          return sendTableData();
+        }
+      }, "Send Table Data"));
     }
   }]);
 

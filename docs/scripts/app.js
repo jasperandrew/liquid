@@ -331,39 +331,40 @@ var Liquid = {
                 title: 'select',
                 field: 'selection',
                 editor: 'tick',
+                editableTitle: true,
                 formatter: 'tickCross'
               }, true);
             }, 10);
-          }
 
-          if (t.src === 'fetch') {
-            fetch(t.content).then(function (res) {
-              return res.json();
-            }).then(function (json) {
-              // console.log(json);
-              t.content = {
-                cols: [],
-                rows: []
-              };
-              t.src = 'local';
-              json.forEach(function (row) {
-                return t.content.rows.push(row);
-              });
-
-              for (var item in t.content.rows[0]) {
-                t.content.cols.push({
-                  title: item,
-                  field: item,
-                  editor: 'input'
+            if (t.src === 'fetch') {
+              fetch(t.content).then(function (res) {
+                return res.json();
+              }).then(function (json) {
+                // console.log(json);
+                t.content = {
+                  cols: [],
+                  rows: []
+                };
+                t.src = 'local';
+                json.forEach(function (row) {
+                  return t.content.rows.push(row);
                 });
-              }
 
+                for (var item in t.content.rows[0]) {
+                  t.content.cols.push({
+                    title: item,
+                    field: item,
+                    editor: 'input'
+                  });
+                }
+
+                t.object.setColumns(t.content.cols);
+                t.object.setData(t.content.rows);
+              });
+            } else {
               t.object.setColumns(t.content.cols);
               t.object.setData(t.content.rows);
-            });
-          } else {
-            t.object.setColumns(t.content.cols);
-            t.object.setData(t.content.rows);
+            }
           }
         }
       });
@@ -506,6 +507,7 @@ var Liquid = {
             title: 'select',
             field: 'selection',
             editor: 'tick',
+            editableTitle: true,
             formatter: 'tickCross'
           }, true);
         } else {
@@ -525,6 +527,7 @@ var Liquid = {
 function nestedTableTest() {}
 
 function sendTableData() {
+  var name = window.prompt('Give a name for the selection column:', 'select');
   var object = Liquid.tabManager.data[Liquid.tabManager.active_tab - 1].throwin.object; // console.log(object);
   // console.log(object.columnManager.columns.map(col => col.definition));
   // console.log(object.rowManager.rows.map(row => row.data));

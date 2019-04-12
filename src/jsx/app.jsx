@@ -275,29 +275,31 @@ const Liquid = {
 							rowFormatter: t.content.formatter
 						});
 						//Liquid.menu.toggleCheckboxes(t.i);
-						window.setTimeout(() => t.object.addColumn({title:'select',field:'selection',editor:'tick',formatter:'tickCross'},true), 10);
-					}
-					if(t.src === 'fetch'){
-						fetch(t.content)
-						.then(res => res.json())
-						.then(json => {
-							// console.log(json);
-							t.content = { cols: [], rows: [] };
-							t.src = 'local';
-	
-							json.forEach(row => t.content.rows.push(row));
-	
-							for(let item in t.content.rows[0]){
-								t.content.cols.push({ title:item, field:item, editor:'input' });
-							}
-	
+						window.setTimeout(() => t.object.addColumn({title:'select',field:'selection',editor:'tick',editableTitle:true,formatter:'tickCross'},true), 10);
+
+						if(t.src === 'fetch'){
+							fetch(t.content)
+							.then(res => res.json())
+							.then(json => {
+								// console.log(json);
+								t.content = { cols: [], rows: [] };
+								t.src = 'local';
+		
+								json.forEach(row => t.content.rows.push(row));
+		
+								for(let item in t.content.rows[0]){
+									t.content.cols.push({ title:item, field:item, editor:'input' });
+								}
+		
+								t.object.setColumns(t.content.cols);
+								t.object.setData(t.content.rows);
+							});
+						}else{
 							t.object.setColumns(t.content.cols);
 							t.object.setData(t.content.rows);
-						});
-					}else{
-						t.object.setColumns(t.content.cols);
-						t.object.setData(t.content.rows);
+						}
 					}
+
 				}
 			});
 		},
@@ -430,7 +432,7 @@ const Liquid = {
 				let tab_object = tab.throwin.object;
 				let check_col = tab_object.getColumn('selection');
 				if(check_col === false){
-					tab_object.addColumn({title:'select',field:'selection',editor:'tick',formatter:'tickCross'},true);
+					tab_object.addColumn({title:'select',field:'selection',editor:'tick',editableTitle:true,formatter:'tickCross'},true);
 				}else{
 					check_col.delete();
 				}
@@ -452,6 +454,7 @@ function nestedTableTest() {
 }
 
 function sendTableData() {
+	let name = window.prompt('Give a name for the selection column:','select');
 	let object = Liquid.tabManager.data[Liquid.tabManager.active_tab-1].throwin.object;
 	// console.log(object);
 	// console.log(object.columnManager.columns.map(col => col.definition));

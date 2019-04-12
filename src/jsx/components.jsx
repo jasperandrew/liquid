@@ -145,8 +145,9 @@ class Menu extends React.Component {
 				<h1>Liquid</h1>
 				<TaskList/>
 				<h2>Testing Buttons</h2>
-				<button onClick={() => Liquid.menu.toggleCheckboxes(Liquid.tabManager.active_tab)}>Toggle Checkboxes</button>
+				<button onClick={() => Liquid.menu.toggleCheckboxes(Liquid.tabManager.active_tab)}>Toggle Select Column</button>
 				<button onClick={() => sendTableData()}>Send Table Data</button>
+				<button onClick={() => addCheckColumn()}>Add New Checkbox Column</button>
 			</div>
 		);
 	}

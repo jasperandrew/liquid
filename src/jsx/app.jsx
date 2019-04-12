@@ -104,6 +104,7 @@ const Liquid = {
 				case 'table_data':
 					this.tabManager.handleTableData(json.table_data); break;
 				case 'text_file':
+				case 'text2':
 					this.tabManager.handleTextFile(json.text_file); break;
 				case 'api_json':
 					this.tabManager.handleJSON(json.api_json, true); break;
@@ -221,6 +222,10 @@ const Liquid = {
 		getTab(n) {
 			if(this.data[n-1]) return this.data[n-1];
 			return false;
+		},
+
+		getCurrentTab() {
+			return this.getTab(this.active_tab);
 		},
 
 		getFormat(extension) {
@@ -430,13 +435,12 @@ const Liquid = {
 			let tab = Liquid.tabManager.getTab(n);
 			if(tab !== false){
 				let tab_object = tab.throwin.object;
-				let check_col = tab_object.getColumn('selection');
-				if(check_col === false){
-					tab_object.addColumn({title:'select',field:'selection',editor:'tick',editableTitle:true,formatter:'tickCross'},true);
-				}else{
-					check_col.delete();
-				}
-				// console.log(Liquid.tabManager.data[n-1]);	
+				tab_object.toggleColumn('selection');
+				// if(check_col === false){
+				// 	tab_object.addColumn({title:'select',field:'selection',editor:'tick',editableTitle:true,formatter:'tickCross'},true);
+				// }else{
+				// 	check_col.hide();
+				// }
 			}else{
 				console.log('invalid  tab: '+n);
 			}
@@ -456,13 +460,10 @@ function nestedTableTest() {
 function sendTableData() {
 	let name = window.prompt('Give a name for the selection column:','select');
 	let object = Liquid.tabManager.data[Liquid.tabManager.active_tab-1].throwin.object;
-	// console.log(object);
-	// console.log(object.columnManager.columns.map(col => col.definition));
-	// console.log(object.rowManager.rows.map(row => row.data));
 
 	let table = {
-		cols: object.columnManager.columns.map(col => col.definition),
-		rows: object.rowManager.rows.map(row => row.data)
+		cols: object.getColumnDefinitions(),
+		rows: object.getData()
 	}
 
 	let json_data = {
@@ -479,4 +480,9 @@ function sendTableData() {
 	.then(response => { Liquid.handleResponse(response) });
 
 	
+}
+
+function addCheckColumn() {
+	let col_name = window.prompt('Give a name for the new checkbox column:','checked');
+	Liquid.tabManager.getCurrentTab().throwin.object.addColumn({title:col_name,field:col_name,editor:'tick',formatter:'tickCross'},true);
 }

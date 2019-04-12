@@ -124,6 +124,7 @@ var Liquid = {
           break;
 
         case 'text_file':
+        case 'text2':
           _this.tabManager.handleTextFile(json.text_file);
 
           break;
@@ -265,6 +266,9 @@ var Liquid = {
     getTab: function getTab(n) {
       if (this.data[n - 1]) return this.data[n - 1];
       return false;
+    },
+    getCurrentTab: function getCurrentTab() {
+      return this.getTab(this.active_tab);
     },
     getFormat: function getFormat(extension) {
       switch (extension) {
@@ -500,20 +504,11 @@ var Liquid = {
 
       if (tab !== false) {
         var tab_object = tab.throwin.object;
-        var check_col = tab_object.getColumn('selection');
-
-        if (check_col === false) {
-          tab_object.addColumn({
-            title: 'select',
-            field: 'selection',
-            editor: 'tick',
-            editableTitle: true,
-            formatter: 'tickCross'
-          }, true);
-        } else {
-          check_col.delete();
-        } // console.log(Liquid.tabManager.data[n-1]);	
-
+        tab_object.toggleColumn('selection'); // if(check_col === false){
+        // 	tab_object.addColumn({title:'select',field:'selection',editor:'tick',editableTitle:true,formatter:'tickCross'},true);
+        // }else{
+        // 	check_col.hide();
+        // }
       } else {
         console.log('invalid  tab: ' + n);
       }
@@ -528,17 +523,10 @@ function nestedTableTest() {}
 
 function sendTableData() {
   var name = window.prompt('Give a name for the selection column:', 'select');
-  var object = Liquid.tabManager.data[Liquid.tabManager.active_tab - 1].throwin.object; // console.log(object);
-  // console.log(object.columnManager.columns.map(col => col.definition));
-  // console.log(object.rowManager.rows.map(row => row.data));
-
+  var object = Liquid.tabManager.data[Liquid.tabManager.active_tab - 1].throwin.object;
   var table = {
-    cols: object.columnManager.columns.map(function (col) {
-      return col.definition;
-    }),
-    rows: object.rowManager.rows.map(function (row) {
-      return row.data;
-    })
+    cols: object.getColumnDefinitions(),
+    rows: object.getData()
   };
   var json_data = {
     cmd_name: 'user_input',
@@ -552,4 +540,14 @@ function sendTableData() {
   }).then(function (response) {
     Liquid.handleResponse(response);
   });
+}
+
+function addCheckColumn() {
+  var col_name = window.prompt('Give a name for the new checkbox column:', 'checked');
+  Liquid.tabManager.getCurrentTab().throwin.object.addColumn({
+    title: col_name,
+    field: col_name,
+    editor: 'tick',
+    formatter: 'tickCross'
+  }, true);
 }

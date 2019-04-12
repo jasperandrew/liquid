@@ -284,11 +284,15 @@ function (_React$Component7) {
         onClick: function onClick() {
           return Liquid.menu.toggleCheckboxes(Liquid.tabManager.active_tab);
         }
-      }, "Toggle Checkboxes"), React.createElement("button", {
+      }, "Toggle Select Column"), React.createElement("button", {
         onClick: function onClick() {
           return sendTableData();
         }
-      }, "Send Table Data"));
+      }, "Send Table Data"), React.createElement("button", {
+        onClick: function onClick() {
+          return addCheckColumn();
+        }
+      }, "Add New Checkbox Column"));
     }
   }]);
 

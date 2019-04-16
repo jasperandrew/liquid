@@ -6,6 +6,11 @@
 - textbox input
 - tabs overlap with dialogue
 
-- add new check
-- rename check col
-- text2
+- triple-state checkbox ?
+- filter column
+    - complex filter
+- one-click check
+
+- column menu
+    - hide column
+    - edit column name

@@ -11,7 +11,7 @@ var INIT_DIALOGUE = {
   id: null,
   data: null,
   options: [{
-    jsxElement: React.createElement(Option, {
+    jsxElement: React.createElement(OptionComponent, {
       key: 1,
       i: 1,
       isDefault: 0,
@@ -22,7 +22,7 @@ var INIT_DIALOGUE = {
     optText: 'Start the interview wizard',
     optId: 'wizard'
   }, {
-    jsxElement: React.createElement(Option, {
+    jsxElement: React.createElement(OptionComponent, {
       key: 2,
       i: 2,
       isDefault: 0,
@@ -125,7 +125,7 @@ var Liquid = {
 
         case 'text_file':
         case 'text2':
-          _this.tabManager.handleTextFile(json.text_file);
+          _this.tabManager.handleTextFile(json[data]);
 
           break;
 
@@ -207,7 +207,7 @@ var Liquid = {
       for (var i in answ_cands) {
         var opt = answ_cands[i];
         options.push({
-          jsxElement: React.createElement(Option, {
+          jsxElement: React.createElement(OptionComponent, {
             key: i + 1,
             i: i + 1,
             isDefault: 0,
@@ -228,68 +228,52 @@ var Liquid = {
       });
     },
     render: function render() {
-      ReactDOM.render(React.createElement(Dialogue, {
+      ReactDOM.render(React.createElement(DialogueComponent, {
         prompt: this.history[0].prompt
       }), document.querySelector('#dialogue_container'));
     }
   },
   //// Manages throwin/tab layout ////
   tabManager: {
-    data: [],
+    tabs: [],
     // All tabs
     active_tab: 1,
     // Currently active tab
-    addTab: function addTab(name, ext, source, content) {
-      var n = this.data.length + 1;
+    addTab: function addTab(name, ext, data) {
+      var n = this.tabs.length + 1;
       var short_name = name.split('/').pop();
-      this.data.push({
-        jsxElement: React.createElement(Tab, {
+      this.tabs.push({
+        jsxElement: React.createElement(TabComponent, {
           key: n,
-          i: n,
-          tabName: short_name,
-          format: this.getFormat(ext),
-          content: content
+          n: n,
+          title: short_name,
+          format: Tab.getFormat(ext),
+          data: data
         }),
         throwin: {
           name: name,
           ext: ext,
-          i: n,
-          src: source,
-          format: this.getFormat(ext),
-          content: content,
+          n: n,
+          format: Tab.getFormat(ext),
+          data: data,
           object: null
         }
       });
-      this.active_tab = this.data.length;
+      this.active_tab = this.tabs.length;
       this.render();
     },
     getTab: function getTab(n) {
-      if (this.data[n - 1]) return this.data[n - 1];
+      if (this.tabs[n - 1]) return this.tabs[n - 1];
       return false;
     },
     getCurrentTab: function getCurrentTab() {
       return this.getTab(this.active_tab);
-    },
-    getFormat: function getFormat(extension) {
-      switch (extension) {
-        case 'json_select':
-          return 'json_select';
-
-        case 'tsv':
-          return 'table';
-        // case 'txt':
-        // case 'sql':
-
-        default:
-          return 'text';
-      }
     },
     handleTableData: function handleTableData(json) {
       var content = {
         cols: [],
         rows: json.tbl_rows
       };
-      console.log(json);
 
       if (typeof json.tbl_cols[0] === "string") {
         // Temporary check to see if cols are string or object
@@ -304,30 +288,30 @@ var Liquid = {
         content.cols = json.tbl_cols;
       }
 
-      this.addTab(json.node_name, 'tsv', 'local', content);
+      this.addTab(json.node_name, 'tsv', content);
     },
     handleTextFile: function handleTextFile(json) {
-      this.addTab(json.node_name, json.file_extension, 'local', json.file_contents);
+      this.addTab(json.node_name, json.file_extension, json.file_contents);
     },
     handleJSON: function handleJSON(data, selection) {
-      this.addTab(data.node_name, 'json', 'local', JSON.stringify(data.json, null, 2));
+      this.addTab(data.node_name, 'json', JSON.stringify(data.json, null, 2));
 
       if (selection) {
-        this.addTab(data.node_name + '_select', 'json_select', 'local', data.json_vars);
+        this.addTab(data.node_name + '_select', 'json_select', data.json_vars);
       }
     },
     render: function render() {
-      ReactDOM.render(React.createElement(TabContainer, null), document.querySelector('#tab_container'));
-      this.data.forEach(function (tab) {
+      ReactDOM.render(React.createElement(TabViewComponent, null), document.querySelector('#tab_container'));
+      this.tabs.forEach(function (tab) {
         var t = tab.throwin;
 
         if (t.format === 'table') {
           if (!t.object) {
-            t.object = new Tabulator('#t' + t.i, {
+            t.object = new Tabulator('#t' + t.n, {
               layout: 'fitData',
               placeholder: 'Loading...',
               movableColumns: true,
-              rowFormatter: t.content.formatter
+              rowFormatter: t.data.formatter
             }); //Liquid.menu.toggleCheckboxes(t.i);
 
             window.setTimeout(function () {
@@ -335,40 +319,16 @@ var Liquid = {
                 title: 'select',
                 field: 'selection',
                 editor: 'tick',
-                editableTitle: true,
+                editorParams: {
+                  tristate: true
+                },
+                visible: false,
                 formatter: 'tickCross'
               }, true);
             }, 10);
-
-            if (t.src === 'fetch') {
-              fetch(t.content).then(function (res) {
-                return res.json();
-              }).then(function (json) {
-                // console.log(json);
-                t.content = {
-                  cols: [],
-                  rows: []
-                };
-                t.src = 'local';
-                json.forEach(function (row) {
-                  return t.content.rows.push(row);
-                });
-
-                for (var item in t.content.rows[0]) {
-                  t.content.cols.push({
-                    title: item,
-                    field: item,
-                    editor: 'input'
-                  });
-                }
-
-                t.object.setColumns(t.content.cols);
-                t.object.setData(t.content.rows);
-              });
-            } else {
-              t.object.setColumns(t.content.cols);
-              t.object.setData(t.content.rows);
-            }
+            console.log(t);
+            t.object.setColumns(t.data.cols);
+            t.object.setData(t.data.rows);
           }
         }
       });
@@ -514,7 +474,7 @@ var Liquid = {
       }
     },
     render: function render() {
-      ReactDOM.render(React.createElement(Menu, null), document.querySelector('nav')); //this.updateTaskList();
+      ReactDOM.render(React.createElement(NavComponent, null), document.querySelector('nav')); //this.updateTaskList();
     }
   }
 };
@@ -523,7 +483,7 @@ function nestedTableTest() {}
 
 function sendTableData() {
   var name = window.prompt('Give a name for the selection column:', 'select');
-  var object = Liquid.tabManager.data[Liquid.tabManager.active_tab - 1].throwin.object;
+  var object = Liquid.tabManager.tabs[Liquid.tabManager.active_tab - 1].throwin.object;
   var table = {
     cols: object.getColumnDefinitions(),
     rows: object.getData()

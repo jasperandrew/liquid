@@ -8,13 +8,13 @@ const INIT_DIALOGUE = {
 	data: null,
 	options: [
 		{
-			jsxElement: <Option key={1} i={1} isDefault={0} optText='Start the interview wizard' optId='wizard'/>,
+			jsxElement: <OptionComponent key={1} i={1} isDefault={0} optText='Start the interview wizard' optId='wizard'/>,
 			isDefault: 0,
 			optText: 'Start the interview wizard',
 			optId: 'wizard',
 		},
 		{
-			jsxElement: <Option key={2} i={2} isDefault={0} optText='Upload ("Throw in") a file from your computer' optId='upload'/>,
+			jsxElement: <OptionComponent key={2} i={2} isDefault={0} optText='Upload ("Throw in") a file from your computer' optId='upload'/>,
 			isDefault: 0,
 			optText: 'Upload ("Throw in") a file from your computer',
 			optId: 'upload',
@@ -105,7 +105,7 @@ const Liquid = {
 					this.tabManager.handleTableData(json.table_data); break;
 				case 'text_file':
 				case 'text2':
-					this.tabManager.handleTextFile(json.text_file); break;
+					this.tabManager.handleTextFile(json[data]); break;
 				case 'api_json':
 					this.tabManager.handleJSON(json.api_json, true); break;
 				case 'user_question':
@@ -176,7 +176,7 @@ const Liquid = {
 			for(let i in answ_cands){
 				let opt = answ_cands[i];
 				options.push({
-					jsxElement: <Option key={i+1} i={i+1} isDefault={0} optText={opt.answ_text} optId={opt.answ_id}/>,
+					jsxElement: <OptionComponent key={i+1} i={i+1} isDefault={0} optText={opt.answ_text} optId={opt.answ_id}/>,
 					isDefault: 0,
 					opt_text: opt.answ_text,
 					opt_id: opt.answ_id,
@@ -191,36 +191,35 @@ const Liquid = {
 		},
 
 		render() {
-			ReactDOM.render(<Dialogue prompt={this.history[0].prompt}/>, document.querySelector('#dialogue_container'));
+			ReactDOM.render(<DialogueComponent prompt={this.history[0].prompt}/>, document.querySelector('#dialogue_container'));
 		}
 	},
 
 	//// Manages throwin/tab layout ////
 	tabManager: {
-		data: [], // All tabs
+		tabs: [], // All tabs
 		active_tab: 1, // Currently active tab
 		
-		addTab(name, ext, source, content) {
-			let n = this.data.length + 1;
+		addTab(name, ext, data) {
+			let n = this.tabs.length + 1;
 			let short_name = name.split('/').pop();
-			this.data.push({
-				jsxElement: <Tab key={n} i={n} tabName={short_name} format={this.getFormat(ext)} content={content}/>,
+			this.tabs.push({
+				jsxElement: <TabComponent key={n} n={n} title={short_name} format={Tab.getFormat(ext)} data={data}/>,
 				throwin: {
 					name: name,
 					ext: ext,
-					i: n,
-					src: source,
-					format: this.getFormat(ext),
-					content: content,
+					n: n,
+					format: Tab.getFormat(ext),
+					data: data,
 					object: null
 				}
 			});
-			this.active_tab = this.data.length;
+			this.active_tab = this.tabs.length;
 			this.render();
 		},
 
 		getTab(n) {
-			if(this.data[n-1]) return this.data[n-1];
+			if(this.tabs[n-1]) return this.tabs[n-1];
 			return false;
 		},
 
@@ -228,81 +227,49 @@ const Liquid = {
 			return this.getTab(this.active_tab);
 		},
 
-		getFormat(extension) {
-			switch(extension){
-				case 'json_select':
-					return 'json_select';
-				case 'tsv':
-					return 'table';
-				// case 'txt':
-				// case 'sql':
-				default:
-					return 'text';
-			}
-		},
-
 		handleTableData(json) {
 			let content = {
 				cols: [],
 				rows: json.tbl_rows
 			};
-			console.log(json);
 			if(typeof(json.tbl_cols[0]) === "string"){ // Temporary check to see if cols are string or object
 				json.tbl_cols.forEach(col => content.cols.push({ title:col, field:col, editor:true }));
 			}else{
 				content.cols = json.tbl_cols;
 			}
 
-			this.addTab(json.node_name, 'tsv', 'local', content);
+			this.addTab(json.node_name, 'tsv', content);
 		},
 
 		handleTextFile(json) {
-			this.addTab(json.node_name, json.file_extension, 'local', json.file_contents);
+			this.addTab(json.node_name, json.file_extension, json.file_contents);
 		},
 
 		handleJSON(data, selection) {
-			this.addTab(data.node_name, 'json', 'local', JSON.stringify(data.json, null, 2));
+			this.addTab(data.node_name, 'json', JSON.stringify(data.json, null, 2));
 			if(selection){
-				this.addTab(data.node_name+'_select', 'json_select', 'local', data.json_vars);
+				this.addTab(data.node_name+'_select', 'json_select', data.json_vars);
 			}
 		},
 	
 		render() {
-			ReactDOM.render(<TabContainer/>, document.querySelector('#tab_container'));
-			this.data.forEach(tab => {
+			ReactDOM.render(<TabViewComponent/>, document.querySelector('#tab_container'));
+			this.tabs.forEach(tab => {
 				let t = tab.throwin;
 				if(t.format === 'table'){
 					if(!t.object){
-						t.object = new Tabulator('#t' + t.i, {
+						t.object = new Tabulator('#t' + t.n, {
 							layout:'fitData',
 							placeholder:'Loading...',
 							movableColumns: true,
-							rowFormatter: t.content.formatter
+							rowFormatter: t.data.formatter
 						});
 						//Liquid.menu.toggleCheckboxes(t.i);
-						window.setTimeout(() => t.object.addColumn({title:'select',field:'selection',editor:'tick',editableTitle:true,formatter:'tickCross'},true), 10);
+						window.setTimeout(() => t.object.addColumn({title:'select',field:'selection',editor:'tick',editorParams:{tristate:true},visible:false,formatter:'tickCross'},true), 10);
 
-						if(t.src === 'fetch'){
-							fetch(t.content)
-							.then(res => res.json())
-							.then(json => {
-								// console.log(json);
-								t.content = { cols: [], rows: [] };
-								t.src = 'local';
-		
-								json.forEach(row => t.content.rows.push(row));
-		
-								for(let item in t.content.rows[0]){
-									t.content.cols.push({ title:item, field:item, editor:'input' });
-								}
-		
-								t.object.setColumns(t.content.cols);
-								t.object.setData(t.content.rows);
-							});
-						}else{
-							t.object.setColumns(t.content.cols);
-							t.object.setData(t.content.rows);
-						}
+						console.log(t);
+						t.object.setColumns(t.data.cols);
+						t.object.setData(t.data.rows);
 					}
 
 				}
@@ -447,7 +414,7 @@ const Liquid = {
 		},
 
 		render() {
-			ReactDOM.render(<Menu/>, document.querySelector('nav'));
+			ReactDOM.render(<NavComponent/>, document.querySelector('nav'));
 			//this.updateTaskList();
 		}
 	}
@@ -459,7 +426,7 @@ function nestedTableTest() {
 
 function sendTableData() {
 	let name = window.prompt('Give a name for the selection column:','select');
-	let object = Liquid.tabManager.data[Liquid.tabManager.active_tab-1].throwin.object;
+	let object = Liquid.tabManager.tabs[Liquid.tabManager.active_tab-1].throwin.object;
 
 	let table = {
 		cols: object.getColumnDefinitions(),

@@ -1,8 +1,10 @@
 /************************************************************\
 *                         JSX CLASSES                        *
 \************************************************************/
+
 //////////// Dialogue question/answer stuff ////////////
-class Option extends React.Component {
+
+class OptionComponent extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -17,7 +19,7 @@ class Option extends React.Component {
 	}
 }
 
-class Dialogue extends React.Component {
+class DialogueComponent extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -38,19 +40,22 @@ class Dialogue extends React.Component {
 	}
 }
 
-//////////// Throwin/tab layout stuff ////////////
-class Throwin extends React.Component {
+//////////// Tab layout stuff ////////////
+
+class TabComponent extends React.Component {
 	constructor(props) {
 		super(props);
 	}
 
 	render() {
+		let id = 'tab' + this.props.n;
 		let innerHTML = [];
+		
 		switch(this.props.format){
 			case 'json_select':
 				let k = 1;
-				for(let name in this.props.content){
-					let val = this.props.content[name].toString();
+				for(let name in this.props.data){
+					let val = this.props.data[name].toString();
 					if(val.length > 70) val = val.slice(0,70) + ' . . .';
 					
 					innerHTML.push(
@@ -61,49 +66,37 @@ class Throwin extends React.Component {
 					);
 					innerHTML.push(<br key={k++}/>);
 				}
-				innerHTML.push(<input key={k++} type='button' id={'json_submit_'+this.props.i} onClick={() => Liquid.tabManager.submitJSONvars('#t'+this.props.i)} />);
-				innerHTML.push(<label key={k++} htmlFor={'json_submit_'+this.props.i}>Submit</label>);
+				innerHTML.push(<input key={k++} type='button' id={'json_submit_'+this.props.n} onClick={() => Liquid.tabManager.submitJSONvars('#t'+this.props.n)} />);
+				innerHTML.push(<label key={k++} htmlFor={'json_submit_'+this.props.n}>Submit</label>);
 				break;
 
 			case 'text':
-				innerHTML.push(<span key='1' dangerouslySetInnerHTML={{__html: this.props.content}}></span>);
+				innerHTML.push(<span key='1' dangerouslySetInnerHTML={{__html: this.props.data}}></span>);
 				break;
 			// case 'table':
 			default:
 		}
 
-		return <div className={this.props.format} id={'t' + this.props.i}>{innerHTML}</div>;
-	}
-}
-
-class Tab extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
-	render() {
-		let id = 'tab' + this.props.i;
-
 		return (
 			<div className='tab'>
-				<input type='radio' id={id} name='tabs' defaultChecked={this.props.i === Liquid.tabManager.active_tab ? true : false}/>
-				<label onClick={() => Liquid.tabManager.setActiveTab(this.props.i)} htmlFor={id}>{this.props.tabName}</label>
+				<input type='radio' id={id} name='tabs' defaultChecked={this.props.n === Liquid.tabManager.active_tab ? true : false}/>
+				<label onClick={() => Liquid.tabManager.setActiveTab(this.props.n)} htmlFor={id}>{this.props.title}</label>
 				<div className='throwin'>
-					<Throwin format={this.props.format} i={this.props.i} content={this.props.content}/>
+					<div className={this.props.format} id={'t' + this.props.n}>{innerHTML}</div>
 				</div>
 			</div>
 		);
 	}
 }
 
-class TabContainer extends React.Component {
+class TabViewComponent extends React.Component {
 	constructor(props){
 		super(props);
 	}
 
 	render() {
 		let tabs = [];
-		Liquid.tabManager.data.forEach(tab => { tabs.push(tab.jsxElement); });
+		Liquid.tabManager.tabs.forEach(tab => { tabs.push(tab.jsxElement); });
 
 		return (
 			<div className='tabs'>
@@ -114,7 +107,8 @@ class TabContainer extends React.Component {
 }
 
 //////////// Menu stuff ////////////
-class TaskList extends React.Component {
+
+class TaskListComponent extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -134,7 +128,7 @@ class TaskList extends React.Component {
 
 }
 
-class Menu extends React.Component {
+class NavComponent extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -143,7 +137,7 @@ class Menu extends React.Component {
 		return (
 			<div id="menu_container">
 				<h1>Liquid</h1>
-				<TaskList/>
+				<TaskListComponent/>
 				<h2>Testing Buttons</h2>
 				<button onClick={() => Liquid.menu.toggleCheckboxes(Liquid.tabManager.active_tab)}>Toggle Select Column</button>
 				<button onClick={() => sendTableData()}>Send Table Data</button>

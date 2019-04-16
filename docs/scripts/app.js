@@ -124,7 +124,7 @@ var Liquid = {
           break;
 
         case 'text_file':
-        case 'text2':
+        case 'text_file2':
           _this.tabManager.handleTextFile(json[data]);
 
           break;

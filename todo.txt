@@ -1,7 +1,6 @@
 - new task, tasks on sidebar
 - lock question once clicked
 - check todo list
-- create throwin class with subclasses
 - find a different way to render color text (stop using dangerouslySetInnerHTML)
 - textbox input
 - tabs overlap with dialogue
@@ -10,6 +9,7 @@
 - filter column
     - complex filter
 - one-click check
+- nested tables
 
 - column menu
     - hide column

@@ -104,7 +104,7 @@ const Liquid = {
 				case 'table_data':
 					this.tabManager.handleTableData(json.table_data); break;
 				case 'text_file':
-				case 'text2':
+				case 'text_file2':
 					this.tabManager.handleTextFile(json[data]); break;
 				case 'api_json':
 					this.tabManager.handleJSON(json.api_json, true); break;

@@ -305,12 +305,34 @@ var Liquid = {
               return obj.addColumn({
                 title: 'select',
                 field: 'selection',
-                editor: 'tick',
-                editorParams: {
-                  tristate: true
-                },
                 visible: false,
-                formatter: 'tickCross'
+                formatter: function formatter(cell, formatterParams, onRendered) {
+                  switch (cell.getValue()) {
+                    case undefined:
+                      return '☐';
+
+                    case false:
+                      return '☒';
+
+                    case true:
+                      return '☑';
+                  }
+                },
+                cellClick: function cellClick(e, cell) {
+                  switch (cell.getValue()) {
+                    case undefined:
+                      cell.setValue(true);
+                      break;
+
+                    case false:
+                      cell.setValue(undefined);
+                      break;
+
+                    case true:
+                      cell.setValue(false);
+                      break;
+                  }
+                }
               }, true);
             }, 10);
           }

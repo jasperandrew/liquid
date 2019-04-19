@@ -5,11 +5,9 @@
 - textbox input
 - tabs overlap with dialogue
 
-- triple-state checkbox ?
 - text column
 - filter column
     - complex filter
-- one-click check
 - nested tables
 
 - column menu

@@ -26,7 +26,7 @@ function () {
 
     this.name = name;
     this.rawdata = rawdata;
-    this.file_type = null;
+    this.extension = extension;
     this.title = this.name.split('/').pop();
     this.id = Liquid.tabManager.tabs.length + 1;
     this.tab_type = null;

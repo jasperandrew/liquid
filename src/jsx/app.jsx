@@ -228,13 +228,9 @@ const Liquid = {
 			return false;
 		},
 
-		getAllTabs() {
-			return this.tabs;
-		},
+		getAllTabs() { return this.tabs; },
 
-		getCurrentTab() {
-			return this.getTab(this.active_tab);
-		},
+		getCurrentTab() { return this.getTab(this.active_tab); },
 	
 		render() {
 			ReactDOM.render(<TabViewComponent/>, document.querySelector('#tab_container'));
@@ -388,15 +384,14 @@ const Liquid = {
 		toggleCheckboxes(n) {
 			let tab = Liquid.tabManager.getTab(n);
 			if(tab !== false){
-				let tab_object = tab.throwin.object;
+				if(tab.getType() !== 'table'){
+					console.error(`tab ${n} isn\'t a table tab`);
+					return false;
+				}
+				let tab_object = tab.getTableObject();
 				tab_object.toggleColumn('selection');
-				// if(check_col === false){
-				// 	tab_object.addColumn({title:'select',field:'selection',editor:'tick',editableTitle:true,formatter:'tickCross'},true);
-				// }else{
-				// 	check_col.hide();
-				// }
 			}else{
-				console.log('invalid  tab: '+n);
+				console.log(`invalid  tab: ${n}`);
 			}
 		},
 
@@ -413,7 +408,13 @@ function nestedTableTest() {
 
 function sendTableData() {
 	let name = window.prompt('Give a name for the selection column:','select');
-	let object = Liquid.tabManager.tabs[Liquid.tabManager.active_tab-1].throwin.object;
+	let tab = Liquid.tabManager.getCurrentTab();
+	if(tab.getType() !== 'table'){
+		console.error(`tab ${n} isn\'t a table tab`);
+		return false;
+	}
+
+	let object = tab.getTableObject();
 
 	let table = {
 		cols: object.getColumnDefinitions(),
@@ -423,7 +424,7 @@ function sendTableData() {
 	let json_data = {
 		cmd_name: 'user_input',
 		input_type: 'checkbox_values',
-		tag_col_name: 'jaspers_faves',
+		tag_col_name: name,
 		tabulator_table: table,
 		task_name: 'dentists'
 	}
@@ -438,5 +439,5 @@ function sendTableData() {
 
 function addCheckColumn() {
 	let col_name = window.prompt('Give a name for the new checkbox column:','checked');
-	Liquid.tabManager.getCurrentTab().throwin.object.addColumn({title:col_name,field:col_name,editor:'tick',formatter:'tickCross'},true);
+	Liquid.tabManager.getCurrentTab().getTableObject().addColumn({title:col_name,field:col_name,editor:'tick',formatter:'tickCross'},true);
 }

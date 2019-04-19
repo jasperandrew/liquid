@@ -2,8 +2,7 @@ class Tab {
     constructor(name, extension, rawdata) {
         this.name = name;
         this.rawdata = rawdata;
-
-        this.file_type = null;
+        this.extension = extension;
         this.title = this.name.split('/').pop();
         this.id =  Liquid.tabManager.tabs.length + 1;
         this.tab_type = null;
@@ -16,7 +15,7 @@ class Tab {
     getExtension() { return this.extension; }
 
     getID() {return this.id; }
-    
+
     getType() { return this.type; }
 
     getComponent() {

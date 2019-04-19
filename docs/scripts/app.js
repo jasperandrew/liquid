@@ -447,14 +447,15 @@ var Liquid = {
       var tab = Liquid.tabManager.getTab(n);
 
       if (tab !== false) {
-        var tab_object = tab.throwin.object;
-        tab_object.toggleColumn('selection'); // if(check_col === false){
-        // 	tab_object.addColumn({title:'select',field:'selection',editor:'tick',editableTitle:true,formatter:'tickCross'},true);
-        // }else{
-        // 	check_col.hide();
-        // }
+        if (tab.getType() !== 'table') {
+          console.error("tab ".concat(n, " isn't a table tab"));
+          return false;
+        }
+
+        var tab_object = tab.getTableObject();
+        tab_object.toggleColumn('selection');
       } else {
-        console.log('invalid  tab: ' + n);
+        console.log("invalid  tab: ".concat(n));
       }
     },
     render: function render() {
@@ -467,7 +468,14 @@ function nestedTableTest() {}
 
 function sendTableData() {
   var name = window.prompt('Give a name for the selection column:', 'select');
-  var object = Liquid.tabManager.tabs[Liquid.tabManager.active_tab - 1].throwin.object;
+  var tab = Liquid.tabManager.getCurrentTab();
+
+  if (tab.getType() !== 'table') {
+    console.error("tab ".concat(n, " isn't a table tab"));
+    return false;
+  }
+
+  var object = tab.getTableObject();
   var table = {
     cols: object.getColumnDefinitions(),
     rows: object.getData()
@@ -475,7 +483,7 @@ function sendTableData() {
   var json_data = {
     cmd_name: 'user_input',
     input_type: 'checkbox_values',
-    tag_col_name: 'jaspers_faves',
+    tag_col_name: name,
     tabulator_table: table,
     task_name: 'dentists'
   };
@@ -488,7 +496,7 @@ function sendTableData() {
 
 function addCheckColumn() {
   var col_name = window.prompt('Give a name for the new checkbox column:', 'checked');
-  Liquid.tabManager.getCurrentTab().throwin.object.addColumn({
+  Liquid.tabManager.getCurrentTab().getTableObject().addColumn({
     title: col_name,
     field: col_name,
     editor: 'tick',

@@ -230,7 +230,7 @@ const Liquid = {
 
 		getAllTabs() { return this.tabs; },
 
-		getCurrentTab() { return this.getTab(this.active_tab); },
+		getActiveTab() { return this.getTab(this.active_tab); },
 	
 		render() {
 			ReactDOM.render(<TabViewComponent/>, document.querySelector('#tab_container'));
@@ -250,18 +250,20 @@ const Liquid = {
 
 						tab.setTableObject(obj);
 
-						//Liquid.menu.toggleCheckboxes(t.i);
-						window.setTimeout(() => obj.addColumn({title:'select',field:'selection',visible:false,
+						window.setTimeout(() => obj.addColumn({title:'select',field:'selection',visible:false, // TODO // Make this stuff go away
 							formatter:(cell,formatterParams,onRendered) => {
 								switch(cell.getValue()){
-									case undefined: return '☐';
+									case undefined: cell.setValue('indeterminate'); return '☐';
+									case 'indeterminate': return '☐';
 									case false: return '☒';
 									case true: return '☑';
 								}
 							},
 							cellClick:(e,cell) => {
+								console.log(cell.getValue());
 								switch(cell.getValue()){
 									case undefined: cell.setValue(true); break;
+									case 'indeterminate': cell.setValue(true); break;
 									case false: cell.setValue(undefined); break;
 									case true: cell.setValue(false); break;
 								}
@@ -422,7 +424,7 @@ function nestedTableTest() {
 
 function sendTableData() {
 	let name = window.prompt('Give a name for the selection column:','select');
-	let tab = Liquid.tabManager.getCurrentTab();
+	let tab = Liquid.tabManager.getActiveTab();
 	if(tab.getType() !== 'table'){
 		console.error(`tab ${n} isn\'t a table tab`);
 		return false;
@@ -453,5 +455,5 @@ function sendTableData() {
 
 function addCheckColumn() {
 	let col_name = window.prompt('Give a name for the new checkbox column:','checked');
-	Liquid.tabManager.getCurrentTab().getTableObject().addColumn({title:col_name,field:col_name,editor:'tick',formatter:'tickCross'},true);
+	Liquid.tabManager.getActiveTab().getTableObject().addColumn({title:col_name,field:col_name,editor:'tick',formatter:'tickCross'},true);
 }

@@ -282,7 +282,7 @@ var Liquid = {
     getAllTabs: function getAllTabs() {
       return this.tabs;
     },
-    getCurrentTab: function getCurrentTab() {
+    getActiveTab: function getActiveTab() {
       return this.getTab(this.active_tab);
     },
     render: function render() {
@@ -299,16 +299,20 @@ var Liquid = {
             });
             obj.setColumns(data.cols);
             obj.setData(data.rows);
-            tab.setTableObject(obj); //Liquid.menu.toggleCheckboxes(t.i);
-
+            tab.setTableObject(obj);
             window.setTimeout(function () {
               return obj.addColumn({
                 title: 'select',
                 field: 'selection',
                 visible: false,
+                // TODO // Make this stuff go away
                 formatter: function formatter(cell, formatterParams, onRendered) {
                   switch (cell.getValue()) {
                     case undefined:
+                      cell.setValue('indeterminate');
+                      return '☐';
+
+                    case 'indeterminate':
                       return '☐';
 
                     case false:
@@ -319,8 +323,14 @@ var Liquid = {
                   }
                 },
                 cellClick: function cellClick(e, cell) {
+                  console.log(cell.getValue());
+
                   switch (cell.getValue()) {
                     case undefined:
+                      cell.setValue(true);
+                      break;
+
+                    case 'indeterminate':
                       cell.setValue(true);
                       break;
 
@@ -490,7 +500,7 @@ function nestedTableTest() {}
 
 function sendTableData() {
   var name = window.prompt('Give a name for the selection column:', 'select');
-  var tab = Liquid.tabManager.getCurrentTab();
+  var tab = Liquid.tabManager.getActiveTab();
 
   if (tab.getType() !== 'table') {
     console.error("tab ".concat(n, " isn't a table tab"));
@@ -518,7 +528,7 @@ function sendTableData() {
 
 function addCheckColumn() {
   var col_name = window.prompt('Give a name for the new checkbox column:', 'checked');
-  Liquid.tabManager.getCurrentTab().getTableObject().addColumn({
+  Liquid.tabManager.getActiveTab().getTableObject().addColumn({
     title: col_name,
     field: col_name,
     editor: 'tick',

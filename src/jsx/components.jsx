@@ -51,11 +51,11 @@ class TabComponent extends React.Component {
 		let id = 'tab' + this.props.n;
 		let innerHTML = [];
 		
-		switch(this.props.format){
+		switch(this.props.type){
 			case 'json_select':
 				let k = 1;
-				for(let name in this.props.data){
-					let val = this.props.data[name].toString();
+				for(let name in this.props.rawdata){
+					let val = this.props.rawdata[name].toString();
 					if(val.length > 70) val = val.slice(0,70) + ' . . .';
 					
 					innerHTML.push(
@@ -71,7 +71,7 @@ class TabComponent extends React.Component {
 				break;
 
 			case 'text':
-				innerHTML.push(<span key='1' dangerouslySetInnerHTML={{__html: this.props.data}}></span>);
+				innerHTML.push(<span key='1' dangerouslySetInnerHTML={{__html: this.props.rawdata}}></span>);
 				break;
 			// case 'table':
 			default:
@@ -82,7 +82,7 @@ class TabComponent extends React.Component {
 				<input type='radio' id={id} name='tabs' defaultChecked={this.props.n === Liquid.tabManager.active_tab ? true : false}/>
 				<label onClick={() => Liquid.tabManager.setActiveTab(this.props.n)} htmlFor={id}>{this.props.title}</label>
 				<div className='throwin'>
-					<div className={this.props.format} id={'t' + this.props.n}>{innerHTML}</div>
+					<div className={this.props.type} id={'t' + this.props.n}>{innerHTML}</div>
 				</div>
 			</div>
 		);
@@ -96,7 +96,7 @@ class TabViewComponent extends React.Component {
 
 	render() {
 		let tabs = [];
-		Liquid.tabManager.tabs.forEach(tab => { tabs.push(tab.jsxElement); });
+		Liquid.tabManager.tabs.forEach(t => { tabs.push(t.getComponent()); });
 
 		return (
 			<div className='tabs'>

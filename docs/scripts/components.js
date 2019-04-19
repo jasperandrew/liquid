@@ -107,12 +107,12 @@ function (_React$Component3) {
       var id = 'tab' + this.props.n;
       var innerHTML = [];
 
-      switch (this.props.format) {
+      switch (this.props.type) {
         case 'json_select':
           var k = 1;
 
-          for (var name in this.props.data) {
-            var val = this.props.data[name].toString();
+          for (var name in this.props.rawdata) {
+            var val = this.props.rawdata[name].toString();
             if (val.length > 70) val = val.slice(0, 70) + ' . . .';
             innerHTML.push(React.createElement("label", {
               key: k++,
@@ -146,7 +146,7 @@ function (_React$Component3) {
           innerHTML.push(React.createElement("span", {
             key: "1",
             dangerouslySetInnerHTML: {
-              __html: this.props.data
+              __html: this.props.rawdata
             }
           }));
           break;
@@ -170,7 +170,7 @@ function (_React$Component3) {
       }, this.props.title), React.createElement("div", {
         className: "throwin"
       }, React.createElement("div", {
-        className: this.props.format,
+        className: this.props.type,
         id: 't' + this.props.n
       }, innerHTML)));
     }
@@ -194,8 +194,8 @@ function (_React$Component4) {
     key: "render",
     value: function render() {
       var tabs = [];
-      Liquid.tabManager.tabs.forEach(function (tab) {
-        tabs.push(tab.jsxElement);
+      Liquid.tabManager.tabs.forEach(function (t) {
+        tabs.push(t.getComponent());
       });
       return React.createElement("div", {
         className: "tabs"

@@ -21,24 +21,51 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Tab =
 /*#__PURE__*/
 function () {
-  function Tab(name, data) {
+  function Tab(name, extension, rawdata) {
     _classCallCheck(this, Tab);
 
     this.name = name;
-    this.data = data;
-    this.extension = this.name.split('.').pop();
+    this.rawdata = rawdata;
+    this.file_type = null;
     this.title = this.name.split('/').pop();
-    this.n = Liquid.tabManager.tabs.length + 1; // this.throwin = new Throwin(name, extension, n, data);
+    this.id = Liquid.tabManager.tabs.length + 1;
+    this.tab_type = null;
   }
 
   _createClass(Tab, [{
-    key: "getJSX",
-    value: function getJSX() {
+    key: "getName",
+    value: function getName() {
+      return this.name;
+    }
+  }, {
+    key: "getRawData",
+    value: function getRawData() {
+      return this.rawdata;
+    }
+  }, {
+    key: "getExtension",
+    value: function getExtension() {
+      return this.extension;
+    }
+  }, {
+    key: "getID",
+    value: function getID() {
+      return this.id;
+    }
+  }, {
+    key: "getType",
+    value: function getType() {
+      return this.type;
+    }
+  }, {
+    key: "getComponent",
+    value: function getComponent() {
       return React.createElement(TabComponent, {
-        key: this.n,
-        n: this.n,
+        key: this.id,
+        n: this.id,
         title: this.title,
-        data: this.data
+        rawdata: this.rawdata,
+        type: this.type
       });
     }
   }], [{
@@ -62,30 +89,107 @@ function () {
   return Tab;
 }();
 
-var TableTab =
+var TextTab =
 /*#__PURE__*/
 function (_Tab) {
-  _inherits(TableTab, _Tab);
+  _inherits(TextTab, _Tab);
 
-  function TableTab() {
+  function TextTab(name, extension, rawdata) {
+    var _this;
+
+    _classCallCheck(this, TextTab);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(TextTab).call(this, name, extension, rawdata));
+    _this.type = 'text';
+    return _this;
+  }
+
+  return TextTab;
+}(Tab);
+
+var TableTab =
+/*#__PURE__*/
+function (_Tab2) {
+  _inherits(TableTab, _Tab2);
+
+  function TableTab(name, extension, rawdata) {
+    var _this2;
+
     _classCallCheck(this, TableTab);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(TableTab).call(this));
+    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(TableTab).call(this, name, extension, rawdata));
+    _this2.type = 'table';
+    _this2.object = null;
+    _this2.rawdata = {
+      cols: [],
+      rows: rawdata.rows
+    };
+
+    if (typeof rawdata.cols[0] === "string") {
+      // Temporary check to see if cols are string or object
+      rawdata.cols.forEach(function (col) {
+        return _this2.rawdata.cols.push({
+          title: col,
+          field: col,
+          editor: true
+        });
+      });
+    } else {
+      _this2.rawdata.cols = rawdata.cols;
+    }
+
+    return _this2;
   }
+
+  _createClass(TableTab, [{
+    key: "getTableObject",
+    value: function getTableObject() {
+      return this.object;
+    }
+  }, {
+    key: "setTableObject",
+    value: function setTableObject(object) {
+      this.object = object;
+    }
+  }]);
 
   return TableTab;
 }(Tab);
 
 var JSONTab =
 /*#__PURE__*/
-function (_Tab2) {
-  _inherits(JSONTab, _Tab2);
+function (_Tab3) {
+  _inherits(JSONTab, _Tab3);
 
-  function JSONTab() {
+  function JSONTab(name, extension, rawdata) {
+    var _this3;
+
     _classCallCheck(this, JSONTab);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(JSONTab).call(this));
+    _this3 = _possibleConstructorReturn(this, _getPrototypeOf(JSONTab).call(this, name, extension, rawdata));
+    _this3.type = 'json';
+    _this3.object = null;
+    return _this3;
   }
 
   return JSONTab;
 }(Tab);
+
+var JSONSelectTab =
+/*#__PURE__*/
+function (_JSONTab) {
+  _inherits(JSONSelectTab, _JSONTab);
+
+  function JSONSelectTab(name, extension, rawdata) {
+    var _this4;
+
+    _classCallCheck(this, JSONSelectTab);
+
+    _this4 = _possibleConstructorReturn(this, _getPrototypeOf(JSONSelectTab).call(this, name, extension, rawdata));
+    _this4.type = 'json_select';
+    _this4.object = null;
+    return _this4;
+  }
+
+  return JSONSelectTab;
+}(JSONTab);

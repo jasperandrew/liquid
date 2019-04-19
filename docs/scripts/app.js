@@ -100,47 +100,58 @@ var Liquid = {
   handleResponse: function handleResponse(response_txt) {
     var _this = this;
 
-    var json;
+    var response_json;
 
     try {
-      json = JSON.parse(response_txt);
+      response_json = JSON.parse(response_txt);
     } catch (e) {
       console.error('[Error] Non-JSON response received:\n\n' + response_txt);
       alert('[Error] Non-JSON response received:\n\n' + response_txt);
       return;
     }
 
-    console.log('[DATA-IN]', json);
-    json['reply_contents'].forEach(function (data) {
-      switch (data) {
+    console.log('[DATA-IN]', response_json);
+    response_json['reply_contents'].forEach(function (section) {
+      var sec_data = response_json[section];
+
+      switch (section) {
         case 'status_ok':
           /* Handle change/hide dialogue */
           console.log('STATUS-OK');
           break;
 
         case 'table_data':
-          _this.tabManager.handleTableData(json.table_data);
+          var rawdata = {
+            rows: sec_data.tbl_rows,
+            cols: sec_data.tbl_cols
+          };
+          var extension = 'tsv';
+
+          _this.tabManager.addTab('table', sec_data.node_name, extension, rawdata);
 
           break;
 
         case 'text_file':
         case 'text_file2':
-          _this.tabManager.handleTextFile(json[data]);
+          _this.tabManager.addTab('text', sec_data.node_name, sec_data.file_extension, sec_data.file_contents);
 
           break;
 
         case 'api_json':
-          _this.tabManager.handleJSON(json.api_json, true);
+          _this.tabManager.addTab('text', sec_data.node_name, 'json', JSON.stringify(sec_data.json, null, 2)); // TODO // change to json tab type when that is implemented
+
+
+          _this.tabManager.addTab('json_select', sec_data.node_name + '_select', null, sec_data.json_vars);
 
           break;
 
         case 'user_question':
-          _this.dialogueManager.handleUserQuestion(json.user_question);
+          _this.dialogueManager.handleUserQuestion(sec_data);
 
           break;
 
         default:
-          console.error('[Liquid.handleResponse] unrecognized reply type: ' + data);
+          console.error('[Liquid.handleResponse] unrecognized reply type: ' + section);
       }
     });
   },
@@ -239,26 +250,28 @@ var Liquid = {
     // All tabs
     active_tab: 1,
     // Currently active tab
-    addTab: function addTab(name, ext, data) {
-      var n = this.tabs.length + 1;
-      var short_name = name.split('/').pop();
-      this.tabs.push({
-        jsxElement: React.createElement(TabComponent, {
-          key: n,
-          n: n,
-          title: short_name,
-          format: Tab.getFormat(ext),
-          data: data
-        }),
-        throwin: {
-          name: name,
-          ext: ext,
-          n: n,
-          format: Tab.getFormat(ext),
-          data: data,
-          object: null
-        }
-      });
+    addTab: function addTab(type, name, extension, rawdata) {
+      var new_tab;
+
+      switch (type) {
+        case 'text':
+          new_tab = new TextTab(name, extension, rawdata);
+          break;
+
+        case 'table':
+          new_tab = new TableTab(name, extension, rawdata);
+          break;
+
+        case 'json':
+          new_tab = new JSONTab(name, extension, rawdata);
+          break;
+
+        case 'json_select':
+          new_tab = new JSONSelectTab(name, extension, rawdata);
+          break;
+      }
+
+      this.tabs.push(new_tab);
       this.active_tab = this.tabs.length;
       this.render();
     },
@@ -266,56 +279,30 @@ var Liquid = {
       if (this.tabs[n - 1]) return this.tabs[n - 1];
       return false;
     },
+    getAllTabs: function getAllTabs() {
+      return this.tabs;
+    },
     getCurrentTab: function getCurrentTab() {
       return this.getTab(this.active_tab);
-    },
-    handleTableData: function handleTableData(json) {
-      var content = {
-        cols: [],
-        rows: json.tbl_rows
-      };
-
-      if (typeof json.tbl_cols[0] === "string") {
-        // Temporary check to see if cols are string or object
-        json.tbl_cols.forEach(function (col) {
-          return content.cols.push({
-            title: col,
-            field: col,
-            editor: true
-          });
-        });
-      } else {
-        content.cols = json.tbl_cols;
-      }
-
-      this.addTab(json.node_name, 'tsv', content);
-    },
-    handleTextFile: function handleTextFile(json) {
-      this.addTab(json.node_name, json.file_extension, json.file_contents);
-    },
-    handleJSON: function handleJSON(data, selection) {
-      this.addTab(data.node_name, 'json', JSON.stringify(data.json, null, 2));
-
-      if (selection) {
-        this.addTab(data.node_name + '_select', 'json_select', data.json_vars);
-      }
     },
     render: function render() {
       ReactDOM.render(React.createElement(TabViewComponent, null), document.querySelector('#tab_container'));
       this.tabs.forEach(function (tab) {
-        var t = tab.throwin;
-
-        if (t.format === 'table') {
-          if (!t.object) {
-            t.object = new Tabulator('#t' + t.n, {
+        if (tab.getType() === 'table') {
+          if (!tab.getTableObject()) {
+            var data = tab.getRawData();
+            var obj = new Tabulator('#t' + tab.getID(), {
               layout: 'fitData',
               placeholder: 'Loading...',
               movableColumns: true,
-              rowFormatter: t.data.formatter
-            }); //Liquid.menu.toggleCheckboxes(t.i);
+              rowFormatter: data.formatter
+            });
+            obj.setColumns(data.cols);
+            obj.setData(data.rows);
+            tab.setTableObject(obj); //Liquid.menu.toggleCheckboxes(t.i);
 
             window.setTimeout(function () {
-              return t.object.addColumn({
+              return obj.addColumn({
                 title: 'select',
                 field: 'selection',
                 editor: 'tick',
@@ -326,9 +313,6 @@ var Liquid = {
                 formatter: 'tickCross'
               }, true);
             }, 10);
-            console.log(t);
-            t.object.setColumns(t.data.cols);
-            t.object.setData(t.data.rows);
           }
         }
       });

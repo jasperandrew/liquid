@@ -63,7 +63,7 @@ nav #task_list h2 {
   margin: 0;
 }
 nav #task_list h2:after {
-  content: "⭮";
+  content: "↻";
   transform: rotate(75deg);
   display: inline-block;
   font-size: 0.7em;
@@ -121,6 +121,10 @@ main {
 .dialogue .prompt {
   margin-top: 0;
   width: calc(100% - 165px);
+}
+.dialogue.locked .option {
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 .option input {

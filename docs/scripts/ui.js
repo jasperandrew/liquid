@@ -7,6 +7,9 @@ var UI = {
   addClass: function addClass(el, name) {
     document.querySelector(el).classList.add(name);
   },
+  removeClass: function removeClass(el, name) {
+    document.querySelector(el).classList.remove(name);
+  },
   toggleNav: function toggleNav(src) {
     var scrn = document.querySelector('div.screen').classList;
 

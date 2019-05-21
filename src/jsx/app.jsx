@@ -27,6 +27,62 @@ const WAIT_DIALOGUE = {
 	data: null,
 	options: null
 };
+// TODO // Move these somewhere
+function triTickFormatter(cell,formatterParams,onRendered) {
+	switch(cell.getValue()){
+		case undefined: cell.setValue(null); return '☐';
+		case null: return '☐';
+		case false: return '☒';
+		case true: return '☑';
+	}
+}
+
+function triTickCellClick(e,cell) {
+	console.log(cell.getValue());
+	switch(cell.getValue()){
+		case undefined: cell.setValue(true); break;
+		case null: cell.setValue(true); break;
+		case false: cell.setValue(null); break;
+		case true: cell.setValue(false); break;
+	}
+}
+
+function arbitraryFilter(data, filterParams) { // one == 1
+	let op_dict = {'&':'&&', '|':'||', '=':'=='}; // TODO // implement NOT operator
+	let filter = filterParams.split('').join('');
+	for(let op in op_dict) filter = filter.split(' ' + op + ' ').join(' ' + op_dict[op] + ' ');
+	
+	try {
+		let parsed_tree = jsep(filter);
+		console.log(parsed_tree);
+		if(parsed_tree.type !== 'BinaryExpression'){
+			console.log('Invalid expression');
+			return true;
+		}
+	} catch(e) {
+		console.log(e.message);
+		return true;
+	}
+
+	// let col_names = Object.keys(data);
+
+	let operators = ['==','!=','>=','<=','>','<','===','!=='];
+	filter = filter.split(' ');
+	for(let i in filter){
+		if(operators.includes(filter[i])){
+			if(filter[i-1][0] === '('){
+				let tmp = filter[i-1].split('(');
+				tmp[1] = 'data.' + tmp[1];
+			}
+
+			filter[i-1] = 'data.' + filter[i-1];
+		}
+	}
+
+	let func_str = 'return ' + filter.join(' ');
+	let result = new Function('data', func_str);
+	return result(data);
+}
 
 /************************************************************\
 *                         LIQUID APP                         *
@@ -49,6 +105,7 @@ const Liquid = {
 		this.dialogueManager.history.push(INIT_DIALOGUE);
 		this.render();
 		this.eventHandler.initialize();
+
 		console.info('Liquid initialized!');
 	},
 
@@ -250,25 +307,8 @@ const Liquid = {
 
 						tab.setTableObject(obj);
 
-						window.setTimeout(() => obj.addColumn({title:'select',field:'selection',visible:false, // TODO // Make this stuff go away
-							formatter:(cell,formatterParams,onRendered) => {
-								switch(cell.getValue()){
-									case undefined: cell.setValue('indeterminate'); return '☐';
-									case 'indeterminate': return '☐';
-									case false: return '☒';
-									case true: return '☑';
-								}
-							},
-							cellClick:(e,cell) => {
-								console.log(cell.getValue());
-								switch(cell.getValue()){
-									case undefined: cell.setValue(true); break;
-									case 'indeterminate': cell.setValue(true); break;
-									case false: cell.setValue(undefined); break;
-									case true: cell.setValue(false); break;
-								}
-							}},true), 10);
-
+						// TODO // Make this stuff go away
+						window.setTimeout(() => obj.addColumn({title:'select',field:'selection',visible:false, formatter:triTickFormatter, cellClick:triTickCellClick },true), 10);
 					}
 
 				}
@@ -455,5 +495,30 @@ function sendTableData() {
 
 function addCheckColumn() {
 	let col_name = window.prompt('Give a name for the new checkbox column:','checked');
-	Liquid.tabManager.getActiveTab().getTableObject().addColumn({title:col_name,field:col_name,editor:'tick',formatter:'tickCross'},true);
+	Liquid.tabManager.getActiveTab().getTableObject().addColumn({title:col_name,field:col_name,formatter:triTickFormatter, cellClick:triTickCellClick },true);
+}
+
+function addTextColumn() {
+	let col_name = window.prompt('Give a name for the new text column:','notes');
+	Liquid.tabManager.getActiveTab().getTableObject().addColumn({title:col_name,field:col_name,editor:true},true);
+}
+
+function filterColumn() {
+	let col = window.prompt('Which column do you want to filter?');
+	let fnc = window.prompt('What function do you want to filter with? (=,!=,like,<,<=,>,>=,in,regex)');
+	let val = window.prompt('What value do you want to filter by?');
+	Liquid.tabManager.getActiveTab().getTableObject().setFilter(col, fnc, val);
+}
+
+function filterCustom() {
+	let str = window.prompt('Type the filter string here');
+	Liquid.tabManager.getActiveTab().getTableObject().setFilter(arbitraryFilter, str);
+}
+
+function clearFilters() {
+	Liquid.tabManager.getActiveTab().getTableObject().clearFilter();
+}
+
+function lockDialogue() {
+	UI.toggleClass('.dialogue','locked');
 }

@@ -265,7 +265,23 @@ function (_React$Component6) {
         onClick: function onClick() {
           return addCheckColumn();
         }
-      }, "Add New Checkbox Column"));
+      }, "Add New Checkbox Column"), React.createElement("button", {
+        onClick: function onClick() {
+          return addTextColumn();
+        }
+      }, "Add New Text Column"), React.createElement("button", {
+        onClick: function onClick() {
+          return filterColumn();
+        }
+      }, "Filter Column"), React.createElement("button", {
+        onClick: function onClick() {
+          return filterCustom();
+        }
+      }, "Custom Filter"), React.createElement("button", {
+        onClick: function onClick() {
+          return clearFilters();
+        }
+      }, "Clear Filters"));
     }
   }]);
 

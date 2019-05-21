@@ -142,6 +142,10 @@ class NavComponent extends React.Component {
 				<button onClick={() => Liquid.menu.toggleCheckboxes(Liquid.tabManager.active_tab)}>Toggle Select Column</button>
 				<button onClick={() => sendTableData()}>Send Table Data</button>
 				<button onClick={() => addCheckColumn()}>Add New Checkbox Column</button>
+				<button onClick={() => addTextColumn()}>Add New Text Column</button>
+				<button onClick={() => filterColumn()}>Filter Column</button>
+				<button onClick={() => filterCustom()}>Custom Filter</button>
+				<button onClick={() => clearFilters()}>Clear Filters</button>
 			</div>
 		);
 	}

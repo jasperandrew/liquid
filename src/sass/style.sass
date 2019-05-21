@@ -61,7 +61,7 @@ nav
 			pointer-events: none
 			margin: 0
 			&:after
-				content: '⭮'
+				content: '↻'
 				transform: rotate(75deg)
 				display: inline-block
 				font-size: 0.7em
@@ -113,6 +113,11 @@ main
 	.prompt
 		margin-top: 0
 		width: calc(100% - 165px)
+
+	&.locked
+		.option
+			pointer-events: none
+			opacity: 0.5
 
 .option
 	input

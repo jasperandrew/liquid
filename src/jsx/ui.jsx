@@ -7,6 +7,10 @@ const UI = {
         document.querySelector(el).classList.add(name);
     },
 
+    removeClass(el, name) {
+        document.querySelector(el).classList.remove(name);
+    },
+
     toggleNav(src) {
         let scrn = document.querySelector('div.screen').classList;
         if(scrn.contains('hidden')){
@@ -23,5 +27,4 @@ const UI = {
             document.querySelector('nav').classList.remove('open');
         }
     }
-    
 }

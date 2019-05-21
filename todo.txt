@@ -2,14 +2,14 @@
 - lock question once clicked
 - check todo list
 - find a different way to render color text (stop using dangerouslySetInnerHTML)
-- textbox input
 - tabs overlap with dialogue
 
-- text column
-- filter column
-    - complex filter
 - nested tables
 
-- column menu
-    - hide column
-    - edit column name
+- redesign
+    - column menu
+        - hide column
+        - edit column name
+        - filter column
+            - complex filter
+

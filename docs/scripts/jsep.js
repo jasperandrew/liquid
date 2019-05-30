@@ -48,14 +48,15 @@
 		t = true,
 	// Use a quickly-accessible map to store all of the unary operators
 	// Values are set to `true` (it really doesn't matter)
-		unary_ops = {'-': t, '!': t, '~': t, '+': t},
+		unary_ops = {'!': t, 'not': t},
 	// Also use a map for the binary operations but set their values to their
 	// binary precedence for quick reference:
 	// see [Order of operations](http://en.wikipedia.org/wiki/Order_of_operations#Programming_language)
 		binary_ops = {
 			'||': 1, '&&': 2,
-			'==': 6, '!=': 6, '===': 6, '!==': 6,
-			'<': 7,  '>': 7,  '<=': 7,  '>=': 7
+			'==': 6, '!=': 6, '===': 6, '!==': 6, '=': 6, 'is': 6, 'is not': 6, 'isn\'t': 6,
+			'<': 7,  '>': 7,  '<=': 7,  '>=': 7,
+			'in': 8, 'contains': 8, 'regex': 8
 		},
 	// Get return the longest key length of any object
 		getMaxKeyLen = function(obj) {
@@ -75,7 +76,9 @@
 		literals = {
 			'true': true,
 			'false': false,
-			'null': null
+			'null': null,
+			'undefined': undefined,
+			'empty': 'empty'
 		},
 	// Except for `this`, which is special. This could be changed to something like `'self'` as well
 		this_str = 'this',
@@ -565,107 +568,6 @@
 	// To be filled in by the template
 	jsep.version = '0.3.4';
 	jsep.toString = function() { return 'JavaScript Expression Parser (JSEP) v' + jsep.version; };
-
-	/**
-	 * @method jsep.addUnaryOp
-	 * @param {string} op_name The name of the unary op to add
-	 * @return jsep
-	 */
-	jsep.addUnaryOp = function(op_name) {
-		max_unop_len = Math.max(op_name.length, max_unop_len);
-		unary_ops[op_name] = t; return this;
-	};
-
-	/**
-	 * @method jsep.addBinaryOp
-	 * @param {string} op_name The name of the binary op to add
-	 * @param {number} precedence The precedence of the binary op (can be a float)
-	 * @return jsep
-	 */
-	jsep.addBinaryOp = function(op_name, precedence) {
-		max_binop_len = Math.max(op_name.length, max_binop_len);
-		binary_ops[op_name] = precedence;
-		return this;
-	};
-
-	/**
-	 * @method jsep.addLiteral
-	 * @param {string} literal_name The name of the literal to add
-	 * @param {*} literal_value The value of the literal
-	 * @return jsep
-	 */
-	jsep.addLiteral = function(literal_name, literal_value) {
-		literals[literal_name] = literal_value;
-		return this;
-	};
-
-	/**
-	 * @method jsep.removeUnaryOp
-	 * @param {string} op_name The name of the unary op to remove
-	 * @return jsep
-	 */
-	jsep.removeUnaryOp = function(op_name) {
-		delete unary_ops[op_name];
-		if(op_name.length === max_unop_len) {
-			max_unop_len = getMaxKeyLen(unary_ops);
-		}
-		return this;
-	};
-
-	/**
-	 * @method jsep.removeAllUnaryOps
-	 * @return jsep
-	 */
-	jsep.removeAllUnaryOps = function() {
-		unary_ops = {};
-		max_unop_len = 0;
-
-		return this;
-	};
-
-	/**
-	 * @method jsep.removeBinaryOp
-	 * @param {string} op_name The name of the binary op to remove
-	 * @return jsep
-	 */
-	jsep.removeBinaryOp = function(op_name) {
-		delete binary_ops[op_name];
-		if(op_name.length === max_binop_len) {
-			max_binop_len = getMaxKeyLen(binary_ops);
-		}
-		return this;
-	};
-
-	/**
-	 * @method jsep.removeAllBinaryOps
-	 * @return jsep
-	 */
-	jsep.removeAllBinaryOps = function() {
-		binary_ops = {};
-		max_binop_len = 0;
-
-		return this;
-	};
-
-	/**
-	 * @method jsep.removeLiteral
-	 * @param {string} literal_name The name of the literal to remove
-	 * @return jsep
-	 */
-	jsep.removeLiteral = function(literal_name) {
-		delete literals[literal_name];
-		return this;
-	};
-
-	/**
-	 * @method jsep.removeAllLiterals
-	 * @return jsep
-	 */
-	jsep.removeAllLiterals = function() {
-		literals = {};
-
-		return this;
-	};
 
 	// In desktop environments, have a way to restore the old value for `jsep`
 	if (typeof exports === 'undefined') {

@@ -47,41 +47,127 @@ function triTickCellClick(e,cell) {
 	}
 }
 
-function arbitraryFilter(data, filterParams) { // one == 1
-	let op_dict = {'&':'&&', '|':'||', '=':'=='}; // TODO // implement NOT operator
-	let filter = filterParams.split('').join('');
-	for(let op in op_dict) filter = filter.split(' ' + op + ' ').join(' ' + op_dict[op] + ' ');
-	
-	try {
-		let parsed_tree = jsep(filter);
-		console.log(parsed_tree);
-		if(parsed_tree.type !== 'BinaryExpression'){
-			console.log('Invalid expression');
-			return true;
+function jsepToString(tree, side = null) {
+	let err_str = '{ERR}';
+	switch(tree.type){
+		// case 'Compound':
+		case 'Identifier':{
+			let q = (side === 'r' ? '\'' : ''),
+				d1 = (side === 'l' ? 'data[\'' : ''),
+				d2 = (side === 'l' ? '\']' : '');
+			return q+d1+tree.name+d2+q;
 		}
-	} catch(e) {
-		console.log(e.message);
-		return true;
-	}
-
-	// let col_names = Object.keys(data);
-
-	let operators = ['==','!=','>=','<=','>','<','===','!=='];
-	filter = filter.split(' ');
-	for(let i in filter){
-		if(operators.includes(filter[i])){
-			if(filter[i-1][0] === '('){
-				let tmp = filter[i-1].split('(');
-				tmp[1] = 'data.' + tmp[1];
+		// case 'MemberExpression':
+		case 'Literal':{
+			let q = (side === 'r' ? '\'' : ''),
+				d1 = (side === 'l' ? 'data[\'' : ''),
+				d2 = (side === 'l' ? '\']' : '');
+			return q+d1+tree.value+d2+q;
+		}
+		// case 'ThisExpression':
+		// case 'CallExpression':
+		case 'UnaryExpression':{
+			let op;
+			switch(tree.operator){
+				case 'not': op = '!'; break;
+				default: op = tree.operator;
 			}
-
-			filter[i-1] = 'data.' + filter[i-1];
+			return `${tree.operator}(${jsepToString(tree.argument, 'r')})`;
 		}
-	}
+		case 'BinaryExpression':{
+			if(tree.left.type === 'Literal'){
+				// TODO // validate column identifiers
+			}else if(tree.left.type !== 'Identifier'){
+				console.error(`jsepToString: Left argument of a binary expression must be a column identifier`);
+				return err_str;
+			}
+			let op;
+			switch(tree.operator){
+				case '=':
+				case 'is': op = '=='; break;
 
-	let func_str = 'return ' + filter.join(' ');
-	let result = new Function('data', func_str);
-	return result(data);
+				case 'is not':
+				case 'isn\'t': op = '!='; break;
+
+				case 'in':{
+					if(tree.right.type !== 'ArrayExpression'){
+						console.error(`jsepToString: Invalid usage of 'in' operator`);
+						return err_str;
+					}
+					let arr = '[';
+					for(let i in tree.right.elements){
+						if(!['Literal', 'Identifier'].includes(tree.right.elements[i].type)){
+							console.error(`jsepToString: Invalid usage of 'in' operator`);
+							return err_str;
+						}
+						arr += jsepToString(tree.right.elements[i], 'r') + ',';
+					}
+					arr += ']';
+					return `${arr}.includes(${jsepToString(tree.left, 'l')})`;
+				}
+				case 'contains':{
+					if(!['Literal', 'Identifier'].includes(tree.right.type)){
+						console.error(`jsepToString: Invalid usage of 'contains' operator`);
+						return err_str;
+					}
+					return `${jsepToString(tree.left, 'l')}.includes(${jsepToString(tree.right, 'r')})`;
+				}
+				case 'regex':{
+					if(!['Literal', 'Identifier'].includes(tree.right.type)){
+						console.error(`jsepToString: Invalid usage of 'regex' operator`);
+						return err_str;
+					}
+					let regex = new RegExp(jsepToString(tree.right, null)).toString();
+					return `${regex}.test(${jsepToString(tree.left, 'l')})`;
+				}
+				default: op = tree.operator;
+			}
+			return `(${jsepToString(tree.left, 'l')} ${op} ${jsepToString(tree.right, 'r')})`;
+		}
+		case 'LogicalExpression':
+			return `(${jsepToString(tree.left, 'l')} ${tree.operator} ${jsepToString(tree.right, 'r')})`;
+		// case 'ConditionalExpression':
+		// case 'ArrayExpression':
+		default:
+			console.error(`jsepToString: Unsupported expression type '${tree.type}'`);
+			return err_str;
+	}
+}
+
+function arbitraryFilter(data, filterParams) { // one > 2 & two < 5
+	let replace = {'&':'&&', '|':'||'}; // TODO // implement NOT operator
+	let filter = filterParams.split('').join('');
+	for(let r in replace){
+		let regex = new RegExp(`([^${r}])\\${r}([^${r}])`);
+		filter = filter.replace(regex, `$1${replace[r]}$2`);
+	}
+	console.log(filter);
+	// try {
+	// 	let parsed_tree = jsep(filter);
+	// 	console.log(parsed_tree);
+	// 	if(parsed_tree.type !== 'BinaryExpression'){
+	// 		console.log('Invalid expression type');
+	// 		return true;
+	// 	}
+	// } catch(e) {
+	// 	console.log(`JSEP: ${e.message}`);
+	// 	return true;
+	// }
+
+
+
+	// console.log(parse('( one > 2 && two < 5 || blah == 9 ) || (three == 1)'));
+
+	let func_str = 'return ' + jsepToString(jsep(filter));
+	console.log(func_str);
+
+	try{
+		let result = new Function('data', func_str);
+		return result(data);
+	}catch(e){
+		console.error(`Filter: ${e}`);
+		return false;
+	}
 }
 
 /************************************************************\

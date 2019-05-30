@@ -13,3 +13,7 @@
         - filter column
             - complex filter
 
+- filter 
+    - toggle case sensitive
+    - empty (null, '', undefined)
+    - wildcard ? 

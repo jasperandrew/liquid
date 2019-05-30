@@ -80,51 +80,167 @@ function triTickCellClick(e, cell) {
   }
 }
 
+function jsepToString(tree) {
+  var side = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var err_str = '{ERR}';
+
+  switch (tree.type) {
+    // case 'Compound':
+    case 'Identifier':
+      {
+        var q = side === 'r' ? '\'' : '',
+            d1 = side === 'l' ? 'data[\'' : '',
+            d2 = side === 'l' ? '\']' : '';
+        return q + d1 + tree.name + d2 + q;
+      }
+    // case 'MemberExpression':
+
+    case 'Literal':
+      {
+        var _q = side === 'r' ? '\'' : '',
+            _d = side === 'l' ? 'data[\'' : '',
+            _d2 = side === 'l' ? '\']' : '';
+
+        return _q + _d + tree.value + _d2 + _q;
+      }
+    // case 'ThisExpression':
+    // case 'CallExpression':
+
+    case 'UnaryExpression':
+      {
+        var op;
+
+        switch (tree.operator) {
+          case 'not':
+            op = '!';
+            break;
+
+          default:
+            op = tree.operator;
+        }
+
+        return "".concat(tree.operator, "(").concat(jsepToString(tree.argument, 'r'), ")");
+      }
+
+    case 'BinaryExpression':
+      {
+        if (tree.left.type === 'Literal') {// TODO // validate column identifiers
+        } else if (tree.left.type !== 'Identifier') {
+          console.error("jsepToString: Left argument of a binary expression must be a column identifier");
+          return err_str;
+        }
+
+        var _op;
+
+        switch (tree.operator) {
+          case '=':
+          case 'is':
+            _op = '==';
+            break;
+
+          case 'is not':
+          case 'isn\'t':
+            _op = '!=';
+            break;
+
+          case 'in':
+            {
+              if (tree.right.type !== 'ArrayExpression') {
+                console.error("jsepToString: Invalid usage of 'in' operator");
+                return err_str;
+              }
+
+              var arr = '[';
+
+              for (var i in tree.right.elements) {
+                if (!['Literal', 'Identifier'].includes(tree.right.elements[i].type)) {
+                  console.error("jsepToString: Invalid usage of 'in' operator");
+                  return err_str;
+                }
+
+                arr += jsepToString(tree.right.elements[i], 'r') + ',';
+              }
+
+              arr += ']';
+              return "".concat(arr, ".includes(").concat(jsepToString(tree.left, 'l'), ")");
+            }
+
+          case 'contains':
+            {
+              if (!['Literal', 'Identifier'].includes(tree.right.type)) {
+                console.error("jsepToString: Invalid usage of 'contains' operator");
+                return err_str;
+              }
+
+              return "".concat(jsepToString(tree.left, 'l'), ".includes(").concat(jsepToString(tree.right, 'r'), ")");
+            }
+
+          case 'regex':
+            {
+              if (!['Literal', 'Identifier'].includes(tree.right.type)) {
+                console.error("jsepToString: Invalid usage of 'regex' operator");
+                return err_str;
+              }
+
+              var regex = new RegExp(jsepToString(tree.right, null)).toString();
+              return "".concat(regex, ".test(").concat(jsepToString(tree.left, 'l'), ")");
+            }
+
+          default:
+            _op = tree.operator;
+        }
+
+        return "(".concat(jsepToString(tree.left, 'l'), " ").concat(_op, " ").concat(jsepToString(tree.right, 'r'), ")");
+      }
+
+    case 'LogicalExpression':
+      return "(".concat(jsepToString(tree.left, 'l'), " ").concat(tree.operator, " ").concat(jsepToString(tree.right, 'r'), ")");
+    // case 'ConditionalExpression':
+    // case 'ArrayExpression':
+
+    default:
+      console.error("jsepToString: Unsupported expression type '".concat(tree.type, "'"));
+      return err_str;
+  }
+}
+
 function arbitraryFilter(data, filterParams) {
-  // one == 1
-  var op_dict = {
+  // one > 2 & two < 5
+  var replace = {
     '&': '&&',
-    '|': '||',
-    '=': '=='
+    '|': '||'
   }; // TODO // implement NOT operator
 
   var filter = filterParams.split('').join('');
 
-  for (var op in op_dict) {
-    filter = filter.split(' ' + op + ' ').join(' ' + op_dict[op] + ' ');
+  for (var r in replace) {
+    var regex = new RegExp("([^".concat(r, "])\\").concat(r, "([^").concat(r, "])"));
+    filter = filter.replace(regex, "$1".concat(replace[r], "$2"));
   }
+
+  console.log(filter); // try {
+  // 	let parsed_tree = jsep(filter);
+  // 	console.log(parsed_tree);
+  // 	if(parsed_tree.type !== 'BinaryExpression'){
+  // 		console.log('Invalid expression type');
+  // 		return true;
+  // 	}
+  // } catch(e) {
+  // 	console.log(`JSEP: ${e.message}`);
+  // 	return true;
+  // }
+  // console.log(parse('( one > 2 && two < 5 || blah == 9 ) || (three == 1)'));
+
+  var func_str = 'return ' + jsepToString(jsep(filter));
+  console.log(func_str);
 
   try {
-    var parsed_tree = jsep(filter);
-    console.log(parsed_tree);
-
-    if (parsed_tree.type !== 'BinaryExpression') {
-      console.log('Invalid expression');
-      return true;
-    }
+    var result = new Function('data', func_str);
+    return result(data);
   } catch (e) {
-    console.log(e.message);
-    return true;
-  } // let col_names = Object.keys(data);
-
-
-  var operators = ['==', '!=', '>=', '<=', '>', '<', '===', '!=='];
-  filter = filter.split(' ');
-
-  for (var i in filter) {
-    if (operators.includes(filter[i])) {
-      if (filter[i - 1][0] === '(') {
-        var tmp = filter[i - 1].split('(');
-        tmp[1] = 'data.' + tmp[1];
-      }
-
-      filter[i - 1] = 'data.' + filter[i - 1];
-    }
+    console.error("Filter: ".concat(e));
+    return false;
   }
-
-  var func_str = 'return ' + filter.join(' ');
-  var result = new Function('data', func_str);
-  return result(data);
 }
 /************************************************************\
 *                         LIQUID APP                         *

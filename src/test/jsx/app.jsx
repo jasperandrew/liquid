@@ -8,13 +8,13 @@ const INIT_DIALOGUE = {
 	data: null,
 	options: [
 		{
-			jsxElement: <Option key={1} i={1} isDefault={0} optText='Start the interview wizard' optId='wizard'/>,
+			jsxElement: <OptionComponent key={1} i={1} isDefault={0} optText='Start the interview wizard' optId='wizard'/>,
 			isDefault: 0,
 			optText: 'Start the interview wizard',
 			optId: 'wizard',
 		},
 		{
-			jsxElement: <Option key={2} i={2} isDefault={0} optText='Upload ("Throw in") a file from your computer' optId='upload'/>,
+			jsxElement: <OptionComponent key={2} i={2} isDefault={0} optText='Upload ("Throw in") a file from your computer' optId='upload'/>,
 			isDefault: 0,
 			optText: 'Upload ("Throw in") a file from your computer',
 			optId: 'upload',
@@ -27,6 +27,148 @@ const WAIT_DIALOGUE = {
 	data: null,
 	options: null
 };
+// TODO // Move these somewhere
+function triTickFormatter(cell,formatterParams,onRendered) {
+	switch(cell.getValue()){
+		case undefined: cell.setValue(null); return '☐';
+		case null: return '☐';
+		case false: return '☒';
+		case true: return '☑';
+	}
+}
+
+function triTickCellClick(e,cell) {
+	console.log(cell.getValue());
+	switch(cell.getValue()){
+		case undefined: cell.setValue(true); break;
+		case null: cell.setValue(true); break;
+		case false: cell.setValue(null); break;
+		case true: cell.setValue(false); break;
+	}
+}
+
+function jsepToString(tree, side = null) {
+	let err_str = '{ERR}';
+	switch(tree.type){
+		// case 'Compound':
+		case 'Identifier':{
+			let q = (side === 'r' ? '\'' : ''),
+				d1 = (side === 'l' ? 'data[\'' : ''),
+				d2 = (side === 'l' ? '\']' : '');
+			return q+d1+tree.name+d2+q;
+		}
+		// case 'MemberExpression':
+		case 'Literal':{
+			let q = (side === 'r' ? '\'' : ''),
+				d1 = (side === 'l' ? 'data[\'' : ''),
+				d2 = (side === 'l' ? '\']' : '');
+			return q+d1+tree.value+d2+q;
+		}
+		// case 'ThisExpression':
+		// case 'CallExpression':
+		case 'UnaryExpression':{
+			let op;
+			switch(tree.operator){
+				case 'not': op = '!'; break;
+				default: op = tree.operator;
+			}
+			return `${tree.operator}(${jsepToString(tree.argument, 'r')})`;
+		}
+		case 'BinaryExpression':{
+			if(tree.left.type === 'Literal'){
+				// TODO // validate column identifiers
+			}else if(tree.left.type !== 'Identifier'){
+				console.error(`jsepToString: Left argument of a binary expression must be a column identifier`);
+				return err_str;
+			}
+			let op;
+			switch(tree.operator){
+				case '=':
+				case 'is': op = '=='; break;
+
+				case 'is not':
+				case 'isn\'t': op = '!='; break;
+
+				case 'in':{
+					if(tree.right.type !== 'ArrayExpression'){
+						console.error(`jsepToString: Invalid usage of 'in' operator`);
+						return err_str;
+					}
+					let arr = '[';
+					for(let i in tree.right.elements){
+						if(!['Literal', 'Identifier'].includes(tree.right.elements[i].type)){
+							console.error(`jsepToString: Invalid usage of 'in' operator`);
+							return err_str;
+						}
+						arr += jsepToString(tree.right.elements[i], 'r') + ',';
+					}
+					arr += ']';
+					return `${arr}.includes(${jsepToString(tree.left, 'l')})`;
+				}
+				case 'contains':{
+					if(!['Literal', 'Identifier'].includes(tree.right.type)){
+						console.error(`jsepToString: Invalid usage of 'contains' operator`);
+						return err_str;
+					}
+					return `${jsepToString(tree.left, 'l')}.includes(${jsepToString(tree.right, 'r')})`;
+				}
+				case 'regex':{
+					if(!['Literal', 'Identifier'].includes(tree.right.type)){
+						console.error(`jsepToString: Invalid usage of 'regex' operator`);
+						return err_str;
+					}
+					let regex = new RegExp(jsepToString(tree.right, null)).toString();
+					return `${regex}.test(${jsepToString(tree.left, 'l')})`;
+				}
+				default: op = tree.operator;
+			}
+			return `(${jsepToString(tree.left, 'l')} ${op} ${jsepToString(tree.right, 'r')})`;
+		}
+		case 'LogicalExpression':
+			return `(${jsepToString(tree.left, 'l')} ${tree.operator} ${jsepToString(tree.right, 'r')})`;
+		// case 'ConditionalExpression':
+		// case 'ArrayExpression':
+		default:
+			console.error(`jsepToString: Unsupported expression type '${tree.type}'`);
+			return err_str;
+	}
+}
+
+function arbitraryFilter(data, filterParams) { // one > 2 & two < 5
+	let replace = {'&':'&&', '|':'||'}; // TODO // implement NOT operator
+	let filter = filterParams.split('').join('');
+	for(let r in replace){
+		let regex = new RegExp(`([^${r}])\\${r}([^${r}])`);
+		filter = filter.replace(regex, `$1${replace[r]}$2`);
+	}
+	console.log(filter);
+	// try {
+	// 	let parsed_tree = jsep(filter);
+	// 	console.log(parsed_tree);
+	// 	if(parsed_tree.type !== 'BinaryExpression'){
+	// 		console.log('Invalid expression type');
+	// 		return true;
+	// 	}
+	// } catch(e) {
+	// 	console.log(`JSEP: ${e.message}`);
+	// 	return true;
+	// }
+
+
+
+	// console.log(parse('( one > 2 && two < 5 || blah == 9 ) || (three == 1)'));
+
+	let func_str = 'return ' + jsepToString(jsep(filter));
+	console.log(func_str);
+
+	try{
+		let result = new Function('data', func_str);
+		return result(data);
+	}catch(e){
+		console.error(`Filter: ${e}`);
+		return false;
+	}
+}
 
 /************************************************************\
 *                         LIQUID APP                         *
@@ -49,13 +191,14 @@ const Liquid = {
 		this.dialogueManager.history.push(INIT_DIALOGUE);
 		this.render();
 		this.eventHandler.initialize();
+
 		console.info('Liquid initialized!');
 	},
 
 	render() {
 		this.dialogueManager.render();
 		this.tabManager.render();
-		this.menu.render();
+		// this.menu.render();
 		//this.menu.updateTaskList(1);
 		console.info('Liquid rendered!');
 	},
@@ -87,30 +230,41 @@ const Liquid = {
 	},
 
 	handleResponse: function(response_txt) {
-		let json;
+		let response_json;
 		try {
-			json = JSON.parse(response_txt);
+			response_json = JSON.parse(response_txt);
 		} catch(e) {
 			console.error('[Error] Non-JSON response received:\n\n' + response_txt);
 			alert('[Error] Non-JSON response received:\n\n' + response_txt);
 			return;
 		}
-		console.log('[DATA-IN]',json);
+		console.log('[DATA-IN]',response_json);
 
-		json['reply_contents'].forEach(data => {
-			switch(data){
+		response_json['reply_contents'].forEach(section => {
+			let sec_data = response_json[section];
+			switch(section){
 				case 'status_ok': 
 					/* Handle change/hide dialogue */ console.log('STATUS-OK'); break;
 				case 'table_data':
-					this.tabManager.handleTableData(json.table_data); break;
+					let rawdata = {
+						rows:sec_data.tbl_rows,
+						cols:sec_data.tbl_cols
+					};
+					let extension = 'tsv';
+					this.tabManager.addTab('table', sec_data.node_name, extension, rawdata);
+					break;
 				case 'text_file':
-					this.tabManager.handleTextFile(json.text_file); break;
+				case 'text_file2':
+					this.tabManager.addTab('text', sec_data.node_name, sec_data.file_extension, sec_data.file_contents);
+					break;
 				case 'api_json':
-					this.tabManager.handleJSON(json.api_json, true); break;
+					this.tabManager.addTab('text', sec_data.node_name, 'json', JSON.stringify(sec_data.json, null, 2)); // TODO // change to json tab type when that is implemented
+					this.tabManager.addTab('json_select', sec_data.node_name+'_select', null, sec_data.json_vars);
+					break;
 				case 'user_question':
-					this.dialogueManager.handleUserQuestion(json.user_question); break;
+					this.dialogueManager.handleUserQuestion(sec_data); break;
 				default:
-					console.error('[Liquid.handleResponse] unrecognized reply type: ' + data);
+					console.error('[Liquid.handleResponse] unrecognized reply type: ' + section);
 			}
 		});
 	},
@@ -175,7 +329,7 @@ const Liquid = {
 			for(let i in answ_cands){
 				let opt = answ_cands[i];
 				options.push({
-					jsxElement: <Option key={i+1} i={i+1} isDefault={0} optText={opt.answ_text} optId={opt.answ_id}/>,
+					jsxElement: <OptionComponent key={i+1} i={i+1} isDefault={0} optText={opt.answ_text} optId={opt.answ_id}/>,
 					isDefault: 0,
 					opt_text: opt.answ_text,
 					opt_id: opt.answ_id,
@@ -190,107 +344,59 @@ const Liquid = {
 		},
 
 		render() {
-			ReactDOM.render(<Dialogue prompt={this.history[0].prompt}/>, document.querySelector('#dialogue_container'));
+			ReactDOM.render(<DialogueComponent prompt={this.history[0].prompt}/>, document.querySelector('#side'));
 		}
 	},
 
 	//// Manages throwin/tab layout ////
 	tabManager: {
-		data: [], // All tabs
+		tabs: [], // All tabs
 		active_tab: 1, // Currently active tab
 		
-		addTab(name, ext, source, content) {
-			let n = this.data.length + 1;
-			let short_name = name.split('/').pop();
-			this.data.push({
-				jsxElement: <Tab key={n} i={n} tabName={short_name} format={this.getFormat(ext)} content={content}/>,
-				throwin: {
-					name: name,
-					ext: ext,
-					id: '#t' + n,
-					src: source,
-					format: this.getFormat(ext),
-					content: content,
-					object: null
-				}
-			});
-			this.active_tab = this.data.length;
+		addTab(type, name, extension, rawdata) {
+			let new_tab;
+			switch(type){
+				case 'text': new_tab = new TextTab(name, extension, rawdata); break;
+				case 'table': new_tab = new TableTab(name, extension, rawdata); break;
+				case 'json': new_tab = new JSONTab(name, extension, rawdata); break;
+				case 'json_select': new_tab = new JSONSelectTab(name, extension, rawdata); break;
+			}
+			this.tabs.push(new_tab);
+			this.active_tab = this.tabs.length;
 			this.render();
 		},
 
-		getFormat(extension) {
-			switch(extension){
-				case 'json_select':
-					return 'json_select';
-				case 'tsv':
-					return 'table';
-				// case 'txt':
-				// case 'sql':
-				default:
-					return 'text';
-			}
+		getTab(n) {
+			if(this.tabs[n-1]) return this.tabs[n-1];
+			return false;
 		},
 
-		handleTableData(json) {
-			let content = {
-				cols: [],
-				rows: json.tbl_rows
-			};
-			console.log(json);
-			if(typeof(json.tbl_cols[0]) === "string"){ // Temporary check to see if cols are string or object
-				json.tbl_cols.forEach(col => content.cols.push({ title:col, field:col, editor:true }));
-			}else{
-				content.cols = json.tbl_cols;
-			}
+		getAllTabs() { return this.tabs; },
 
-			this.addTab(json.node_name, 'tsv', 'local', content);
-		},
-
-		handleTextFile(json) {
-			this.addTab(json.node_name, json.file_extension, 'local', json.file_contents);
-		},
-
-		handleJSON(data, selection) {
-			this.addTab(data.node_name, 'json', 'local', JSON.stringify(data.json, null, 2));
-			if(selection){
-				this.addTab(data.node_name+'_select', 'json_select', 'local', data.json_vars);
-			}
-		},
+		getActiveTab() { return this.getTab(this.active_tab); },
 	
 		render() {
-			ReactDOM.render(<TabContainer/>, document.querySelector('#tab_container'));
-			this.data.forEach(tab => {
-				let t = tab.throwin;
-				if(t.format === 'table'){
-					if(!t.object){
-						t.object = new Tabulator(t.id, {
+			ReactDOM.render(<TabViewComponent/>, document.querySelector('#viewbox'));
+			this.tabs.forEach(tab => {
+				if(tab.getType() === 'table'){
+					if(!tab.getTableObject()){
+						let data = tab.getRawData();
+						let obj = new Tabulator('#t' + tab.getID(), {
 							layout:'fitData',
 							placeholder:'Loading...',
 							movableColumns: true,
-							rowFormatter: t.content.formatter
+							rowFormatter: data.formatter
 						});
+
+						obj.setColumns(data.cols);
+						obj.setData(data.rows);
+
+						tab.setTableObject(obj);
+
+						// TODO // Make this stuff go away
+						window.setTimeout(() => obj.addColumn({title:'select',field:'selection',visible:false, formatter:triTickFormatter, cellClick:triTickCellClick },true), 10);
 					}
-					if(t.src === 'fetch'){
-						fetch(t.content)
-						.then(res => res.json())
-						.then(json => {
-							// console.log(json);
-							t.content = { cols: [], rows: [] };
-							t.src = 'local';
-	
-							json.forEach(row => t.content.rows.push(row));
-	
-							for(let item in t.content.rows[0]){
-								t.content.cols.push({ title:item, field:item, editor:'input' });
-							}
-	
-							t.object.setColumns(t.content.cols);
-							t.object.setData(t.content.rows);
-						});
-					}else{
-						t.object.setColumns(t.content.cols);
-						t.object.setData(t.content.rows);
-					}
+
 				}
 			});
 		},
@@ -393,8 +499,10 @@ const Liquid = {
 				b = this.event_map[event].split('.'),
 				command = e => { Liquid[b[0]][b[1]](e); };
 
-				elem.removeEventListener(action, command);
-				elem.addEventListener(action, command);
+				if(elem){
+					elem.removeEventListener(action, command);
+					elem.addEventListener(action, command);	
+				}
 			}
 		}
 	},
@@ -417,8 +525,22 @@ const Liquid = {
 			});
 		},
 
+		toggleCheckboxes(n) {
+			let tab = Liquid.tabManager.getTab(n);
+			if(tab !== false){
+				if(tab.getType() !== 'table'){
+					console.error(`tab ${n} isn\'t a table tab`);
+					return false;
+				}
+				let tab_object = tab.getTableObject();
+				tab_object.toggleColumn('selection');
+			}else{
+				console.log(`invalid  tab: ${n}`);
+			}
+		},
+
 		render() {
-			ReactDOM.render(<Menu/>, document.querySelector('nav'));	
+			ReactDOM.render(<NavComponent/>, document.querySelector('nav'));
 			//this.updateTaskList();
 		}
 	}
@@ -426,4 +548,65 @@ const Liquid = {
 
 function nestedTableTest() {
 	
+}
+
+function sendTableData() {
+	let name = window.prompt('Give a name for the selection column:','select');
+	let tab = Liquid.tabManager.getActiveTab();
+	if(tab.getType() !== 'table'){
+		console.error(`tab ${n} isn\'t a table tab`);
+		return false;
+	}
+
+	let object = tab.getTableObject();
+
+	let table = {
+		cols: object.getColumnDefinitions(),
+		rows: object.getData()
+	}
+
+	let json_data = {
+		cmd_name: 'user_input',
+		input_type: 'checkbox_values',
+		tag_col_name: name,
+		tabulator_table: table,
+		task_name: 'dentists'
+	}
+
+	Liquid.httpRequest({
+		'json_data': JSON.stringify(json_data)
+	})
+	.then(response => { Liquid.handleResponse(response) });
+
+	
+}
+
+function addCheckColumn() {
+	let col_name = window.prompt('Give a name for the new checkbox column:','checked');
+	Liquid.tabManager.getActiveTab().getTableObject().addColumn({title:col_name,field:col_name,formatter:triTickFormatter, cellClick:triTickCellClick },true);
+}
+
+function addTextColumn() {
+	let col_name = window.prompt('Give a name for the new text column:','notes');
+	Liquid.tabManager.getActiveTab().getTableObject().addColumn({title:col_name,field:col_name,editor:true},true);
+}
+
+function filterColumn() {
+	let col = window.prompt('Which column do you want to filter?');
+	let fnc = window.prompt('What function do you want to filter with? (=,!=,like,<,<=,>,>=,in,regex)');
+	let val = window.prompt('What value do you want to filter by?');
+	Liquid.tabManager.getActiveTab().getTableObject().setFilter(col, fnc, val);
+}
+
+function filterCustom() {
+	let str = window.prompt('Type the filter string here');
+	Liquid.tabManager.getActiveTab().getTableObject().setFilter(arbitraryFilter, str);
+}
+
+function clearFilters() {
+	Liquid.tabManager.getActiveTab().getTableObject().clearFilter();
+}
+
+function lockDialogue() {
+	UI.toggleClass('.dialogue','locked');
 }

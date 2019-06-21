@@ -1,295 +1,128 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans|Ubuntu+Mono")
 
+*
+    box-sizing: border-box
+
 body
-	font-family: "Open Sans"
+    margin: 0
+    padding: 0
+    font-family: Open Sans, sans-serif
 
-$nav-width: 230px
-$nav-pad: 20px
-$nav-cls: 20px
-nav
-	position: fixed
-	left: 0 - $nav-width - 2 * $nav-pad + $nav-cls
-	top: 0
-	background-color: #c9d5ef
-	width: $nav-width
-	height: 100vh
-	z-index: 3
-	box-shadow: 1px 0 4px 0 rgba(0,0,0,0.15)
-	transition: left 0.1s, box-shadow 0.5s
-	padding: 20px
-	&:after,
-	&:before
-		content: ''
-		display: block
-		position: absolute
-		right: 7px
-		width: 0
-		height: 0
-		border-top: 8px solid transparent
-		border-bottom: 8px solid transparent
-		border-right: 5px solid #000
-		opacity: 0.4
-		transition: opacity 0.3s
-	&:before
-		top: 25vh
-	&:after
-		top: 75vh
-
-	&:hover
-		left: 0 - $nav-width - 2 * $nav-pad + $nav-cls + 3px
-		box-shadow: 1px 0 4px 0 rgba(0,0,0,0.4)
-		cursor: pointer
-	&.open
-		left: 0
-		box-shadow: 1px 0 4px 0 rgba(0,0,0,0.4)
-		cursor: default
-		&:after, &:before
-			opacity: 0
-
-	h1
-		text-transform: uppercase
-		font-size: 3em
-		text-align: center
-		margin: 10px 0 30px 0
-		line-height: 100%
-		opacity: 0.5
-		color: #fff
-	
-	#task_list
-		h2
-			text-transform: uppercase
-			pointer-events: none
-			margin: 0
-			&:after
-				content: '⭮'
-				transform: rotate(75deg)
-				display: inline-block
-				font-size: 0.7em
-				position: relative
-				left: 7px
-				bottom: 1px
-				opacity: 0.3
-				cursor: pointer
-				pointer-events: all
-		ul
-			margin-top: 5px
-			list-style: none
-
-.screen
-	z-index: 1
-	display: block
-	position: fixed
-	top: 0
-	left: 0
-	width: 100vw
-	height: 100vh
-	background: black
-	opacity: 0
-	transition: 0.3s ease-in-out
-	&.open
-		opacity: 0.15
-	&.hidden
-		display: none
-
-$main-width: calc(100% - #{$nav-cls})
+$main_wdt: calc(100vw - 350px)
 main
-	box-sizing: border-box
-	padding: 0
-	position: fixed
-	right: 0
-	top: 0
-	width: $main-width
-	height: 100vh
-	background: #000
-	
-.dialogue
-	position: absolute
-	top: 0
-	width: $main-width
-	background: #fff
-	padding: 20px
-	border-bottom: 1px solid #ddd
-	min-height: 113px
-	.prompt
-		margin-top: 0
-		width: calc(100% - 165px)
+    height: 100vh
+    width: $main_wdt
 
-.option
-	input
-		display: none
+#side.hidden + main
+    width: 100vw
 
-	label
-		display: inline-block
-		margin: 5px 0 0 40px
-		border: 1px solid #ddd
-		padding: 5px 15px
-		background: #f8f8f8
-	label:hover
-		cursor: pointer
-		background: #fff
+$head_hgt: 100px
+#header_menu
+    width: 100%
+    height: $head_hgt
+    border-bottom: 1px solid black
+    display: flex
+    align-items: center
 
-	input:checked ~ label
-		background: #b5c4e5
+    $logo_wdt: 70px
+    .logo
+        display: inline-block
+        background: center/cover url('../resources/water-drop.jpg')
+        width: $logo_wdt
+        height: $logo_wdt
+        margin: ($head_hgt - $logo_wdt) / 2
 
-#throwin_data
-	position: absolute
-	right: 20px
-	padding: 20px
+    .title_menu
+        display: flex
+        flex-direction: column
+        justify-content: space-around
 
-#throwin_data > *
-	display: block
-	text-align: center
+        .title
+            display: inline-block
+            padding: 0
+            margin: 0
 
-#throwin_data > input
-	display: none
+        .menu
+            display: flex
+            flex-direction: row
+            
+            .menu_item
+                margin-right: 10px
+    
+    .throwin_button
+        margin-left: auto
+        margin-right: 50px
 
-#throwin_data > label
-	align-items: center
-	text-align: center
-	padding: 10px
-	border: 1px solid #274fa5
-	color: white
-	font-size: 1.2em
-	line-height: 1.2em
-	cursor: pointer
-	background: #6e92dd
-	&:hover
-		filter: brightness(0.9)
-	&:active
-		filter: brightness(0.8)
+        input
+            display: none
+        
+        label[for$='file']
+            display: flex
+            align-items: center
+            padding: 15px 20px
+            border: 1px solid #4a649c
+            font-size: 1.2em
+            line-height: 1.2em
+            cursor: pointer
+            background: #87aaf3
+            color: #222
+            border-radius: 5px
+            &:hover
+                filter: brightness(0.9)
+            &:active
+                filter: brightness(0.8)
 
-#throwin_data > span
-	font-size: 0.7em
-	margin: 5px 0
+            div
+                display: inline-block
+                opacity: 0.8
+                background: center/cover url('../resources/ico-file.png')
+                width: 23px
+                height: 23px
+                margin-right: 8px
 
-#tab_container::after
-	content: 'No files yet!'
-	display: block
-	position: fixed
-	bottom: 50px
-	left: 0
-	width: calc(100% - 20px)
-	margin: 10px
-	z-index: -1
-	text-align: center
-	padding-bottom: 30vh
+#body::after
+    content: 'No files yet!'
+    display: block
+    bottom: 50px
+    left: 0
+    width: calc(100% - 20px)
+    margin: 10px
+    z-index: -1
+    text-align: center
+    padding-top: 30vh
+    padding-bottom: 30vh
 
-.tabs
-	position: absolute
-	bottom: 7px
-	left: 20px
-	width: calc(100% - 20px)
+#dialogue
+    height: 100vh
+    width: 350px
+    position: fixed
+    right: 0
+    top: 0
+    border-left: 1px solid black
+    padding: 20px
 
-.tab
-	display: inline
-	margin: 0
-	font-size: 0
-	& *
-		font-size: initial
-	> input
-		display: none
+    .prompt
+        margin-top: 0
 
-	> label
-		position: relative
-		font-size: initial
-		box-sizing: border-box
-		padding: 10px 25px 20px 25px
-		color: #888
-		border: 1px solid #bbb
-		border-left: none
-		background: #fff
-	&:first-child > label
-		border-left: 1px solid #bbb
+    &.locked
+        .option
+            pointer-events: none
+            opacity: 0.5
 
-	> label:hover
-		color: #333
-		cursor: pointer
-		// bottom: 2px
 
-	> input:checked ~ label
-		color: #333
-		// bottom: 4px
-		border-top: 3px solid #6890e8
-		border-radius: 2px 2px 0 0
-		&:hover
-			bottom: 0
+    .option
+        input
+            display: none
 
-	.throwin
-		display: block
-		position: absolute
-		bottom: 50px
-		left: 0
-		width: calc(100% - 20px)
-		z-index: 0
-		border: 1px solid #bbb
-		& > div
-			display: block
-			height: 60vh
-			background: white
-		& .text
-			white-space: pre
-			overflow-x: auto
-			font-family: "Ubuntu Mono", monospace
-			padding: 10px
-		& .table
-			height: calc(60vh + 20px)
-		& .json_select
-			overflow-x: auto
-			padding: 10px
-			> label
-				padding: 0
-				display: inline-block
-				&:last-of-type
-					margin-bottom: 5px
-				input
-					display: none
-				> span
-					opacity: 0.5
-					cursor: pointer
-					span
-						display: none
-					&:before
-						content: '☐ '
-				input:checked ~ span
-					opacity: 1
-					&:before
-						content: '☑ '
-				&:hover
-					> span, input:checked ~ span
-						opacity: 0.7
-						span
-							display: inline
-			input[type="button"]
-				display: none
-			label[for^="json_submit"]
-				position: absolute
-				top: 20px
-				right: 35px
-				background-color: #3ec435
-				color: #fff
-				padding: 10px 15px 
-				border-radius: 5px
-				cursor: pointer
-				&:hover
-					filter: brightness(0.9)
-				&:active
-					filter: brightness(0.8)
-				&:before
-					content: '✓ '
-					font-weight: bold
-				
-input:checked ~ .throwin
-	display: block
-	z-index: 9
+        label
+            display: inline-block
+            margin: 5px 0
+            border: 1px solid #ddd
+            padding: 5px 15px
+            background: #f8f8f8
+        label:hover
+            cursor: pointer
+            background: #fff
 
-/* Tabulator overrides */
-.tabulator
-	margin-bottom: 0
-
-.tabulator-cell
-	height: auto !important
-	font-size: 13px !important
-	&.tabulator-editing
-		padding-left: 3px !important
-		& input
-			font-size: 13px !important
+        input:checked ~ label
+            background: #b5c4e5

@@ -293,7 +293,7 @@ var Liquid = {
 
     return fetch(API_URL, options).then(function (response) {
       return response.text();
-    }).catch(function (err) {
+    })["catch"](function (err) {
       console.error('[Liquid.httpRequest] ' + err);
       return {
         error: '[Liquid.httpRequest] ' + err

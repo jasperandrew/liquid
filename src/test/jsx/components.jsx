@@ -62,7 +62,7 @@ class TabComponent extends React.Component {
 			case 'text':
 				innerHTML.push(<span key='1' dangerouslySetInnerHTML={{__html: this.props.rawdata}}></span>);
 				break;
-			// case 'table':
+			// case 'table'
 			default:
 		}
 

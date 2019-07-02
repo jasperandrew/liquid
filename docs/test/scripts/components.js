@@ -38,7 +38,7 @@ function (_React$Component) {
         className: "logo"
       }), React.createElement("div", {
         className: "title_menu"
-      }, React.createElement("h1", {
+      }, React.createElement("div", {
         className: "title"
       }, "Current Task Name"), React.createElement("div", {
         className: "menu"
@@ -57,9 +57,6 @@ function (_React$Component) {
       }, React.createElement("input", {
         id: "throwin_file",
         type: "file"
-      }), React.createElement("input", {
-        id: "throwin_text",
-        type: "button"
       }), React.createElement("label", {
         htmlFor: "throwin_file"
       }, React.createElement("div", null), "Throw-in")));
@@ -69,22 +66,20 @@ function (_React$Component) {
   return HeaderMenuComponent;
 }(React.Component);
 
-var TabComponent =
+var ThrowinComponent =
 /*#__PURE__*/
 function (_React$Component2) {
-  _inherits(TabComponent, _React$Component2);
+  _inherits(ThrowinComponent, _React$Component2);
 
-  function TabComponent(props) {
-    _classCallCheck(this, TabComponent);
+  function ThrowinComponent(props) {
+    _classCallCheck(this, ThrowinComponent);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(TabComponent).call(this, props));
+    return _possibleConstructorReturn(this, _getPrototypeOf(ThrowinComponent).call(this, props));
   }
 
-  _createClass(TabComponent, [{
+  _createClass(ThrowinComponent, [{
     key: "render",
     value: function render() {
-      var _this = this;
-
       var id = 'tab' + this.props.n;
       var innerHTML = [];
 
@@ -112,11 +107,9 @@ function (_React$Component2) {
           innerHTML.push(React.createElement("input", {
             key: k++,
             type: "button",
-            id: 'json_submit_' + this.props.n,
-            onClick: function onClick() {
-              return Liquid.tabManager.submitJSONvars('#t' + _this.props.n);
-            }
-          }));
+            id: 'json_submit_' + this.props.n
+          })); //onClick={() => Liquid.tabManager.submitJSONvars('#t'+this.props.n)}
+
           innerHTML.push(React.createElement("label", {
             key: k++,
             htmlFor: 'json_submit_' + this.props.n
@@ -137,33 +130,48 @@ function (_React$Component2) {
       }
 
       return React.createElement("div", {
-        className: "tab"
-      }, React.createElement("input", {
-        type: "radio",
-        id: id,
-        name: "tabs",
-        defaultChecked: this.props.n === Liquid.tabManager.active_tab ? true : false
-      }), React.createElement("label", {
-        onClick: function onClick() {
-          return Liquid.tabManager.setActiveTab(_this.props.n);
-        },
-        htmlFor: id
-      }, this.props.title), React.createElement("div", {
-        className: "throwin"
-      }, React.createElement("div", {
         className: this.props.type,
         id: 't' + this.props.n
-      }, innerHTML)));
+      }, innerHTML);
     }
   }]);
 
-  return TabComponent;
+  return ThrowinComponent;
+}(React.Component);
+
+var TabButtonComponent =
+/*#__PURE__*/
+function (_React$Component3) {
+  _inherits(TabButtonComponent, _React$Component3);
+
+  function TabButtonComponent(props) {
+    _classCallCheck(this, TabButtonComponent);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(TabButtonComponent).call(this, props));
+  }
+
+  _createClass(TabButtonComponent, [{
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      var active = this.props.is_active ? ' active' : '';
+      return React.createElement("div", {
+        className: "tab_button".concat(active),
+        onClick: function onClick() {
+          return UI.TabView.setActive(_this.props.n);
+        }
+      }, this.props.title);
+    }
+  }]);
+
+  return TabButtonComponent;
 }(React.Component);
 
 var TabViewComponent =
 /*#__PURE__*/
-function (_React$Component3) {
-  _inherits(TabViewComponent, _React$Component3);
+function (_React$Component4) {
+  _inherits(TabViewComponent, _React$Component4);
 
   function TabViewComponent(props) {
     _classCallCheck(this, TabViewComponent);
@@ -174,13 +182,31 @@ function (_React$Component3) {
   _createClass(TabViewComponent, [{
     key: "render",
     value: function render() {
-      var tabs = [];
-      Liquid.tabManager.tabs.forEach(function (t) {
-        tabs.push(t.getComponent());
+      var _this2 = this;
+
+      var throwin_set = [],
+          button_set = [];
+      DATA.Throwin.getAll().forEach(function (t, i) {
+        var is_active = _this2.props.active_tab === i + 1;
+        var active = is_active ? ' active' : '';
+        throwin_set.push(React.createElement("div", {
+          key: i,
+          className: "throwin".concat(active)
+        }, t.getThrowinComponent()));
+        button_set.push(React.createElement(TabButtonComponent, {
+          key: i,
+          n: t.id,
+          title: t.title,
+          is_active: is_active
+        }));
       });
       return React.createElement("div", {
-        className: "tabs"
-      }, tabs);
+        id: "tabs"
+      }, React.createElement("div", {
+        id: "throwin_set"
+      }, throwin_set), React.createElement("div", {
+        id: "button_set"
+      }, button_set));
     }
   }]);
 
@@ -189,8 +215,8 @@ function (_React$Component3) {
 
 var OptionComponent =
 /*#__PURE__*/
-function (_React$Component4) {
-  _inherits(OptionComponent, _React$Component4);
+function (_React$Component5) {
+  _inherits(OptionComponent, _React$Component5);
 
   function OptionComponent(props) {
     _classCallCheck(this, OptionComponent);
@@ -201,7 +227,7 @@ function (_React$Component4) {
   _createClass(OptionComponent, [{
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       return React.createElement("div", {
         className: 'option' + (this.props.isDefault ? ' default' : '')
@@ -213,7 +239,7 @@ function (_React$Component4) {
       }), React.createElement("label", {
         htmlFor: 'opt' + this.props.i,
         onClick: function onClick() {
-          return Liquid.dialogueManager.handleAnswer(_this2.props.optId);
+          return DATA.Dialog.handleAnswer(_this3.props.optId);
         }
       }, this.props.optText));
     }
@@ -224,8 +250,8 @@ function (_React$Component4) {
 
 var DialogueComponent =
 /*#__PURE__*/
-function (_React$Component5) {
-  _inherits(DialogueComponent, _React$Component5);
+function (_React$Component6) {
+  _inherits(DialogueComponent, _React$Component6);
 
   function DialogueComponent(props) {
     _classCallCheck(this, DialogueComponent);
@@ -236,7 +262,7 @@ function (_React$Component5) {
   _createClass(DialogueComponent, [{
     key: "render",
     value: function render() {
-      var opts = Liquid.dialogueManager.history[0].options,
+      var opts = DATA.Dialog.get(0).options,
           opts_jsx = [];
       if (opts !== null) opts.forEach(function (opt) {
         opts_jsx.push(opt.jsxElement);
@@ -251,5 +277,3 @@ function (_React$Component5) {
 
   return DialogueComponent;
 }(React.Component);
-
-ReactDOM.render(React.createElement(HeaderMenuComponent, null), document.querySelector('#head'));

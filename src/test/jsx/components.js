@@ -8,7 +8,7 @@ class HeaderMenuComponent extends React.Component {
             <div id='header_menu'>
                 <div className='logo'></div>
                 <div className='title_menu'>
-                    <h1 className='title'>Current Task Name</h1>
+                    <div className='title'>Current Task Name</div>
                     <div className='menu'>
                         <div className='menu_item'>File</div>
                         <div className='menu_item'>Edit</div>
@@ -19,7 +19,7 @@ class HeaderMenuComponent extends React.Component {
                 </div>
                 <div className='throwin_button'>
                     <input id="throwin_file" type="file" />
-                    <input id="throwin_text" type="button" />
+                    {/* <input id="throwin_text" type="button" /> */}
 
                     <label htmlFor="throwin_file"><div></div>Throw-in</label>
                     {/* <div className='throwin_opts'>
@@ -31,7 +31,7 @@ class HeaderMenuComponent extends React.Component {
 	}
 }
 
-class TabComponent extends React.Component {
+class ThrowinComponent extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -55,41 +55,54 @@ class TabComponent extends React.Component {
 					);
 					innerHTML.push(<br key={k++}/>);
 				}
-				innerHTML.push(<input key={k++} type='button' id={'json_submit_'+this.props.n} onClick={() => Liquid.tabManager.submitJSONvars('#t'+this.props.n)} />);
+				innerHTML.push(<input key={k++} type='button' id={'json_submit_'+this.props.n}  />); //onClick={() => Liquid.tabManager.submitJSONvars('#t'+this.props.n)}
 				innerHTML.push(<label key={k++} htmlFor={'json_submit_'+this.props.n}>Submit</label>);
 				break;
 
 			case 'text':
 				innerHTML.push(<span key='1' dangerouslySetInnerHTML={{__html: this.props.rawdata}}></span>);
 				break;
-			// case 'table'
+			// case 'table':
 			default:
 		}
 
-		return (
-			<div className='tab'>
-				<input type='radio' id={id} name='tabs' defaultChecked={this.props.n === Liquid.tabManager.active_tab ? true : false}/>
-				<label onClick={() => Liquid.tabManager.setActiveTab(this.props.n)} htmlFor={id}>{this.props.title}</label>
-				<div className='throwin'>
-					<div className={this.props.type} id={'t' + this.props.n}>{innerHTML}</div>
-				</div>
-			</div>
-		);
+		return <div className={this.props.type} id={'t' + this.props.n}>{innerHTML}</div>;
 	}
 }
 
-class TabViewComponent extends React.Component {
-	constructor(props){
+class TabButtonComponent extends React.Component {
+	constructor(props) {
 		super(props);
 	}
 
 	render() {
-		let tabs = [];
-		Liquid.tabManager.tabs.forEach(t => { tabs.push(t.getComponent()); });
+		let active = this.props.is_active ? ' active' : '';
+		return <div className={`tab_button${active}`} onClick={() => UI.TabView.setActive(this.props.n)}>{this.props.title}</div>;
+	}
+}
+
+class TabViewComponent extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		let throwin_set = [], button_set = [];
+		DATA.Throwin.getAll().forEach((t,i) => {
+			let is_active = this.props.active_tab === i+1;
+			let active = is_active ? ' active' : '';
+			throwin_set.push(<div key={i} className={`throwin${active}`}>{t.getThrowinComponent()}</div>);
+			button_set.push(<TabButtonComponent key={i} n={t.id} title={t.title} is_active={is_active}/>);
+		});
 
 		return (
-			<div className='tabs'>
-				{tabs}
+			<div id='tabs'>
+				<div id='throwin_set'>
+					{throwin_set}
+				</div>
+				<div id='button_set'>
+					{button_set}
+				</div>
 			</div>
 		);
 	}
@@ -104,7 +117,7 @@ class OptionComponent extends React.Component {
 		return (
 			<div className={'option' + (this.props.isDefault ? ' default' : '')}>
 				<input type='radio' id={'opt' + this.props.i} name='options' value={this.props.optId}/>
-				<label htmlFor={'opt' + this.props.i} onClick={() => Liquid.dialogueManager.handleAnswer(this.props.optId)}>{this.props.optText}</label>
+				<label htmlFor={'opt' + this.props.i} onClick={() => DATA.Dialog.handleAnswer(this.props.optId)}>{this.props.optText}</label>
 			</div>
 		);
 	}
@@ -116,7 +129,7 @@ class DialogueComponent extends React.Component {
 	}
 
 	render() {
-		let opts = Liquid.dialogueManager.history[0].options,
+		let opts = DATA.Dialog.get(0).options,
 			opts_jsx = [];
 
 		if(opts !== null)
@@ -130,5 +143,3 @@ class DialogueComponent extends React.Component {
 		);
 	}
 }
-
-ReactDOM.render(<HeaderMenuComponent/>, document.querySelector('#head'));

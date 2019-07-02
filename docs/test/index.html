@@ -9,12 +9,11 @@
 	</head>
 
 <body>
-	<div id="side"></div>
+	<nav></nav>
 	<main>
 		<div id="head"></div>
 		<div id="toolbar"></div>
-		<div id="viewbox"></div>
-		<div id="tabs"></div>
+		<div id="tabview"></div>
 	</main>
 	<div id="shade"></div>
 
@@ -22,12 +21,19 @@
 	<script src="scripts/react-dom.development.js" crossorigin></script>
 	<script src="scripts/tabulator.js"></script>
 	<script src="scripts/jsep.js"></script>
-	<script src="scripts/classes.js"></script>
 	<script src="scripts/components.js"></script>
-	<script src="scripts/app.js"></script>
+	<script src="scripts/vars.js"></script>
+	<script src="scripts/data.js"></script>
 	<script src="scripts/ui.js"></script>
+	<script src="scripts/classes.js"></script>
+	<!-- <script src="scripts/app.js"></script> -->
 	<script>
-		Liquid.initialize();
+		// Liquid.initialize();
+		DATA.init();
+		UI.init();
+		DATA.Throwin.add('text','test','txt','testing, 1, 2');
+		DATA.Throwin.add('text','test two','txt','testing, 1, 2, 3');
+		UI.render();
 	</script>
 </body>
 </html>

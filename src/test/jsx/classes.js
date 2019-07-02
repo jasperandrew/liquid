@@ -1,11 +1,11 @@
-class Tab {
+class Throwin {
     constructor(name, extension, rawdata) {
         this.name = name;
         this.rawdata = rawdata;
         this.extension = extension;
         this.title = this.name.split('/').pop();
-        this.id =  Liquid.tabManager.tabs.length + 1;
-        this.tab_type = null;
+        this.id =  DATA.Throwin.data.length + 1;
+        this.type = null;
     }
 
     getName() { return this.name; }
@@ -18,8 +18,8 @@ class Tab {
 
     getType() { return this.type; }
 
-    getComponent() {
-        return <TabComponent key={this.id} n={this.id} title={this.title} rawdata={this.rawdata} type={this.type}/>;
+    getThrowinComponent() {
+        return <ThrowinComponent key={this.id} n={this.id} title={this.title} rawdata={this.rawdata} type={this.type}/>;
     }
 
     static getFormat(extension) {
@@ -36,14 +36,14 @@ class Tab {
     }
 }
 
-class TextTab extends Tab {
+class TextThrowin extends Throwin {
     constructor(name, extension, rawdata) {
         super(name, extension, rawdata);
         this.type = 'text';
     }
 }
 
-class TableTab extends Tab {
+class TableThrowin extends Throwin {
     constructor(name, extension, rawdata) {
         super(name, extension, rawdata);
         this.type = 'table';
@@ -64,7 +64,7 @@ class TableTab extends Tab {
     setTableObject(object) { this.object = object; }
 }
 
-class JSONTab extends Tab {
+class JSONThrowin extends Throwin {
     constructor(name, extension, rawdata) {
         super(name, extension, rawdata);
         this.type = 'json';
@@ -72,7 +72,7 @@ class JSONTab extends Tab {
     }
 }
 
-class JSONSelectTab extends JSONTab {
+class JSONSelectThrowin extends JSONThrowin {
     constructor(name, extension, rawdata) {
         super(name, extension, rawdata);
         this.type = 'json_select';

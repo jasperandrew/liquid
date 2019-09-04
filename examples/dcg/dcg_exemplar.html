@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quixey Relevance</title>
+<style>
+
+udbody {
+    width: 1000px;
+    margin: 40px auto;
+    font-family: 'trebuchet MS', 'Lucida sans', Arial;
+    font-size: 14px;
+    color: #444;
+}
+
+table {
+    *border-collapse: collapse; /* IE7 and lower */
+    border-spacing: 0;
+    width: 100%;    
+}
+
+.bordered {
+    border: solid #ccc 1px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    -webkit-box-shadow: 0 1px 1px #ccc; 
+    -moz-box-shadow: 0 1px 1px #ccc; 
+    box-shadow: 0 1px 1px #ccc;         
+}
+
+.bordered tr:hover {
+    background: #fbf8e9;
+    -o-transition: all 0.1s ease-in-out;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;     
+}    
+    
+.bordered td, .bordered th {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;    
+}
+
+.bordered th {
+    background-color: #dce9f9;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ebf3fc), to(#dce9f9));
+    background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:    -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:     -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:      -o-linear-gradient(top, #ebf3fc, #dce9f9);
+    background-image:         linear-gradient(top, #ebf3fc, #dce9f9);
+    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
+    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
+    border-top: none;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+}
+
+.bordered td:first-child, .bordered th:first-child {
+    border-left: none;
+}
+
+.bordered th:first-child {
+    -moz-border-radius: 6px 0 0 0;
+    -webkit-border-radius: 6px 0 0 0;
+    border-radius: 6px 0 0 0;
+}
+
+.bordered th:last-child {
+    -moz-border-radius: 0 6px 0 0;
+    -webkit-border-radius: 0 6px 0 0;
+    border-radius: 0 6px 0 0;
+}
+
+.bordered th:only-child{
+    -moz-border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+}
+
+.bordered tr:last-child td:first-child {
+    -moz-border-radius: 0 0 0 6px;
+    -webkit-border-radius: 0 0 0 6px;
+    border-radius: 0 0 0 6px;
+}
+
+.bordered tr:last-child td:last-child {
+    -moz-border-radius: 0 0 6px 0;
+    -webkit-border-radius: 0 0 6px 0;
+    border-radius: 0 0 6px 0;
+}
+
+
+
+/*----------------------*/
+
+.zebra td, .zebra th {
+    padding: 10px;
+    border-bottom: 1px solid #f2f2f2;    
+}
+
+.zebra tbody tr:nth-child(even) {
+    background: #f5f5f5;
+    -webkit-box-shadow: 0 1px 0 rgba(255,255,255,.8) inset; 
+    -moz-box-shadow:0 1px 0 rgba(255,255,255,.8) inset;  
+    box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;        
+}
+
+.zebra th {
+    text-align: left;
+    text-shadow: 0 1px 0 rgba(255,255,255,.5); 
+    border-bottom: 1px solid #ccc;
+    background-color: #eee;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#eee));
+    background-image: -webkit-linear-gradient(top, #f5f5f5, #eee);
+    background-image:    -moz-linear-gradient(top, #f5f5f5, #eee);
+    background-image:     -ms-linear-gradient(top, #f5f5f5, #eee);
+    background-image:      -o-linear-gradient(top, #f5f5f5, #eee); 
+    background-image:         linear-gradient(top, #f5f5f5, #eee);
+}
+
+.zebra th:first-child {
+    -moz-border-radius: 6px 0 0 0;
+    -webkit-border-radius: 6px 0 0 0;
+    border-radius: 6px 0 0 0;  
+}
+
+.zebra th:last-child {
+    -moz-border-radius: 0 6px 0 0;
+    -webkit-border-radius: 0 6px 0 0;
+    border-radius: 0 6px 0 0;
+}
+
+.zebra th:only-child{
+    -moz-border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+}
+
+.zebra tfoot td {
+    border-bottom: 0;
+    border-top: 1px solid #fff;
+    background-color: #f1f1f1;  
+}
+
+.zebra tfoot td:first-child {
+    -moz-border-radius: 0 0 0 6px;
+    -webkit-border-radius: 0 0 0 6px;
+    border-radius: 0 0 0 6px;
+}
+
+.zebra tfoot td:last-child {
+    -moz-border-radius: 0 0 6px 0;
+    -webkit-border-radius: 0 0 6px 0;
+    border-radius: 0 0 6px 0;
+}
+
+.zebra tfoot td:only-child{
+    -moz-border-radius: 0 0 6px 6px;
+    -webkit-border-radius: 0 0 6px 6px
+    border-radius: 0 0 6px 6px
+}
+  
+</style>
+<meta charset="UTF-8">
+</head>
+
+<body>
+<body>
+
+<h2>Worst Diffs for Treatment</h2>
+
+<h2><A
+HREF=https://www.google.com/search?q=budweiser&ie=utf-8&oe=utf-8>budweiser</A>
+(events)</h2> <A HREF=http://localhost:8778/search-ui.html?q=budweiser&locale=zh_CN&custom_id=&platform_ids=[2005]&geoloc=36.10305%2C-115.17306&display_style=Android+App>(localhost)</A>
+<A HREF=http://localhost:8778/consideration?q=budweiser&locale=zh_CN&custom_id=2444238231&platform_ids=[2005]&geoloc=36.10305%2C-115.17306&display_style=Android+App>(Consideration
+Set)</A>(diff=-0.1365056226572262, cntl=1.1184922948771348, trtm=0.9819866722199085)
+<br>
+<table class="bordered"><thead><tr>  <th>Cntl</th><th>Control URL</th> <th>Trtm</th>  <th>Treatment URL</th>  </tr>    </thead>
+<tr><th>_5_</th> <th><a href=http://www.yellowpages.com/columbus-oh/mip/johnny-rockets-6489404>http://www.yellowpages.com/columbus-oh/mip/johnny-rockets-6489404</a><br>http://www.yellowpages.com/columbus-oh/mip/johnny-rockets-6489404</th>
+<th>_1_</th> <th><a href=http://www.urbanspoon.com/r/33/370304/restaurant/German-Village/Brown-Bag-Deli-Columbus>http://www.urbanspoon.com/r/33/370304/restaurant/German-Village/Brown-Bag-Deli-Columbus</a><br>http://www.urbanspoon.com/r/33/370304/restaurant/German-Village/Brown-Bag-Deli-Columbus</th>  </tr>
+<tr><th>_4_</th> <th><a href=http://www.urbanspoon.com/r/33/370305/restaurant/German-Village/Brown-Bag-Deli-Columbus>http://www.urbanspoon.com/r/33/370305/restaurant/German-Village/Brown-Bag-Deli-Columbus</a><br>http://www.urbanspoon.com/r/33/370305/restaurant/German-Village/Brown-Bag-Deli-Columbus</th>
+<th>_2_</th> <th><a href=http://www.yellowpages.com/columbus-oh/mip/johnny-rockets-6489405>http://www.yellowpages.com/columbus-oh/mip/johnny-rockets-6489405</a><br>http://www.yellowpages.com/columbus-oh/mip/johnny-rockets-6489405</th>  </tr>
+</table>
+
+
+<h2><A HREF=https://www.google.com/search?q=sweet and sour sauce&ie=utf-8&oe=utf-8>sweet and sour sauce</A> (events)</h2> <A HREF=http://localhost:8778/search-ui.html?q=sweet and sour sauce&locale=zh_CN&custom_id=&platform_ids=[2005]&geoloc=36.10305%2C-115.17306&display_style=Android+App>(localhost)</A>
+<A HREF=http://localhost:8778/consideration?q=sweet and sour sauce&locale=zh_CN&custom_id=2444238231&platform_ids=[2005]&geoloc=36.10305%2C-115.17306&display_style=Android+App>(Consideration
+Set)</A>(diff=-0.0650770512286547, cntl=0.9335693461057895, trtm=0.8684922948771348)
+<br>
+<table class="bordered"><thead><tr>  <th>Cntl</th><th>Control URL</th> <th>Trtm</th>  <th>Treatment URL</th>  </tr>    </thead>
+<tr><th>_5.0_</th> <th><a href=http://tripadvisor.com/Restaurant_Review-g60956-d469811-Reviews-King_s_Palace-San_Antonio_Texas.html>http://tripadvisor.com/Restaurant_Review-g60956-d469811-Reviews-King_s_Palace-San_Antonio_Texas.html</a><br>http://tripadvisor.com/Restaurant_Review-g60956-d469811-Reviews-King_s_Palace-San_Antonio_Texas.html</th>
+<th>_1.0_</th> <th><a href=http://www.urbanspoon.com/r/39/430077/restaurant/Southtown/Aprils-Chinese-San-Antonio>http://www.urbanspoon.com/r/39/430077/restaurant/Southtown/Aprils-Chinese-San-Antonio</a><br>http://www.urbanspoon.com/r/39/430077/restaurant/Southtown/Aprils-Chinese-San-Antonio</th>  </tr><tr><th>_4.0_</th> <th><a href=http://www.urbanspoon.com/r/39/430076/restaurant/Southtown/Aprils-Chinese2-San-Antonio>http://www.urbanspoon.com/r/39/430076/restaurant/Southtown/Aprils-Chinese2-San-Antonio</a><br>http://www.urbanspoon.com/r/39/430076/restaurant/Southtown/Aprils-Chinese2-San-Antonio</th>
+<th>_2.0_</th> <th><a href=http://tripadvisor.com/Restaurant_Review-g60956-d2150007-Reviews-Bean_Sprout-San_Antonio_Texas.html>http://tripadvisor.com/Restaurant_Review-g60956-d2150007-Reviews-Bean_Sprout-San_Antonio_Texas.html</a><br>http://tripadvisor.com/Restaurant_Review-g60956-d2150007-Reviews-Bean_Sprout-San_Antonio_Texas.html</th>  </tr>
+</table>

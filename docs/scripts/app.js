@@ -372,6 +372,7 @@ var Liquid = {
 
       switch (ans_id) {
         case 'upload':
+        case 'default_throwin_question_only':
           document.querySelector('label[for="throwin_file"]').click();
           return;
       }

@@ -17,3 +17,9 @@
     - toggle case sensitive
     - empty (null, '', undefined)
     - wildcard ? 
+
+- download throwins
+
+- html rendering
+    - open new tab
+    - whitespace pre in html display

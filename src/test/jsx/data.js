@@ -87,9 +87,12 @@ const DATA = {
 
         // TODO // Create Option class and move this there
         handleAnswer(ans_id) {
+			console.log('test');
 			switch(ans_id){
 				case 'upload':
-					document.querySelector('label[for="throwin_file"]').click(); return;
+				case 'default_throwin_question_only':
+					document.querySelector('label[for="throwin_file"]').click();
+					return;
 			}
 			if(ans_id === '' || ans_id === undefined) return;
 			let json_data = {
@@ -171,7 +174,7 @@ const DATA = {
             UI.TabView.render();
 		},
 
-        get(n) { return this.data[n] || null; },
+        get(n) { return this.data[n-1] || null; },
         getAll() { return this.data; },
     },
 

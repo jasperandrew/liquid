@@ -41,17 +41,18 @@ function (_React$Component) {
       }, React.createElement("div", {
         className: "title"
       }, "Current Task Name"), React.createElement("div", {
-        className: "menu"
+        className: "menus"
       }, React.createElement("div", {
-        className: "menu_item"
-      }, "File"), React.createElement("div", {
-        className: "menu_item"
+        className: "menu",
+        "menu-title": "File"
+      }, React.createElement("p", null, "Test 1"), React.createElement("p", null, "Test 2"), React.createElement("p", null, "Test 3")), React.createElement("div", {
+        className: "menu"
       }, "Edit"), React.createElement("div", {
-        className: "menu_item"
+        className: "menu"
       }, "These"), React.createElement("div", {
-        className: "menu_item"
+        className: "menu"
       }, "Are"), React.createElement("div", {
-        className: "menu_item"
+        className: "menu"
       }, "Placeholders"))), React.createElement("div", {
         className: "throwin_button"
       }, React.createElement("input", {

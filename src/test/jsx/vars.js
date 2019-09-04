@@ -166,3 +166,70 @@ function arbitraryFilter(data, filterParams) { // one > 2 & two < 5
 		return false;
 	}
 }
+
+
+/** Test functions */
+function nestedTableTest() {
+	
+}
+
+function sendTableData() {
+	let name = window.prompt('Give a name for the selection column:','select');
+	let tab = Liquid.tabManager.getActiveTab();
+	if(tab.getType() !== 'table'){
+		console.error(`tab ${n} isn\'t a table tab`);
+		return false;
+	}
+
+	let object = tab.getTableObject();
+
+	let table = {
+		cols: object.getColumnDefinitions(),
+		rows: object.getData()
+	}
+
+	let json_data = {
+		cmd_name: 'user_input',
+		input_type: 'checkbox_values',
+		tag_col_name: name,
+		tabulator_table: table,
+		task_name: 'dentists'
+	}
+
+	Liquid.httpRequest({
+		'json_data': JSON.stringify(json_data)
+	})
+	.then(response => { Liquid.handleResponse(response) });
+
+	
+}
+
+function addCheckColumn() {
+	let col_name = window.prompt('Give a name for the new checkbox column:','checked');
+	DATA.Throwin.get(UI.TabView.getActive()).getTableObject().addColumn({title:col_name,field:col_name,formatter:triTickFormatter, cellClick:triTickCellClick },true);
+}
+
+function addTextColumn() {
+	let col_name = window.prompt('Give a name for the new text column:','notes');
+	DATA.Throwin.get(UI.TabView.getActive()).getTableObject().addColumn({title:col_name,field:col_name,editor:true},true);
+}
+
+function filterColumn() {
+	let col = window.prompt('Which column do you want to filter?');
+	let fnc = window.prompt('What function do you want to filter with? (=,!=,like,<,<=,>,>=,in,regex)');
+	let val = window.prompt('What value do you want to filter by?');
+	DATA.Throwin.get(UI.TabView.getActive()).getTableObject().setFilter(col, fnc, val);
+}
+
+function filterCustom() {
+	let str = window.prompt('Type the filter string here');
+	DATA.Throwin.get(UI.TabView.getActive()).getTableObject().setFilter(arbitraryFilter, str);
+}
+
+function clearFilters() {
+	DATA.Throwin.get(UI.TabView.getActive()).getTableObject().clearFilter();
+}
+
+function lockDialogue() {
+	UI.toggleClass('#dialogue','locked');
+}

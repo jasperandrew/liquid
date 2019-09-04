@@ -1,0 +1,9 @@
+userid	date	label	clientappid	metricvalue
+37221581	2016-02-06	recType:all::sends	03340	66751
+37221581	2016-02-12	recType:all::sends	45451	67743
+37221581	2016-06-06	recType:all::impressed_sends	0	1
+37221581	2016-06-06	recType:all::opened_sends	0	1
+37221581	2016-06-07	recType:all::dismissed_sends	0	1
+37230778	2016-03-08	recType:all::sends	03340	5567
+37230778	2016-03-11	recType:all::sends	11211	4501
+37230778	2016-08-18	recType:all::opened_sends	0	1

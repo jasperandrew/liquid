@@ -1,0 +1,485 @@
+{
+    "default_list": "queries", 
+    "queries": [
+        {
+            "both_results": [
+                {
+                    "cntl_score": "_5_", 
+                    "cntl_url": "http://www.yellowpages.com/columbus-oh/mip/johnny-rockets-6489404", 
+                    "trtm_score": "_1_", 
+                    "trtm_url": "http://www.urbanspoon.com/r/33/370304/restaurant/German-Village/Brown-Bag-Deli-Columbus"
+                }, 
+                {
+                    "cntl_score": "_4_", 
+                    "cntl_url": "http://www.urbanspoon.com/r/33/370305/restaurant/German-Village/Brown-Bag-Deli-Columbus", 
+                    "trtm_score": "_2_", 
+                    "trtm_url": "http://www.yellowpages.com/columbus-oh/mip/johnny-rockets-6489405"
+                }, 
+                {
+                    "cntl_score": "2", 
+                    "cntl_url": "https://www.quixey.com/app/2212609161/budweiser?search_id=18b358cee403588a6796e64255c72e1398042921&session_id=20cd0cc5f01fd7178cbc9eab4ad3c859697465bd", 
+                    "trtm_score": "2", 
+                    "trtm_url": "https://www.quixey.com/app/2212609161/budweiser?search_id=c9c935946487c16d9b570383197f22673547c3c3&session_id=f17836354c96267f6e0314228853d40fb369ac0e"
+                }, 
+                {
+                    "cntl_score": "3", 
+                    "cntl_url": "http://tripadvisor.com/Restaurant_Review-g50226-d1511453-Reviews-Thai_Lagoon-Columbus_Ohio.html", 
+                    "trtm_score": "3", 
+                    "trtm_url": "http://tripadvisor.com/Restaurant_Review-g50226-d1511453-Reviews-Thai_Lagoon-Columbus_Ohio.html"
+                }, 
+                {
+                    "cntl_score": "3", 
+                    "cntl_url": "https://www.quixey.com/app/2812539489/budweiser-red-lights?search_id=18b358cee403588a6796e64255c72e1398042921&session_id=20cd0cc5f01fd7178cbc9eab4ad3c859697465bd", 
+                    "trtm_score": "2", 
+                    "trtm_url": "http://www.foursquare.com/v/4b086e97f964a520c00b23e3"
+                }
+            ], 
+            "cntl_dcg": "1.1184922948771348", 
+            "diff_dcg": -0.1365056226572262, 
+            "lat": "39.98934", 
+            "long": "-82.99912", 
+            "query": "budweiser", 
+            "trtm_dcg": "0.9819866722199085"
+        }, 
+        {
+            "both_results": [
+                {
+                    "cntl_score": "_5.0_", 
+                    "cntl_url": "http://tripadvisor.com/Restaurant_Review-g60956-d469811-Reviews-King_s_Palace-San_Antonio_Texas.html", 
+                    "trtm_score": "_1.0_", 
+                    "trtm_url": "http://www.urbanspoon.com/r/39/430077/restaurant/Southtown/Aprils-Chinese-San-Antonio"
+                }, 
+                {
+                    "cntl_score": "_4.0_", 
+                    "cntl_url": "http://www.urbanspoon.com/r/39/430076/restaurant/Southtown/Aprils-Chinese2-San-Antonio", 
+                    "trtm_score": "_2.0_", 
+                    "trtm_url": "http://tripadvisor.com/Restaurant_Review-g60956-d2150007-Reviews-Bean_Sprout-San_Antonio_Texas.html"
+                }, 
+                {
+                    "cntl_score": "2", 
+                    "cntl_url": "http://www.foursquare.com/v/4ad4bffef964a520a6ea20e3", 
+                    "trtm_score": "2", 
+                    "trtm_url": "http://www.foursquare.com/v/4ad4bffef964a520a6ea20e3"
+                }, 
+                {
+                    "cntl_score": "3", 
+                    "cntl_url": "https://www.quixey.com/app/2212419651/chicken-recipes?search_id=eca7c2deff2a6ea6d9051623eca60423bbd94577&session_id=6d85db10421de975a21cbd612095959463e07841", 
+                    "trtm_score": "3", 
+                    "trtm_url": "https://www.quixey.com/app/2212419651/chicken-recipes?search_id=0d4dff0d034754e31a405241c19cd40f010cdd80&session_id=d85d8878c0ca73cc59f962c588249a99b3a8bb78"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/2206023808/chinese-recipes?search_id=eca7c2deff2a6ea6d9051623eca60423bbd94577&session_id=6d85db10421de975a21cbd612095959463e07841", 
+                    "trtm_score": "3", 
+                    "trtm_url": "https://www.quixey.com/app/2812709174/sauce-recipes-guide-vdo?search_id=0d4dff0d034754e31a405241c19cd40f010cdd80&session_id=d85d8878c0ca73cc59f962c588249a99b3a8bb78"
+                }
+            ], 
+            "cntl_dcg": "0.9335693461057895", 
+            "diff_dcg": "-0.0650770512286547", 
+            "lat": "29.46567", 
+            "long": "-98.50977", 
+            "query": "sweet and sour sauce", 
+            "trtm_dcg": "0.8684922948771348"
+        }, 
+        {
+            "both_results": [
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/2840324125/pitbull-dogs?search_id=4643372d02b540eb884c91943db04e68ae893a00&session_id=d786ce0515c4581952eedc03ee1c07d7f67edad5", 
+                    "trtm_score": "1", 
+                    "trtm_url": "http://www.urbanspoon.com/r/256/1500706/restaurant/Pensacola/Dog-House-Deli-Pensacola-Beach"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/2657152962/pets4homes?search_id=4643372d02b540eb884c91943db04e68ae893a00&session_id=d786ce0515c4581952eedc03ee1c07d7f67edad5", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/2840324125/pitbull-dogs?search_id=6caf547244b552349b0f032652a54aca5bd2e974&session_id=8d8fc9d8a00ce1c9e1901a6fa699e2e0c83dd9a4"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/2837323199/bull-terrier-dogs?search_id=4643372d02b540eb884c91943db04e68ae893a00&session_id=d786ce0515c4581952eedc03ee1c07d7f67edad5", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/2657152962/pets4homes?search_id=6caf547244b552349b0f032652a54aca5bd2e974&session_id=8d8fc9d8a00ce1c9e1901a6fa699e2e0c83dd9a4"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/2837392228/rottweiler-dogs?search_id=4643372d02b540eb884c91943db04e68ae893a00&session_id=d786ce0515c4581952eedc03ee1c07d7f67edad5", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/2837392228/rottweiler-dogs?search_id=6caf547244b552349b0f032652a54aca5bd2e974&session_id=8d8fc9d8a00ce1c9e1901a6fa699e2e0c83dd9a4"
+                }, 
+                {
+                    "cntl_score": "3", 
+                    "cntl_url": "https://www.quixey.com/app/2840419924/dalmatian-dogs?search_id=4643372d02b540eb884c91943db04e68ae893a00&session_id=d786ce0515c4581952eedc03ee1c07d7f67edad5", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/2837323199/bull-terrier-dogs?search_id=6caf547244b552349b0f032652a54aca5bd2e974&session_id=8d8fc9d8a00ce1c9e1901a6fa699e2e0c83dd9a4"
+                }
+            ], 
+            "cntl_dcg": "2.071845064556435", 
+            "diff_dcg": -0.6849229487713453, 
+            "lat": "30.45285", 
+            "long": "-87.16772", 
+            "query": "how to find dog breeders", 
+            "trtm_dcg": "1.3869221157850897"
+        }, 
+        {
+            "both_results": [
+                {
+                    "cntl_score": "3", 
+                    "cntl_url": "https://www.quixey.com/app/203521/retro-camera?search_id=974b7bcc15974f0a9cdb887fef91000706913a00&session_id=994bfcbe234798f364ddc1e2e0a2a5e0c4d3ea4e", 
+                    "trtm_score": "3", 
+                    "trtm_url": "https://www.quixey.com/app/203521/retro-camera?search_id=9dfad5a4353eb6343f889da94cf7658472989081&session_id=931f68c57b2bd3807a878ec6371a04578d9f2b16"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/2077584853/line-camera-selfie-collage?search_id=974b7bcc15974f0a9cdb887fef91000706913a00&session_id=994bfcbe234798f364ddc1e2e0a2a5e0c4d3ea4e", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/2077584853/line-camera-selfie-collage?search_id=9dfad5a4353eb6343f889da94cf7658472989081&session_id=931f68c57b2bd3807a878ec6371a04578d9f2b16"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/45119462/paper-camera?search_id=974b7bcc15974f0a9cdb887fef91000706913a00&session_id=994bfcbe234798f364ddc1e2e0a2a5e0c4d3ea4e", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/45119462/paper-camera?search_id=9dfad5a4353eb6343f889da94cf7658472989081&session_id=931f68c57b2bd3807a878ec6371a04578d9f2b16"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/2410796321/lomo-camera?search_id=974b7bcc15974f0a9cdb887fef91000706913a00&session_id=994bfcbe234798f364ddc1e2e0a2a5e0c4d3ea4e", 
+                    "trtm_score": "3", 
+                    "trtm_url": "https://www.quixey.com/app/2600439530/camera-zoom-fx?search_id=9dfad5a4353eb6343f889da94cf7658472989081&session_id=931f68c57b2bd3807a878ec6371a04578d9f2b16"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/272805/flickr?search_id=974b7bcc15974f0a9cdb887fef91000706913a00&session_id=994bfcbe234798f364ddc1e2e0a2a5e0c4d3ea4e", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/2410796321/lomo-camera?search_id=9dfad5a4353eb6343f889da94cf7658472989081&session_id=931f68c57b2bd3807a878ec6371a04578d9f2b16"
+                }
+            ], 
+            "cntl_dcg": "1.8869221157850897", 
+            "diff_dcg": -0.09110787172011703, 
+            "lat": "39.78438", 
+            "long": "-86.15006", 
+            "query": "cameras", 
+            "trtm_dcg": "1.7958142440649727"
+        }, 
+        {
+            "both_results": [
+                {
+                    "cntl_score": "1", 
+                    "cntl_url": "https://www.quixey.com/app/66693215/twc-tv?search_id=e3c2aca62eca9c7667e47eae1999570fdc1b9f44&session_id=e1aaaffca6daa6688a2756a3204870addc25fc45", 
+                    "trtm_score": "1", 
+                    "trtm_url": "https://www.quixey.com/app/14447480/xfinity-tv-remote?search_id=8ace1f157124385561893c2d98dcd6c9a3aebf34&session_id=9b6b1d600583da81c72af5427af74c329dda561a"
+                }, 
+                {
+                    "cntl_score": "1", 
+                    "cntl_url": "https://www.quixey.com/app/14447480/xfinity-tv-remote?search_id=e3c2aca62eca9c7667e47eae1999570fdc1b9f44&session_id=e1aaaffca6daa6688a2756a3204870addc25fc45", 
+                    "trtm_score": "1", 
+                    "trtm_url": "https://www.quixey.com/app/66693215/twc-tv?search_id=8ace1f157124385561893c2d98dcd6c9a3aebf34&session_id=9b6b1d600583da81c72af5427af74c329dda561a"
+                }, 
+                {
+                    "cntl_score": "2", 
+                    "cntl_url": "https://www.quixey.com/app/17673798/spb-tv?search_id=e3c2aca62eca9c7667e47eae1999570fdc1b9f44&session_id=e1aaaffca6daa6688a2756a3204870addc25fc45", 
+                    "trtm_score": "1", 
+                    "trtm_url": "https://www.quixey.com/app/222624/directv?search_id=8ace1f157124385561893c2d98dcd6c9a3aebf34&session_id=9b6b1d600583da81c72af5427af74c329dda561a"
+                }, 
+                {
+                    "cntl_score": "1", 
+                    "cntl_url": "https://www.quixey.com/app/2644077554/virgin-tv-anywhere?search_id=e3c2aca62eca9c7667e47eae1999570fdc1b9f44&session_id=e1aaaffca6daa6688a2756a3204870addc25fc45", 
+                    "trtm_score": "2", 
+                    "trtm_url": "https://www.quixey.com/app/17673798/spb-tv?search_id=8ace1f157124385561893c2d98dcd6c9a3aebf34&session_id=9b6b1d600583da81c72af5427af74c329dda561a"
+                }, 
+                {
+                    "cntl_score": "2", 
+                    "cntl_url": "https://www.quixey.com/app/287380/tv-guide-mobile?search_id=e3c2aca62eca9c7667e47eae1999570fdc1b9f44&session_id=e1aaaffca6daa6688a2756a3204870addc25fc45", 
+                    "trtm_score": "2", 
+                    "trtm_url": "https://www.quixey.com/app/340655/i-tv?search_id=8ace1f157124385561893c2d98dcd6c9a3aebf34&session_id=9b6b1d600583da81c72af5427af74c329dda561a"
+                }
+            ], 
+            "cntl_dcg": "0.19262807163681805", 
+            "diff_dcg": -0.036443148688046656, 
+            "lat": "38.21648", 
+            "long": "-85.72368", 
+            "query": "change tv channels", 
+            "trtm_dcg": "0.1561849229487714"
+        }, 
+        {
+            "both_results": [
+                {
+                    "cntl_score": "5", 
+                    "cntl_url": "https://www.quixey.com/app/2403444995/snapchat?search_id=8d2d30b5e2872cc7b0bc529eb1ca885a70ded5a0&session_id=7ebffc99b2eda46c88f551a4a5f80a844845287e", 
+                    "trtm_score": "5", 
+                    "trtm_url": "https://www.quixey.com/app/2403444995/snapchat?search_id=2b4b63e22a89895240e7ce9fd4b6c37a101ca651&session_id=10589378f0a0690b4643d07c451612c56cfc5026"
+                }, 
+                {
+                    "cntl_score": "3", 
+                    "cntl_url": "https://www.quixey.com/app/2719751603/usernames-for-snapchat?search_id=8d2d30b5e2872cc7b0bc529eb1ca885a70ded5a0&session_id=7ebffc99b2eda46c88f551a4a5f80a844845287e", 
+                    "trtm_score": "3", 
+                    "trtm_url": "https://www.quixey.com/app/2719751603/usernames-for-snapchat?search_id=2b4b63e22a89895240e7ce9fd4b6c37a101ca651&session_id=10589378f0a0690b4643d07c451612c56cfc5026"
+                }, 
+                {
+                    "cntl_score": 1, 
+                    "cntl_url": "", 
+                    "trtm_score": 1, 
+                    "trtm_url": ""
+                }, 
+                {
+                    "cntl_score": 1, 
+                    "cntl_url": "", 
+                    "trtm_score": 1, 
+                    "trtm_url": ""
+                }, 
+                {
+                    "cntl_score": 1, 
+                    "cntl_url": "", 
+                    "trtm_score": 1, 
+                    "trtm_url": ""
+                }
+            ], 
+            "cntl_dcg": "1.782746772178259", 
+            "diff_dcg": 0.0, 
+            "lat": "32.52296", 
+            "long": "-86.21078", 
+            "query": "snapchat inc", 
+            "trtm_dcg": "1.782746772178259"
+        }, 
+        {
+            "both_results": [
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/2629250673/mokriya-craigslist-android-app?search_id=785971bc280a4284096fa522c5f99f9aad27091f&session_id=362dd2b4a61acff0c107fa64dc669f08fd21c129", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/2629250673/mokriya-craigslist-android-app?search_id=cc5fcb323ff64627cd65cca9999aaed5b5302a47&session_id=bdf36a085389e502a2fe49af0904b2459ce443db"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/2851835708/for-craigslist-android-app-pro?search_id=785971bc280a4284096fa522c5f99f9aad27091f&session_id=362dd2b4a61acff0c107fa64dc669f08fd21c129", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/2851835708/for-craigslist-android-app-pro?search_id=cc5fcb323ff64627cd65cca9999aaed5b5302a47&session_id=bdf36a085389e502a2fe49af0904b2459ce443db"
+                }, 
+                {
+                    "cntl_score": "2", 
+                    "cntl_url": "https://www.quixey.com/app/2851828660/for-craigslist-canada-free-app?search_id=785971bc280a4284096fa522c5f99f9aad27091f&session_id=362dd2b4a61acff0c107fa64dc669f08fd21c129", 
+                    "trtm_score": "2", 
+                    "trtm_url": "https://www.quixey.com/app/2851828660/for-craigslist-canada-free-app?search_id=cc5fcb323ff64627cd65cca9999aaed5b5302a47&session_id=bdf36a085389e502a2fe49af0904b2459ce443db"
+                }, 
+                {
+                    "cntl_score": 1, 
+                    "cntl_url": "", 
+                    "trtm_score": 1, 
+                    "trtm_url": ""
+                }, 
+                {
+                    "cntl_score": 1, 
+                    "cntl_url": "", 
+                    "trtm_score": 1, 
+                    "trtm_url": ""
+                }
+            ], 
+            "cntl_dcg": "1.6475426905456059", 
+            "diff_dcg": 0.0, 
+            "lat": "38.64168", 
+            "long": "-90.24339", 
+            "query": "craigslist trucks for sale by owner", 
+            "trtm_dcg": "1.6475426905456059"
+        }, 
+        {
+            "both_results": [
+                {
+                    "cntl_score": "1", 
+                    "cntl_url": "http://www.urbanspoon.com/r/60/650870/restaurant/Altura-Park/Padillas-Mexican-Kitchen-Albuquerque", 
+                    "trtm_score": "1", 
+                    "trtm_url": "http://www.urbanspoon.com/r/60/650870/restaurant/Altura-Park/Padillas-Mexican-Kitchen-Albuquerque"
+                }, 
+                {
+                    "cntl_score": "1", 
+                    "cntl_url": "https://www.quixey.com/app/2435242995/all-inclusive-vacations?search_id=e3584c965c211f086efb4e0d017c3792805ae281&session_id=b47790e3f0febf54b6f7efe790a00007d5cc5e1a", 
+                    "trtm_score": "3", 
+                    "trtm_url": "https://www.quixey.com/app/2674012782/bogga-vacation?search_id=045fba1e83bd7563e0c65416159c8675d9fd1774&session_id=c8d18ccea340201be80ead99e8637ad2810d3875"
+                }, 
+                {
+                    "cntl_score": "3", 
+                    "cntl_url": "https://www.quixey.com/app/2674012782/bogga-vacation?search_id=e3584c965c211f086efb4e0d017c3792805ae281&session_id=b47790e3f0febf54b6f7efe790a00007d5cc5e1a", 
+                    "trtm_score": "1", 
+                    "trtm_url": "https://www.quixey.com/app/2435242995/all-inclusive-vacations?search_id=045fba1e83bd7563e0c65416159c8675d9fd1774&session_id=c8d18ccea340201be80ead99e8637ad2810d3875"
+                }, 
+                {
+                    "cntl_score": 1, 
+                    "cntl_url": "", 
+                    "trtm_score": 1, 
+                    "trtm_url": ""
+                }, 
+                {
+                    "cntl_score": 1, 
+                    "cntl_url": "", 
+                    "trtm_score": 1, 
+                    "trtm_url": ""
+                }
+            ], 
+            "cntl_dcg": "0.4893794252394837", 
+            "diff_dcg": 0.10204081632653045, 
+            "lat": "35.10072", 
+            "long": "-106.60039", 
+            "query": "vacations for kids", 
+            "trtm_dcg": "0.5914202415660141"
+        }, 
+        {
+            "both_results": [
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/210965/whitepages?search_id=5253d4a1937957c0bc40407154edebaaa5859fa2&session_id=d97f26b47f21292a8f9f8f856da8b6d76272b85a", 
+                    "trtm_score": "3", 
+                    "trtm_url": "https://www.quixey.com/app/2408228803/brewster-address-book?search_id=99d2654abd66c5538ada1adb6f3542d0eb86b5b4&session_id=860a5071fd9a32777dd6b04da8181d45838ce92e"
+                }, 
+                {
+                    "cntl_score": "3", 
+                    "cntl_url": "https://www.quixey.com/app/2600831215/address-book?search_id=5253d4a1937957c0bc40407154edebaaa5859fa2&session_id=d97f26b47f21292a8f9f8f856da8b6d76272b85a", 
+                    "trtm_score": "3", 
+                    "trtm_url": "https://www.quixey.com/app/2600831215/address-book?search_id=99d2654abd66c5538ada1adb6f3542d0eb86b5b4&session_id=860a5071fd9a32777dd6b04da8181d45838ce92e"
+                }, 
+                {
+                    "cntl_score": "3", 
+                    "cntl_url": "https://www.quixey.com/app/2408228803/brewster-address-book?search_id=5253d4a1937957c0bc40407154edebaaa5859fa2&session_id=d97f26b47f21292a8f9f8f856da8b6d76272b85a", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/210965/whitepages?search_id=99d2654abd66c5538ada1adb6f3542d0eb86b5b4&session_id=860a5071fd9a32777dd6b04da8181d45838ce92e"
+                }, 
+                {
+                    "cntl_score": "3", 
+                    "cntl_url": "https://www.quixey.com/app/2414742918/address-book?search_id=5253d4a1937957c0bc40407154edebaaa5859fa2&session_id=d97f26b47f21292a8f9f8f856da8b6d76272b85a", 
+                    "trtm_score": "3", 
+                    "trtm_url": "https://www.quixey.com/app/2414742918/address-book?search_id=99d2654abd66c5538ada1adb6f3542d0eb86b5b4&session_id=860a5071fd9a32777dd6b04da8181d45838ce92e"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/2690179882/outlook-address-book?search_id=5253d4a1937957c0bc40407154edebaaa5859fa2&session_id=d97f26b47f21292a8f9f8f856da8b6d76272b85a", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/225179/swiss-phone-book?search_id=99d2654abd66c5538ada1adb6f3542d0eb86b5b4&session_id=860a5071fd9a32777dd6b04da8181d45838ce92e"
+                }
+            ], 
+            "cntl_dcg": "1.7396917950853812", 
+            "diff_dcg": -0.12244897959183687, 
+            "lat": "37.19527", 
+            "long": "-93.28597", 
+            "query": "address book", 
+            "trtm_dcg": "1.6172428154935443"
+        }, 
+        {
+            "both_results": [
+                {
+                    "cntl_score": "2", 
+                    "cntl_url": "https://www.quixey.com/app/2412373621/free-books-stories-wattpad?search_id=79beead42358aad73b324f9e5b55d19840cf9403&session_id=49567009b006c770903d6bd5847faab565f066de", 
+                    "trtm_score": "2", 
+                    "trtm_url": "https://www.quixey.com/app/17970205/text-free-free-texting-app?search_id=459d8c8a7be26b332def799c1ebc161238eb41a1&session_id=f4b2261d60c518abb6b8a91a43f8b34c35beb00b"
+                }, 
+                {
+                    "cntl_score": "3", 
+                    "cntl_url": "https://www.quixey.com/app/2741597618/text-free-calling-texting-app?search_id=79beead42358aad73b324f9e5b55d19840cf9403&session_id=49567009b006c770903d6bd5847faab565f066de", 
+                    "trtm_score": 1, 
+                    "trtm_url": ""
+                }, 
+                {
+                    "cntl_score": "2", 
+                    "cntl_url": "https://www.quixey.com/app/2419637761/talkray-free-calls-and-text?search_id=79beead42358aad73b324f9e5b55d19840cf9403&session_id=49567009b006c770903d6bd5847faab565f066de", 
+                    "trtm_score": 1, 
+                    "trtm_url": ""
+                }, 
+                {
+                    "cntl_score": "2", 
+                    "cntl_url": "https://www.quixey.com/app/17970205/text-free-free-texting-app?search_id=79beead42358aad73b324f9e5b55d19840cf9403&session_id=49567009b006c770903d6bd5847faab565f066de", 
+                    "trtm_score": 1, 
+                    "trtm_url": ""
+                }, 
+                {
+                    "cntl_score": 1, 
+                    "cntl_url": "", 
+                    "trtm_score": 1, 
+                    "trtm_url": ""
+                }
+            ], 
+            "cntl_dcg": "0.9234173261141192", 
+            "diff_dcg": 0.020043731778425666, 
+            "lat": "27.75158", 
+            "long": "-82.62238", 
+            "query": "text over 500 people  at one time", 
+            "trtm_dcg": "0.9434610578925449"
+        }, 
+        {
+            "both_results": [
+                {
+                    "cntl_score": "2", 
+                    "cntl_url": "http://www.urbanspoon.com/r/8/1523628/restaurant/Downtown/Bangkok-Chef-Houston", 
+                    "trtm_score": "2", 
+                    "trtm_url": "http://www.urbanspoon.com/r/8/1523628/restaurant/Downtown/Bangkok-Chef-Houston"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/2415539788/waplog-chat-dating-meet-friend?search_id=5a52e3d8e6a82f8feffe24b921ee8f4fa1b08b8d&session_id=900c1d75a29dec3a95ab7ed473e9b03810f837c5", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/2415539788/waplog-chat-dating-meet-friend?search_id=4fa47d502e85593bbc37c5fb0d0f7bc1b9f8b1dd&session_id=b1d7720104dbff63a402a0ad3cb497c737ec1b21"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/6734283/skout-meet-chat-new-friends?search_id=5a52e3d8e6a82f8feffe24b921ee8f4fa1b08b8d&session_id=900c1d75a29dec3a95ab7ed473e9b03810f837c5", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/6734283/skout-meet-chat-new-friends?search_id=4fa47d502e85593bbc37c5fb0d0f7bc1b9f8b1dd&session_id=b1d7720104dbff63a402a0ad3cb497c737ec1b21"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/2431377044/friends-talk-chat-meet?search_id=5a52e3d8e6a82f8feffe24b921ee8f4fa1b08b8d&session_id=900c1d75a29dec3a95ab7ed473e9b03810f837c5", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/2431377044/friends-talk-chat-meet?search_id=4fa47d502e85593bbc37c5fb0d0f7bc1b9f8b1dd&session_id=b1d7720104dbff63a402a0ad3cb497c737ec1b21"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/48386062/qeep-chat-flirt-friends?search_id=5a52e3d8e6a82f8feffe24b921ee8f4fa1b08b8d&session_id=900c1d75a29dec3a95ab7ed473e9b03810f837c5", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/2411434973/airg-meet-new-friends?search_id=4fa47d502e85593bbc37c5fb0d0f7bc1b9f8b1dd&session_id=b1d7720104dbff63a402a0ad3cb497c737ec1b21"
+                }
+            ], 
+            "cntl_dcg": "1.6369221157850897", 
+            "diff_dcg": 0.0, 
+            "lat": "29.75159", 
+            "long": "-95.36434", 
+            "query": "meet friends", 
+            "trtm_dcg": "1.6369221157850897"
+        }, 
+        {
+            "both_results": [
+                {
+                    "cntl_score": "2", 
+                    "cntl_url": "https://www.quixey.com/app/2408339104/stick-tennis?search_id=5745bcba32bf962e221058d797bceb583c972d1f&session_id=1c6d5e21830f0b4b5b532307052f2f20f7be28e7", 
+                    "trtm_score": "2", 
+                    "trtm_url": "https://www.quixey.com/app/2408339104/stick-tennis?search_id=a2997e347523780b1b5a370e239f5d0265e06a97&session_id=ea1e4209ae399454d8f452c7f8b3ddbb24fe6a56"
+                }, 
+                {
+                    "cntl_score": "2", 
+                    "cntl_url": "https://www.quixey.com/app/22511495/virtual-table-tennis?search_id=5745bcba32bf962e221058d797bceb583c972d1f&session_id=1c6d5e21830f0b4b5b532307052f2f20f7be28e7", 
+                    "trtm_score": "2", 
+                    "trtm_url": "https://www.quixey.com/app/22511495/virtual-table-tennis?search_id=a2997e347523780b1b5a370e239f5d0265e06a97&session_id=ea1e4209ae399454d8f452c7f8b3ddbb24fe6a56"
+                }, 
+                {
+                    "cntl_score": "2", 
+                    "cntl_url": "https://www.quixey.com/app/2797031223/smash-tennis?search_id=5745bcba32bf962e221058d797bceb583c972d1f&session_id=1c6d5e21830f0b4b5b532307052f2f20f7be28e7", 
+                    "trtm_score": "2", 
+                    "trtm_url": "https://www.quixey.com/app/2072826434/virtua-tennis-challenge?search_id=a2997e347523780b1b5a370e239f5d0265e06a97&session_id=ea1e4209ae399454d8f452c7f8b3ddbb24fe6a56"
+                }, 
+                {
+                    "cntl_score": "2", 
+                    "cntl_url": "https://www.quixey.com/app/2072826434/virtua-tennis-challenge?search_id=5745bcba32bf962e221058d797bceb583c972d1f&session_id=1c6d5e21830f0b4b5b532307052f2f20f7be28e7", 
+                    "trtm_score": "2", 
+                    "trtm_url": "https://www.quixey.com/app/2797031223/smash-tennis?search_id=a2997e347523780b1b5a370e239f5d0265e06a97&session_id=ea1e4209ae399454d8f452c7f8b3ddbb24fe6a56"
+                }, 
+                {
+                    "cntl_score": "3", 
+                    "cntl_url": "https://www.quixey.com/app/2762089907/learn-tennis?search_id=5745bcba32bf962e221058d797bceb583c972d1f&session_id=1c6d5e21830f0b4b5b532307052f2f20f7be28e7", 
+                    "trtm_score": "3", 
+                    "trtm_url": "https://www.quixey.com/app/2762089907/learn-tennis?search_id=a2997e347523780b1b5a370e239f5d0265e06a97&session_id=ea1e4209ae399454d8f452c7f8b3ddbb24fe6a56"
+                }
+            ], 
+            "cntl_dcg": "0.7773844231570181", 
+            "diff_dcg": 0.0, 
+            "lat": "29.76555", 
+            "long": "-95.39709", 
+            "query": "tennis pratice", 
+            "trtm_dcg": "0.7773844231570181"
+        }
+    ]
+}

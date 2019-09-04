@@ -237,3 +237,74 @@ function arbitraryFilter(data, filterParams) {
     return false;
   }
 }
+/** Test functions */
+
+
+function nestedTableTest() {}
+
+function sendTableData() {
+  var name = window.prompt('Give a name for the selection column:', 'select');
+  var tab = Liquid.tabManager.getActiveTab();
+
+  if (tab.getType() !== 'table') {
+    console.error("tab ".concat(n, " isn't a table tab"));
+    return false;
+  }
+
+  var object = tab.getTableObject();
+  var table = {
+    cols: object.getColumnDefinitions(),
+    rows: object.getData()
+  };
+  var json_data = {
+    cmd_name: 'user_input',
+    input_type: 'checkbox_values',
+    tag_col_name: name,
+    tabulator_table: table,
+    task_name: 'dentists'
+  };
+  Liquid.httpRequest({
+    'json_data': JSON.stringify(json_data)
+  }).then(function (response) {
+    Liquid.handleResponse(response);
+  });
+}
+
+function addCheckColumn() {
+  var col_name = window.prompt('Give a name for the new checkbox column:', 'checked');
+  DATA.Throwin.get(UI.TabView.getActive()).getTableObject().addColumn({
+    title: col_name,
+    field: col_name,
+    formatter: triTickFormatter,
+    cellClick: triTickCellClick
+  }, true);
+}
+
+function addTextColumn() {
+  var col_name = window.prompt('Give a name for the new text column:', 'notes');
+  DATA.Throwin.get(UI.TabView.getActive()).getTableObject().addColumn({
+    title: col_name,
+    field: col_name,
+    editor: true
+  }, true);
+}
+
+function filterColumn() {
+  var col = window.prompt('Which column do you want to filter?');
+  var fnc = window.prompt('What function do you want to filter with? (=,!=,like,<,<=,>,>=,in,regex)');
+  var val = window.prompt('What value do you want to filter by?');
+  DATA.Throwin.get(UI.TabView.getActive()).getTableObject().setFilter(col, fnc, val);
+}
+
+function filterCustom() {
+  var str = window.prompt('Type the filter string here');
+  DATA.Throwin.get(UI.TabView.getActive()).getTableObject().setFilter(arbitraryFilter, str);
+}
+
+function clearFilters() {
+  DATA.Throwin.get(UI.TabView.getActive()).getTableObject().clearFilter();
+}
+
+function lockDialogue() {
+  UI.toggleClass('#dialogue', 'locked');
+}

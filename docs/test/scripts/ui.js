@@ -15,9 +15,9 @@ var UI = {
     this.EventHandler.init();
   },
   render: function render() {
-    ReactDOM.render(React.createElement(HeaderMenuComponent, null), document.querySelector('#head'));
     this.DialogView.render();
     this.TabView.render();
+    this.HeaderMenu.render();
   },
   DialogView: {
     render: function render() {
@@ -66,6 +66,38 @@ var UI = {
           }
         }
       });
+    }
+  },
+  HeaderMenu: {
+    menus: [{
+      title: 'File',
+      items: []
+    }, {
+      title: 'Edit',
+      items: []
+    }, {
+      title: 'Test',
+      items: [{
+        name: 'Add Check Column',
+        func: addCheckColumn
+      }, {
+        name: 'Add Text Column',
+        func: addCheckColumn
+      }, {
+        name: 'Basic Column Filter',
+        func: addCheckColumn
+      }, {
+        name: 'Custom Column Filter',
+        func: addCheckColumn
+      }, {
+        name: 'Clear Filters',
+        func: addCheckColumn
+      }]
+    }],
+    render: function render() {
+      ReactDOM.render(React.createElement(HeaderMenuComponent, {
+        menus: this.menus
+      }), document.querySelector('#head'));
     }
   },
   EventHandler: {

@@ -1,0 +1,5 @@
+label	event_display_name
+recType:all::sends	Send
+recType:all::impressed_sends	Impressed
+recType:all::opened_sends	Open
+recType:all::dismissed_sends	Dismiss

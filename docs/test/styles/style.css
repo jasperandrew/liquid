@@ -92,11 +92,11 @@ nav.hidden + main {
   margin: 0;
   font-size: 20px;
 }
-#header_menu .title_menu .menu {
+#header_menu .title_menu .menus {
   display: flex;
   flex-direction: row;
 }
-#header_menu .title_menu .menu .menu_item {
+#header_menu .title_menu .menus .menu {
   margin-right: 10px;
 }
 #header_menu .throwin_button {

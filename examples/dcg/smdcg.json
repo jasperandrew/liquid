@@ -1,0 +1,124 @@
+{
+    "queries": [
+        {
+            "both_results": [
+                {
+                    "cntl_score": "_5_", 
+                    "cntl_url": "http://www.yellowpages.com/columbus-oh/mip/johnny-rockets-6489404", 
+                    "trtm_score": "_1_", 
+                    "trtm_url": "http://www.urbanspoon.com/r/33/370304/restaurant/German-Village/Brown-Bag-Deli-Columbus"
+                }, 
+                {
+                    "cntl_score": "_4_", 
+                    "cntl_url": "http://www.urbanspoon.com/r/33/370305/restaurant/German-Village/Brown-Bag-Deli-Columbus", 
+                    "trtm_score": "_2_", 
+                    "trtm_url": "http://www.yellowpages.com/columbus-oh/mip/johnny-rockets-6489405"
+                }, 
+                {
+                    "cntl_score": "2", 
+                    "cntl_url": "https://www.quixey.com/app/2212609161/budweiser?search_id=18b358cee403588a6796e64255c72e1398042921&session_id=20cd0cc5f01fd7178cbc9eab4ad3c859697465bd", 
+                    "trtm_score": "2", 
+                    "trtm_url": "https://www.quixey.com/app/2212609161/budweiser?search_id=c9c935946487c16d9b570383197f22673547c3c3&session_id=f17836354c96267f6e0314228853d40fb369ac0e"
+                }, 
+                {
+                    "cntl_score": "3", 
+                    "cntl_url": "http://tripadvisor.com/Restaurant_Review-g50226-d1511453-Reviews-Thai_Lagoon-Columbus_Ohio.html", 
+                    "trtm_score": "3", 
+                    "trtm_url": "http://tripadvisor.com/Restaurant_Review-g50226-d1511453-Reviews-Thai_Lagoon-Columbus_Ohio.html"
+                }, 
+                {
+                    "cntl_score": "3", 
+                    "cntl_url": "https://www.quixey.com/app/2812539489/budweiser-red-lights?search_id=18b358cee403588a6796e64255c72e1398042921&session_id=20cd0cc5f01fd7178cbc9eab4ad3c859697465bd", 
+                    "trtm_score": "2", 
+                    "trtm_url": "http://www.foursquare.com/v/4b086e97f964a520c00b23e3"
+                }
+            ], 
+            "cntl_dcg": "1.1184922948771348", 
+            "diff_dcg": -0.1365056226572262, 
+            "lat": "39.98934", 
+            "long": "-82.99912", 
+            "query": "budweiser", 
+            "trtm_dcg": "0.9819866722199085"
+        }, 
+        {
+            "both_results": [
+                {
+                    "cntl_score": "_5.0_", 
+                    "cntl_url": "http://tripadvisor.com/Restaurant_Review-g60956-d469811-Reviews-King_s_Palace-San_Antonio_Texas.html", 
+                    "trtm_score": "_1.0_", 
+                    "trtm_url": "http://www.urbanspoon.com/r/39/430077/restaurant/Southtown/Aprils-Chinese-San-Antonio"
+                }, 
+                {
+                    "cntl_score": "_4.0_", 
+                    "cntl_url": "http://www.urbanspoon.com/r/39/430076/restaurant/Southtown/Aprils-Chinese2-San-Antonio", 
+                    "trtm_score": "_2.0_", 
+                    "trtm_url": "http://tripadvisor.com/Restaurant_Review-g60956-d2150007-Reviews-Bean_Sprout-San_Antonio_Texas.html"
+                }, 
+                {
+                    "cntl_score": "2", 
+                    "cntl_url": "http://www.foursquare.com/v/4ad4bffef964a520a6ea20e3", 
+                    "trtm_score": "2", 
+                    "trtm_url": "http://www.foursquare.com/v/4ad4bffef964a520a6ea20e3"
+                }, 
+                {
+                    "cntl_score": "3", 
+                    "cntl_url": "https://www.quixey.com/app/2212419651/chicken-recipes?search_id=eca7c2deff2a6ea6d9051623eca60423bbd94577&session_id=6d85db10421de975a21cbd612095959463e07841", 
+                    "trtm_score": "3", 
+                    "trtm_url": "https://www.quixey.com/app/2212419651/chicken-recipes?search_id=0d4dff0d034754e31a405241c19cd40f010cdd80&session_id=d85d8878c0ca73cc59f962c588249a99b3a8bb78"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/2206023808/chinese-recipes?search_id=eca7c2deff2a6ea6d9051623eca60423bbd94577&session_id=6d85db10421de975a21cbd612095959463e07841", 
+                    "trtm_score": "3", 
+                    "trtm_url": "https://www.quixey.com/app/2812709174/sauce-recipes-guide-vdo?search_id=0d4dff0d034754e31a405241c19cd40f010cdd80&session_id=d85d8878c0ca73cc59f962c588249a99b3a8bb78"
+                }
+            ], 
+            "cntl_dcg": "0.9335693461057895", 
+            "diff_dcg": "-0.0650770512286547", 
+            "lat": "29.46567", 
+            "long": "-98.50977", 
+            "query": "sweet and sour sauce", 
+            "trtm_dcg": "0.8684922948771348"
+        }, 
+        {
+            "both_results": [
+                {
+                    "cntl_score": "3", 
+                    "cntl_url": "https://www.quixey.com/app/203521/retro-camera?search_id=974b7bcc15974f0a9cdb887fef91000706913a00&session_id=994bfcbe234798f364ddc1e2e0a2a5e0c4d3ea4e", 
+                    "trtm_score": "3", 
+                    "trtm_url": "https://www.quixey.com/app/203521/retro-camera?search_id=9dfad5a4353eb6343f889da94cf7658472989081&session_id=931f68c57b2bd3807a878ec6371a04578d9f2b16"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/2077584853/line-camera-selfie-collage?search_id=974b7bcc15974f0a9cdb887fef91000706913a00&session_id=994bfcbe234798f364ddc1e2e0a2a5e0c4d3ea4e", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/2077584853/line-camera-selfie-collage?search_id=9dfad5a4353eb6343f889da94cf7658472989081&session_id=931f68c57b2bd3807a878ec6371a04578d9f2b16"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/45119462/paper-camera?search_id=974b7bcc15974f0a9cdb887fef91000706913a00&session_id=994bfcbe234798f364ddc1e2e0a2a5e0c4d3ea4e", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/45119462/paper-camera?search_id=9dfad5a4353eb6343f889da94cf7658472989081&session_id=931f68c57b2bd3807a878ec6371a04578d9f2b16"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/2410796321/lomo-camera?search_id=974b7bcc15974f0a9cdb887fef91000706913a00&session_id=994bfcbe234798f364ddc1e2e0a2a5e0c4d3ea4e", 
+                    "trtm_score": "3", 
+                    "trtm_url": "https://www.quixey.com/app/2600439530/camera-zoom-fx?search_id=9dfad5a4353eb6343f889da94cf7658472989081&session_id=931f68c57b2bd3807a878ec6371a04578d9f2b16"
+                }, 
+                {
+                    "cntl_score": "4", 
+                    "cntl_url": "https://www.quixey.com/app/272805/flickr?search_id=974b7bcc15974f0a9cdb887fef91000706913a00&session_id=994bfcbe234798f364ddc1e2e0a2a5e0c4d3ea4e", 
+                    "trtm_score": "4", 
+                    "trtm_url": "https://www.quixey.com/app/2410796321/lomo-camera?search_id=9dfad5a4353eb6343f889da94cf7658472989081&session_id=931f68c57b2bd3807a878ec6371a04578d9f2b16"
+                }
+            ], 
+            "cntl_dcg": "1.8869221157850897", 
+            "diff_dcg": -0.09110787172011703, 
+            "lat": "39.78438", 
+            "long": "-86.15006", 
+            "query": "cameras", 
+            "trtm_dcg": "1.7958142440649727"
+        }
+    ]
+}

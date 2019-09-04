@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+     <script type="text/javascript">
+     google.charts.load('current', {'packages':['timeline']});
+      
+     google.charts.setOnLoadCallback(drawChart_user_37221581);
+     function drawChart_user_37221581() {
+        var container = document.getElementById('timeline_user_37221581');
+        var chart = new google.visualization.Timeline(container);
+        var dataTable= new google.visualization.DataTable();
+
+        dataTable.addColumn({ type: 'string', id: 'Action' });
+        dataTable.addColumn({ type: 'date', id: 'Start' });
+        dataTable.addColumn({ type: 'date', id: 'End' });
+        dataTable.addRows([
+          ['Send', new Date("2016-02-06"), new Date("2016-02-06")],
+          ['Send', new Date("2016-02-12"), new Date("2016-02-12")],
+        ]);
+        chart.draw(dataTable);
+      }
+
+     google.charts.setOnLoadCallback(drawChart_user_37230778);
+     function drawChart_user_37230778() {
+        var container = document.getElementById('timeline_user_37230778');
+        var chart = new google.visualization.Timeline(container);
+        var dataTable= new google.visualization.DataTable();
+
+        dataTable.addColumn({ type: 'string', id: 'Action' });
+        dataTable.addColumn({ type: 'date', id: 'Start' });
+        dataTable.addColumn({ type: 'date', id: 'End' });
+        dataTable.addRows([
+          ['Send', new Date("2016-03-08"), new Date("2016-03-08")],
+          ['Send', new Date("2016-03-11"), new Date("2016-03-11")],
+        ]);
+        chart.draw(dataTable);
+      }
+
+
+    </script>
+  </head>
+  <body>
+    <h3>User: 37221581 </h3><div id="timeline_user_37221581" style="height: 330px;width: 4000px"></div>
+    <h3>User: 37230778 </h3><div id="timeline_user_37230778" style="height: 330px;width: 4000px"></div>
+
+  </body>
+</html>
+

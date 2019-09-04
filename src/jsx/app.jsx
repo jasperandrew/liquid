@@ -280,7 +280,8 @@ const Liquid = {
 		handleAnswer(ans_id) {
 			switch(ans_id){
 				case 'upload':
-					document.querySelector('label[for="throwin_file"]').click(); return;
+				case 'default_throwin_question_only':
+						document.querySelector('label[for="throwin_file"]').click(); return;
 			}
 			if(ans_id === '' || ans_id === undefined) return;
 			let json_data = {

@@ -353,6 +353,9 @@ var Liquid = {
 
           break;
 
+        case 'liquid_served_url':
+          window.open('https://spurcell.pythonanywhere.com' + sec_data.relative_url);
+
         default:
           console.error('[Liquid.handleResponse] unrecognized reply type: ' + section);
       }

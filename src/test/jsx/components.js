@@ -11,9 +11,9 @@ class HeaderMenuComponent extends React.Component {
                     <div className='title'>Current Task Name</div>
                     <div className='menus'>
                         <div className='menu' menu-title='File'>
-							<p>Test 1</p>
+							{/* <p>Test 1</p>
 							<p>Test 2</p>
-							<p>Test 3</p>
+							<p>Test 3</p> */}
 						</div>
                         <div className='menu'>Edit</div>
                         <div className='menu'>These</div>
@@ -59,7 +59,7 @@ class ThrowinComponent extends React.Component {
 					);
 					innerHTML.push(<br key={k++}/>);
 				}
-				innerHTML.push(<input key={k++} type='button' id={'json_submit_'+this.props.n}  />); //onClick={() => Liquid.tabManager.submitJSONvars('#t'+this.props.n)}
+				innerHTML.push(<input key={k++} type='button' id={'json_submit_'+this.props.n} onClick={() => UI.TabView.submitJSONvars('#t'+this.props.n)} />);
 				innerHTML.push(<label key={k++} htmlFor={'json_submit_'+this.props.n}>Submit</label>);
 				break;
 

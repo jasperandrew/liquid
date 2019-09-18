@@ -36,7 +36,8 @@ var UI = {
       this.active_tab = i;
       this.render();
     },
-    render: function render() {
+    render: function render(focus_tab) {
+      if (focus_tab) this.active_tab = focus_tab;
       ReactDOM.render(React.createElement(TabViewComponent, {
         active_tab: this.active_tab
       }), document.querySelector('#tabview'));
@@ -65,6 +66,25 @@ var UI = {
             }, 10);
           }
         }
+      });
+    },
+    // TODO // Move this to JSONSelectThrowin class
+    submitJSONvars: function submitJSONvars(tab_selector) {
+      var selected = {};
+      document.querySelectorAll('.throwin ' + tab_selector + ' input:checked').forEach(function (input) {
+        selected[input.attributes['keyname'].value] = input.attributes['keyval'].value;
+      });
+      var json_data = {
+        task_name: DATA.curr_task,
+        cmd_name: 'user_input',
+        input_type: 'json_vars_selection',
+        json_vars_selection: selected,
+        qst_opaque_data: DATA.Dialog.get(0).data
+      };
+      DATA.httpRequest({
+        json_data: json_data
+      }).then(function (response) {
+        DATA.handleResponse(response);
       });
     }
   },

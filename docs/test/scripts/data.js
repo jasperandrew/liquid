@@ -110,8 +110,11 @@ var DATA = {
     handleAnswer: function handleAnswer(ans_id) {
       var _this2 = this;
 
+      console.log('test');
+
       switch (ans_id) {
         case 'upload':
+        case 'default_throwin_question_only':
           document.querySelector('label[for="throwin_file"]').click();
           return;
       }
@@ -213,7 +216,7 @@ var DATA = {
       }
 
       this.data.push(throwin);
-      UI.TabView.render();
+      UI.TabView.render(this.data.length); // focus the most recent tab
     },
     get: function get(n) {
       return this.data[n - 1] || null;

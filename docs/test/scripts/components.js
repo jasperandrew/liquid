@@ -45,7 +45,7 @@ function (_React$Component) {
       }, React.createElement("div", {
         className: "menu",
         "menu-title": "File"
-      }, React.createElement("p", null, "Test 1"), React.createElement("p", null, "Test 2"), React.createElement("p", null, "Test 3")), React.createElement("div", {
+      }), React.createElement("div", {
         className: "menu"
       }, "Edit"), React.createElement("div", {
         className: "menu"
@@ -81,6 +81,8 @@ function (_React$Component2) {
   _createClass(ThrowinComponent, [{
     key: "render",
     value: function render() {
+      var _this = this;
+
       var id = 'tab' + this.props.n;
       var innerHTML = [];
 
@@ -108,9 +110,11 @@ function (_React$Component2) {
           innerHTML.push(React.createElement("input", {
             key: k++,
             type: "button",
-            id: 'json_submit_' + this.props.n
-          })); //onClick={() => Liquid.tabManager.submitJSONvars('#t'+this.props.n)}
-
+            id: 'json_submit_' + this.props.n,
+            onClick: function onClick() {
+              return UI.TabView.submitJSONvars('#t' + _this.props.n);
+            }
+          }));
           innerHTML.push(React.createElement("label", {
             key: k++,
             htmlFor: 'json_submit_' + this.props.n
@@ -154,13 +158,13 @@ function (_React$Component3) {
   _createClass(TabButtonComponent, [{
     key: "render",
     value: function render() {
-      var _this = this;
+      var _this2 = this;
 
       var active = this.props.is_active ? ' active' : '';
       return React.createElement("div", {
         className: "tab_button".concat(active),
         onClick: function onClick() {
-          return UI.TabView.setActive(_this.props.n);
+          return UI.TabView.setActive(_this2.props.n);
         }
       }, this.props.title);
     }
@@ -183,12 +187,12 @@ function (_React$Component4) {
   _createClass(TabViewComponent, [{
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var throwin_set = [],
           button_set = [];
       DATA.Throwin.getAll().forEach(function (t, i) {
-        var is_active = _this2.props.active_tab === i + 1;
+        var is_active = _this3.props.active_tab === i + 1;
         var active = is_active ? ' active' : '';
         throwin_set.push(React.createElement("div", {
           key: i,
@@ -228,7 +232,7 @@ function (_React$Component5) {
   _createClass(OptionComponent, [{
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       return React.createElement("div", {
         className: 'option' + (this.props.isDefault ? ' default' : '')
@@ -240,7 +244,7 @@ function (_React$Component5) {
       }), React.createElement("label", {
         htmlFor: 'opt' + this.props.i,
         onClick: function onClick() {
-          return DATA.Dialog.handleAnswer(_this3.props.optId);
+          return DATA.Dialog.handleAnswer(_this4.props.optId);
         }
       }, this.props.optText));
     }

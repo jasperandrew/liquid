@@ -21,6 +21,5 @@
 - download throwins
 
 - html rendering
-    - open new tab
     - open in liquid tab (iframe)
     - whitespace pre in html display

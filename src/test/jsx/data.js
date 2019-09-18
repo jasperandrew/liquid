@@ -171,7 +171,7 @@ const DATA = {
 				case 'json_select': throwin = new JSONSelectThrowin(name, extension, rawdata); break;
 			}
             this.data.push(throwin);
-            UI.TabView.render();
+            UI.TabView.render(this.data.length); // focus the most recent tab
 		},
 
         get(n) { return this.data[n-1] || null; },

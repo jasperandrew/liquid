@@ -32,7 +32,8 @@ const UI = {
             this.render();
         },
 
-        render() {
+        render(focus_tab) {
+            if(focus_tab) this.active_tab = focus_tab;
 			ReactDOM.render(<TabViewComponent active_tab={this.active_tab}/>, document.querySelector('#tabview'));
 			DATA.Throwin.getAll().forEach(t => {
 				if(t.getType() === 'table'){
@@ -59,25 +60,25 @@ const UI = {
         },
         
         // TODO // Move this to JSONSelectThrowin class
-        // submitJSONvars(tab_selector) {
-		// 	let selected = {};
-		// 	document.querySelectorAll('.throwin ' + tab_selector + ' input:checked').forEach(input => {
-		// 		selected[input.attributes['keyname'].value] = input.attributes['keyval'].value;
-		// 	});
+        submitJSONvars(tab_selector) {
+			let selected = {};
+			document.querySelectorAll('.throwin ' + tab_selector + ' input:checked').forEach(input => {
+				selected[input.attributes['keyname'].value] = input.attributes['keyval'].value;
+			});
 
-		// 	let json_data = {
-		// 		task_name: Liquid.curr_task,
-		// 		cmd_name: 'user_input',
-		// 		input_type: 'json_vars_selection',
-		// 		json_vars_selection: selected,
-		// 		qst_opaque_data: Liquid.dialogueManager.history[Liquid.dialogueManager.curr_pos].data
-		// 	}
+			let json_data = {
+				task_name: DATA.curr_task,
+				cmd_name: 'user_input',
+				input_type: 'json_vars_selection',
+				json_vars_selection: selected,
+				qst_opaque_data: DATA.Dialog.get(0).data
+			}
 
-		// 	Liquid.httpRequest({
-		// 		json_data: json_data
-		// 	})
-		// 	.then(response => { Liquid.handleResponse(response) });
-		// }
+			DATA.httpRequest({
+				json_data: json_data
+			})
+			.then(response => { DATA.handleResponse(response) });
+		}
 
 
     },

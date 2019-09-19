@@ -129,7 +129,12 @@ function (_React$Component2) {
             }
           }));
           break;
-        // case 'table':
+
+        case 'webpage':
+          innerHTML.push(React.createElement("iframe", {
+            key: "1",
+            src: this.props.rawdata
+          }));
 
         default:
       }

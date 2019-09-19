@@ -99,7 +99,11 @@ var DATA = {
           break;
 
         case 'liquid_served_url':
-          window.open('https://spurcell.pythonanywhere.com' + sec_data.relative_url);
+          var url = 'https://spurcell.pythonanywhere.com' + sec_data.relative_url;
+
+          _this.Throwin.add('webpage', sec_data.node_name, 'url', url);
+
+          break;
 
         default:
           console.error('[DATA.handleResponse] unrecognized reply type: ' + section);
@@ -215,6 +219,10 @@ var DATA = {
 
         case 'json_select':
           throwin = new JSONSelectThrowin(name, extension, rawdata);
+          break;
+
+        case 'webpage':
+          throwin = new WebPageThrowin(name, extension, rawdata);
           break;
       }
 

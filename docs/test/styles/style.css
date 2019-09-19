@@ -253,6 +253,14 @@ nav.hidden + main {
   content: "✓ ";
   font-weight: bold;
 }
+#tabs .throwin .webpage {
+  height: inherit;
+}
+#tabs .throwin .webpage iframe {
+  height: inherit;
+  width: 100%;
+  border: none;
+}
 
 #tabs::after {
   content: "No files yet!";

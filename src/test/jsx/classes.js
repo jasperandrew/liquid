@@ -79,3 +79,10 @@ class JSONSelectThrowin extends JSONThrowin {
         this.object = null;
     }
 }
+
+class WebPageThrowin extends Throwin {
+    constructor(name, extension, rawdata) {
+        super(name, extension, rawdata);
+        this.type = 'webpage';
+    }
+}

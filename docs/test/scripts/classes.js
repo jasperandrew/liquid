@@ -193,3 +193,21 @@ function (_JSONThrowin) {
 
   return JSONSelectThrowin;
 }(JSONThrowin);
+
+var WebPageThrowin =
+/*#__PURE__*/
+function (_Throwin4) {
+  _inherits(WebPageThrowin, _Throwin4);
+
+  function WebPageThrowin(name, extension, rawdata) {
+    var _this5;
+
+    _classCallCheck(this, WebPageThrowin);
+
+    _this5 = _possibleConstructorReturn(this, _getPrototypeOf(WebPageThrowin).call(this, name, extension, rawdata));
+    _this5.type = 'webpage';
+    return _this5;
+  }
+
+  return WebPageThrowin;
+}(Throwin);

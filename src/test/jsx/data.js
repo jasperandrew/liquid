@@ -77,7 +77,9 @@ const DATA = {
 				case 'user_question':
 					this.Dialog.handleNew(sec_data); break;
 				case 'liquid_served_url':
-					window.open('https://spurcell.pythonanywhere.com' + sec_data.relative_url);
+					let url = 'https://spurcell.pythonanywhere.com' + sec_data.relative_url;
+					this.Throwin.add('webpage', sec_data.node_name, 'url', url);
+					break;
 				default:
 					console.error('[DATA.handleResponse] unrecognized reply type: ' + section);
 			}
@@ -171,6 +173,7 @@ const DATA = {
 				case 'table': throwin = new TableThrowin(name, extension, rawdata); break;
 				case 'json': throwin = new JSONThrowin(name, extension, rawdata); break;
 				case 'json_select': throwin = new JSONSelectThrowin(name, extension, rawdata); break;
+				case 'webpage': throwin = new WebPageThrowin(name, extension, rawdata); break;
 			}
             this.data.push(throwin);
             UI.TabView.render(this.data.length); // focus the most recent tab

@@ -188,6 +188,7 @@ nav.hidden + main {
   overflow-x: auto;
   font-family: "Ubuntu Mono", monospace;
   padding: 10px;
+  height: inherit;
 }
 #tabs .throwin .table {
   height: inherit;
@@ -195,6 +196,7 @@ nav.hidden + main {
 #tabs .throwin .json_select {
   overflow-x: auto;
   padding: 10px;
+  height: inherit;
 }
 #tabs .throwin .json_select > label {
   padding: 0;

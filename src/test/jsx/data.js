@@ -76,6 +76,8 @@ const DATA = {
 					break;
 				case 'user_question':
 					this.Dialog.handleNew(sec_data); break;
+				case 'liquid_served_url':
+					window.open('https://spurcell.pythonanywhere.com' + sec_data.relative_url);
 				default:
 					console.error('[DATA.handleResponse] unrecognized reply type: ' + section);
 			}

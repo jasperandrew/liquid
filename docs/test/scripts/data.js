@@ -98,6 +98,9 @@ var DATA = {
 
           break;
 
+        case 'liquid_served_url':
+          window.open('https://spurcell.pythonanywhere.com' + sec_data.relative_url);
+
         default:
           console.error('[DATA.handleResponse] unrecognized reply type: ' + section);
       }

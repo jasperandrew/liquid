@@ -16,7 +16,7 @@
 - filter 
     - toggle case sensitive
     - empty (null, '', undefined)
-    - wildcard ? 
+    - wildcard ?
 
 - download throwins
 

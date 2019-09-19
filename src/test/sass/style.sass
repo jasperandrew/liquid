@@ -1,9 +1,10 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans|Ubuntu+Mono")
 
 $nav_wdt: 250px
-$main_wdt: calc(100vw - #{$nav_wdt})
+$main_wdt_nav: calc(100vw - #{$nav_wdt})
 $head_hgt: 70px
-$tool_hgt: 30px
+$nav_hgt: 80px
+$tool_hgt: 0px//30px
 $button_hgt: 45px
 
 *
@@ -15,63 +16,22 @@ body
 	padding: 0
 	font-family: Open Sans, sans-serif
 
-nav
-	position: fixed
-	top: 0
-	right: 0
-	height: 100vh
-	width: $nav_wdt
-	border-left: 1px solid black
-	overflow: hidden
-	transition: right 0.2s
-
-nav.hidden
-	right: -$nav_wdt
-
-#dialogue
-	padding: 20px
-
-	.prompt
-		margin-top: 0
-
-	&.locked
-		.option
-			pointer-events: none
-			opacity: 0.4
-
-
-	.option
-		input
-			display: none
-
-		label
-			display: inline-block
-			margin: 5px 0
-			border: 1px solid #ddd
-			padding: 5px 15px
-			background: #f8f8f8
-		label:hover
-			cursor: pointer
-			background: #fff
-
-		input:checked ~ label
-			background: #b5c4e5
-
 main
 	position: fixed
 	top: 0
 	left: 0
 	height: 100vh
-	width: $main_wdt
-	transition: width 0.2s
-
-nav.hidden + main
 	width: 100vw
+	transition: width 0.2s
+	display: flex
+	flex-direction: column
+
+main.sidebar
+	width: $main_wdt_nav
 
 #header_menu
 	width: 100%
 	height: $head_hgt
-	border-bottom: 1px solid black
 	display: flex
 	align-items: center
 
@@ -131,128 +91,186 @@ nav.hidden + main
 				height: 20px
 				margin-right: 6px
 
-#button_set
+nav
+	height: $nav_hgt
+	border-top: 1px solid black
+
+main.sidebar nav
 	position: fixed
-	bottom: 0
-	left: 0
-	display: flex
-	align-items: flex-end
-	width: $main_wdt
-	background: #eee
-	height: $button_hgt
+	top: 0
+	right: 0
+	height: 100vh
+	width: $nav_wdt
+	border-left: 1px solid black
+	border-top: none
+	overflow: hidden
+	transition: right 0.2s
 
-	.tab_button
-		position: relative
-		display: flex
-		align-items: center
-		height: $button_hgt - 5px
-		padding: 0 20px
-		border: 1px solid lightgrey
-		border-left: none
-		background: #fff
-		cursor: pointer
-		overflow: hidden
+#dialogue
+	padding: 10px 15px
 
-	.tab_button.active::before
-		content: ''
-		display: block
-		position: absolute
-		top: 0
-		left: 0
-		height: 3px
-		width: 100%
-		background: #56a0e9
+	.prompt
+		margin: 0 0 5px 0
+
+	&.locked
+		.option
+			pointer-events: none
+			opacity: 0.4
+
+
+	.option
+		display: inline-block
+		margin-right: 15px
+
+		input
+			display: none
+
+		label
+			display: inline-block
+			margin: 5px 0
+			border: 1px solid #ddd
+			padding: 5px 15px
+			background: #f8f8f8
+		label:hover
+			cursor: pointer
+			background: #fff
+
+		input:checked ~ label
+			background: #b5c4e5
+
+#toolbar
+	height: $tool_hgt
+	//border-top: 1px solid black
+
+#tabview
+	width: inherit
+	flex-grow: 1
+
+main.sidebar #tabs
+	height: calc(100vh - #{$head_hgt} - #{$tool_hgt})
+	#throwin_set
+		.throwin
+			height: calc(100vh - #{$head_hgt} - #{$tool_hgt} - #{$button_hgt})
 
 #tabs
-	position: fixed
-	top: $head_hgt + 30px
-	left: 0
-	width: $main_wdt
-	height: calc(100vh - #{$head_hgt} - #{$tool_hgt})
+	width: inherit
+	height: calc(100vh - #{$head_hgt} - #{$nav_hgt} - #{$tool_hgt})
 
-	.throwin
-		border-top: 1px solid black
-		position: absolute
-		width: 100%
-		z-index: 0
-		background: #fff
-		height: calc(100vh - #{$head_hgt} - #{$tool_hgt} - #{$button_hgt})
-	
-	.throwin.active
-		z-index: 1
-
-	.throwin .text
-		white-space: pre
-		overflow-x: auto
-		font-family: "Ubuntu Mono", monospace
-		padding: 10px
-		height: inherit
-	
-	.throwin .table
-		height: inherit
-
-	.throwin .json_select
-		overflow-x: auto
-		padding: 10px
-		height: inherit
-
-		> label
-			padding: 0
-			display: inline-block
-			&:last-of-type
-				margin-bottom: 5px
-			input
-				display: none
-			> span
-				opacity: 0.5
-				cursor: pointer
-				span
-					display: none
-				&:before
-					content: '☐ '
-			input:checked ~ span
-				opacity: 1
-				&:before
-					content: '☑ '
-			&:hover
-				> span, input:checked ~ span
-					opacity: 0.7
-					span
-						display: inline
-		input[type="button"]
-			display: none
-		label[for^="json_submit"]
-			position: absolute
-			top: 20px
-			right: 35px
-			background-color: #3ec435
-			color: #fff
-			padding: 10px 15px 
-			border-radius: 5px
-			cursor: pointer
-			&:hover
-				filter: brightness(0.9)
-			&:active
-				filter: brightness(0.8)
-			&:before
-				content: '✓ '
-				font-weight: bold
-
-	.throwin .webpage
-		height: inherit
-
-		iframe
-			height: inherit
+	#throwin_set
+		.throwin
+			border-top: 1px solid black
 			width: 100%
-			border: none
+			height: calc(100vh - #{$head_hgt} - #{$nav_hgt} - #{$tool_hgt} - #{$button_hgt})
+			background: #fff
+			display: none
+			
+		
+		.throwin.active
+			display: block
+
+		.throwin .text
+			white-space: pre
+			overflow-x: auto
+			font-family: "Ubuntu Mono", monospace
+			padding: 10px
+			height: inherit
+		
+		.throwin .table
+			height: inherit
+
+		.throwin .json_select
+			overflow-x: auto
+			padding: 10px
+			height: inherit
+
+			> label
+				padding: 0
+				display: inline-block
+				&:last-of-type
+					margin-bottom: 5px
+				input
+					display: none
+				> span
+					opacity: 0.5
+					cursor: pointer
+					span
+						display: none
+					&:before
+						content: '☐ '
+				input:checked ~ span
+					opacity: 1
+					&:before
+						content: '☑ '
+				&:hover
+					> span, input:checked ~ span
+						opacity: 0.7
+						span
+							display: inline
+			input[type="button"]
+				display: none
+			label[for^="json_submit"]
+				position: absolute
+				top: 20px
+				right: 35px
+				background-color: #3ec435
+				color: #fff
+				padding: 10px 15px 
+				border-radius: 5px
+				cursor: pointer
+				&:hover
+					filter: brightness(0.9)
+				&:active
+					filter: brightness(0.8)
+				&:before
+					content: '✓ '
+					font-weight: bold
+
+		.throwin .webpage
+			height: inherit
+
+			iframe
+				height: inherit
+				width: 100%
+				border: none
+
+	#button_set
+		display: flex
+		align-items: flex-end
+		width: inherit
+		background: #eee
+		height: 45px
+
+		.tab_button
+			position: relative
+			display: flex
+			align-items: center
+			height: $button_hgt - 5px
+			padding: 0 20px
+			border: 1px solid lightgrey
+			border-left: none
+			background: #fff
+			cursor: pointer
+			overflow: hidden
+
+		.tab_button.active::before
+			content: ''
+			display: block
+			position: absolute
+			top: 0
+			left: 0
+			height: 3px
+			width: 100%
+			background: #56a0e9
 
 #tabs::after
+	position: absolute
 	content: 'No files yet!'
 	display: block
 	width: 100%
 	z-index: -1
 	text-align: center
 	padding-top: calc(50vh - #{$head_hgt})
+
 
 /* Tabulator overrides */
 .tabulator

@@ -106,7 +106,7 @@ const UI = {
         ],
 
         render() {
-            ReactDOM.render(<HeaderMenuComponent menus={this.menus}/>, document.querySelector('#head'));
+            ReactDOM.render(<HeaderMenuComponent menus={this.menus}/>, document.querySelector('#header'));
         }
     },
 

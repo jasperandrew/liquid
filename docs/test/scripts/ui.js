@@ -117,7 +117,7 @@ var UI = {
     render: function render() {
       ReactDOM.render(React.createElement(HeaderMenuComponent, {
         menus: this.menus
-      }), document.querySelector('#head'));
+      }), document.querySelector('#header'));
     }
   },
   EventHandler: {

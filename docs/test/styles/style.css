@@ -144,6 +144,7 @@ main.sidebar nav {
 }
 
 #tabview {
+  border-top: 1px solid black;
   width: inherit;
   flex-grow: 1;
 }
@@ -151,7 +152,7 @@ main.sidebar nav {
 main.sidebar #tabs {
   height: calc(100vh - 70px - 0px);
 }
-main.sidebar #tabs #throwin_set .throwin {
+main.sidebar #tabs #throwin_set {
   height: calc(100vh - 70px - 0px - 45px);
 }
 
@@ -159,10 +160,12 @@ main.sidebar #tabs #throwin_set .throwin {
   width: inherit;
   height: calc(100vh - 70px - 80px - 0px);
 }
-#tabs #throwin_set .throwin {
-  border-top: 1px solid black;
-  width: 100%;
+#tabs #throwin_set {
   height: calc(100vh - 70px - 80px - 0px - 45px);
+}
+#tabs #throwin_set .throwin {
+  width: 100%;
+  height: inherit;
   background: #fff;
   display: none;
 }

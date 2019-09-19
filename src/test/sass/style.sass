@@ -143,24 +143,24 @@ main.sidebar nav
 	//border-top: 1px solid black
 
 #tabview
+	border-top: 1px solid black
 	width: inherit
 	flex-grow: 1
 
 main.sidebar #tabs
 	height: calc(100vh - #{$head_hgt} - #{$tool_hgt})
 	#throwin_set
-		.throwin
-			height: calc(100vh - #{$head_hgt} - #{$tool_hgt} - #{$button_hgt})
+		height: calc(100vh - #{$head_hgt} - #{$tool_hgt} - #{$button_hgt})
 
 #tabs
 	width: inherit
 	height: calc(100vh - #{$head_hgt} - #{$nav_hgt} - #{$tool_hgt})
 
 	#throwin_set
+		height: calc(100vh - #{$head_hgt} - #{$nav_hgt} - #{$tool_hgt} - #{$button_hgt})
 		.throwin
-			border-top: 1px solid black
 			width: 100%
-			height: calc(100vh - #{$head_hgt} - #{$nav_hgt} - #{$tool_hgt} - #{$button_hgt})
+			height: inherit
 			background: #fff
 			display: none
 			

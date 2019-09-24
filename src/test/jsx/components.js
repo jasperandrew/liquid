@@ -8,17 +8,17 @@ class HeaderMenuComponent extends React.Component {
             <div id='header_menu'>
                 <div className='logo'></div>
                 <div className='title_menu'>
-                    <div className='title'>Current Task Name</div>
+                    <div className='title'>Liquid Data</div>
                     <div className='menus'>
-                        <div className='menu' menu-title='File'>
+                        <div className='menu' /*menu-title='File'*/ >File
 							{/* <p>Test 1</p>
 							<p>Test 2</p>
 							<p>Test 3</p> */}
 						</div>
                         <div className='menu'>Edit</div>
-                        <div className='menu'>These</div>
-                        <div className='menu'>Are</div>
-                        <div className='menu'>Placeholders</div>
+                        <div className='menu'>Insert</div>
+                        <div className='menu'>Data</div>
+                        <div className='menu'>Help</div>
                     </div>
                 </div>
                 <div className='throwin_button'>

@@ -40,20 +40,21 @@ function (_React$Component) {
         className: "title_menu"
       }, React.createElement("div", {
         className: "title"
-      }, "Current Task Name"), React.createElement("div", {
+      }, "Liquid Data"), React.createElement("div", {
         className: "menus"
       }, React.createElement("div", {
-        className: "menu",
-        "menu-title": "File"
-      }), React.createElement("div", {
+        className: "menu"
+        /*menu-title='File'*/
+
+      }, "File"), React.createElement("div", {
         className: "menu"
       }, "Edit"), React.createElement("div", {
         className: "menu"
-      }, "These"), React.createElement("div", {
+      }, "Insert"), React.createElement("div", {
         className: "menu"
-      }, "Are"), React.createElement("div", {
+      }, "Data"), React.createElement("div", {
         className: "menu"
-      }, "Placeholders"))), React.createElement("div", {
+      }, "Help"))), React.createElement("div", {
         className: "throwin_button"
       }, React.createElement("input", {
         id: "throwin_file",

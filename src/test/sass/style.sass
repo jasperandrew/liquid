@@ -2,8 +2,8 @@
 
 $nav_wdt: 250px
 $main_wdt_nav: calc(100vw - #{$nav_wdt})
-$head_hgt: 70px
-$nav_hgt: 80px
+$head_hgt: 100px//70px
+$nav_hgt: 0px//80px
 $tool_hgt: 0px//30px
 $button_hgt: 45px
 
@@ -33,20 +33,21 @@ main.sidebar
 	width: 100%
 	height: $head_hgt
 	display: flex
-	align-items: center
+	// align-items: center
 
 	$logo_wdt: 50px
 	.logo
 		display: inline-block
-		background: center/cover url('../resources/water-drop.jpg')
-		width: $logo_wdt
-		height: $logo_wdt
-		margin: ($head_hgt - $logo_wdt) / 2
+		background: center/cover url('../resources/liquid-logo-vert.png')
+		width: 44px//$logo_wdt
+		height: 76px//$logo_wdt
+		margin: 13px//($head_hgt - $logo_wdt) / 2
 
 	.title_menu
 		display: flex
 		flex-direction: column
-		justify-content: space-around
+		// justify-content: space-around
+		color: #777777
 
 		.title
 			display: inline-block
@@ -57,13 +58,30 @@ main.sidebar
 		.menus
 			display: flex
 			flex-direction: row
+			margin-top: 5px
 			
 			.menu
 				margin-right: 10px
+				height: 16px
+				cursor: pointer
+
+				.contents
+					position: absolute
+					display: none
+
+			.menu:hover
+				background: #eeeeee
+					
+		.menus.open
+			.menu
+				.contents
+					display: block
+
 	
 	.throwin_button
 		margin-left: auto
-		margin-right: 50px
+		margin-right: 27px
+		margin-top: 27px
 
 		input
 			display: none
@@ -91,11 +109,15 @@ main.sidebar
 				height: 20px
 				margin-right: 6px
 
-nav
-	height: $nav_hgt
-	border-top: 1px solid black
+#dialog
+	// height: $nav_hgt
+	position: absolute
+	z-index: 3
+	top: 20px
+	left: 55px
+	width: calc(100vw - 225px)
 
-main.sidebar nav
+main.sidebar #dialog
 	position: fixed
 	top: 0
 	right: 0
@@ -163,7 +185,7 @@ main.sidebar #tabs
 			height: inherit
 			background: #fff
 			display: none
-			
+			position: relative
 		
 		.throwin.active
 			display: block

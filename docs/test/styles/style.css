@@ -28,21 +28,20 @@ main.sidebar {
 
 #header_menu {
   width: 100%;
-  height: 70px;
+  height: 100px;
   display: flex;
-  align-items: center;
 }
 #header_menu .logo {
   display: inline-block;
-  background: center/cover url("../resources/water-drop.jpg");
-  width: 50px;
-  height: 50px;
-  margin: 10px;
+  background: center/cover url("../resources/liquid-logo-vert.png");
+  width: 44px;
+  height: 76px;
+  margin: 13px;
 }
 #header_menu .title_menu {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  color: #777777;
 }
 #header_menu .title_menu .title {
   display: inline-block;
@@ -53,13 +52,27 @@ main.sidebar {
 #header_menu .title_menu .menus {
   display: flex;
   flex-direction: row;
+  margin-top: 5px;
 }
 #header_menu .title_menu .menus .menu {
   margin-right: 10px;
+  height: 16px;
+  cursor: pointer;
+}
+#header_menu .title_menu .menus .menu .contents {
+  position: absolute;
+  display: none;
+}
+#header_menu .title_menu .menus .menu:hover {
+  background: #eeeeee;
+}
+#header_menu .title_menu .menus.open .menu .contents {
+  display: block;
 }
 #header_menu .throwin_button {
   margin-left: auto;
-  margin-right: 50px;
+  margin-right: 27px;
+  margin-top: 27px;
 }
 #header_menu .throwin_button input {
   display: none;
@@ -90,12 +103,15 @@ main.sidebar {
   margin-right: 6px;
 }
 
-nav {
-  height: 80px;
-  border-top: 1px solid black;
+#dialog {
+  position: absolute;
+  z-index: 3;
+  top: 20px;
+  left: 55px;
+  width: calc(100vw - 225px);
 }
 
-main.sidebar nav {
+main.sidebar #dialog {
   position: fixed;
   top: 0;
   right: 0;
@@ -150,24 +166,25 @@ main.sidebar nav {
 }
 
 main.sidebar #tabs {
-  height: calc(100vh - 70px - 0px);
+  height: calc(100vh - 100px - 0px);
 }
 main.sidebar #tabs #throwin_set {
-  height: calc(100vh - 70px - 0px - 45px);
+  height: calc(100vh - 100px - 0px - 45px);
 }
 
 #tabs {
   width: inherit;
-  height: calc(100vh - 70px - 80px - 0px);
+  height: calc(100vh - 100px - 0px - 0px);
 }
 #tabs #throwin_set {
-  height: calc(100vh - 70px - 80px - 0px - 45px);
+  height: calc(100vh - 100px - 0px - 0px - 45px);
 }
 #tabs #throwin_set .throwin {
   width: 100%;
   height: inherit;
   background: #fff;
   display: none;
+  position: relative;
 }
 #tabs #throwin_set .throwin.active {
   display: block;
@@ -287,7 +304,7 @@ main.sidebar #tabs #throwin_set {
   width: 100%;
   z-index: -1;
   text-align: center;
-  padding-top: calc(50vh - 70px);
+  padding-top: calc(50vh - 100px);
 }
 
 /* Tabulator overrides */

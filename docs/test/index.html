@@ -10,8 +10,10 @@
 
 <body>
 	<main>
-		<div id="header"></div>
-		<nav></nav>
+		<div id="top">
+			<div id="header"></div>
+			<div id="dialog"></div>
+		</div>
 		<div id="toolbar"></div>
 		<div id="tabview"></div>
 	</main>
@@ -28,7 +30,7 @@
 	<script src="scripts/classes.js"></script>
 	<!-- <script src="scripts/app.js"></script> -->
 	<script>
-		// Would you like to leave he page message
+		// Would you like to leave the page message
 		window.onbeforeunload = function() { return true; };
 
 		// Liquid.initialize();

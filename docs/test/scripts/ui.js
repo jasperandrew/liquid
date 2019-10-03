@@ -23,7 +23,7 @@ var UI = {
     render: function render() {
       ReactDOM.render(React.createElement(DialogueComponent, {
         prompt: DATA.Dialog.get(0).prompt
-      }), document.querySelector('nav'));
+      }), document.querySelector('#dialog'));
     }
   },
   TabView: {
@@ -114,6 +114,9 @@ var UI = {
         func: addCheckColumn
       }]
     }],
+    toggle: function toggle() {
+      UI.toggleClass('#header .menus', 'open');
+    },
     render: function render() {
       ReactDOM.render(React.createElement(HeaderMenuComponent, {
         menus: this.menus

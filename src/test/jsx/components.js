@@ -8,12 +8,14 @@ class HeaderMenuComponent extends React.Component {
             <div id='header_menu'>
                 <div className='logo'></div>
                 <div className='title_menu'>
-                    <div className='title'>Liquid Data</div>
+                    {/* <div className='title'>Liquid Data</div> */}
                     <div className='menus'>
-                        <div className='menu' /*menu-title='File'*/ >File
-							{/* <p>Test 1</p>
-							<p>Test 2</p>
-							<p>Test 3</p> */}
+                        <div className='menu'><span onClick={() => UI.HeaderMenu.toggle() }>File</span>
+							<div className='contents'>
+								<div>Test 1</div>
+								<div>Test 2</div>
+								<div>Test 3</div>
+							</div>
 						</div>
                         <div className='menu'>Edit</div>
                         <div className='menu'>Insert</div>

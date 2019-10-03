@@ -16,7 +16,7 @@ const UI = {
 
     DialogView: {
         render() {
-			ReactDOM.render(<DialogueComponent prompt={DATA.Dialog.get(0).prompt}/>, document.querySelector('nav'));
+			ReactDOM.render(<DialogueComponent prompt={DATA.Dialog.get(0).prompt}/>, document.querySelector('#dialog'));
 		}
     },
 
@@ -104,6 +104,10 @@ const UI = {
                 ]
             }
         ],
+
+        toggle() {
+            UI.toggleClass('#header .menus', 'open');
+        },
 
         render() {
             ReactDOM.render(<HeaderMenuComponent menus={this.menus}/>, document.querySelector('#header'));

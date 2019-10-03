@@ -39,14 +39,16 @@ function (_React$Component) {
       }), React.createElement("div", {
         className: "title_menu"
       }, React.createElement("div", {
-        className: "title"
-      }, "Liquid Data"), React.createElement("div", {
         className: "menus"
       }, React.createElement("div", {
         className: "menu"
-        /*menu-title='File'*/
-
+      }, React.createElement("span", {
+        onClick: function onClick() {
+          return UI.HeaderMenu.toggle();
+        }
       }, "File"), React.createElement("div", {
+        className: "contents"
+      }, React.createElement("div", null, "Test 1"), React.createElement("div", null, "Test 2"), React.createElement("div", null, "Test 3"))), React.createElement("div", {
         className: "menu"
       }, "Edit"), React.createElement("div", {
         className: "menu"

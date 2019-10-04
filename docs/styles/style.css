@@ -1,307 +1,268 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css?family=Open+Sans|Ubuntu+Mono");
+* {
+  box-sizing: border-box;
+  font-size: 13px;
+}
+
 body {
-  font-family: "Open Sans";
-}
-
-nav {
-  position: fixed;
-  left: -250px;
-  top: 0;
-  background-color: #c9d5ef;
-  width: 230px;
-  height: 100vh;
-  z-index: 3;
-  box-shadow: 1px 0 4px 0 rgba(0, 0, 0, 0.15);
-  transition: left 0.1s, box-shadow 0.5s;
-  padding: 20px;
-}
-nav:after, nav:before {
-  content: "";
-  display: block;
-  position: absolute;
-  right: 7px;
-  width: 0;
-  height: 0;
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
-  border-right: 5px solid #000;
-  opacity: 0.4;
-  transition: opacity 0.3s;
-}
-nav:before {
-  top: 25vh;
-}
-nav:after {
-  top: 75vh;
-}
-nav:hover {
-  left: -247px;
-  box-shadow: 1px 0 4px 0 rgba(0, 0, 0, 0.4);
-  cursor: pointer;
-}
-nav.open {
-  left: 0;
-  box-shadow: 1px 0 4px 0 rgba(0, 0, 0, 0.4);
-  cursor: default;
-}
-nav.open:after, nav.open:before {
-  opacity: 0;
-}
-nav h1 {
-  text-transform: uppercase;
-  font-size: 3em;
-  text-align: center;
-  margin: 10px 0 30px 0;
-  line-height: 100%;
-  opacity: 0.5;
-  color: #fff;
-}
-nav #task_list h2 {
-  text-transform: uppercase;
-  pointer-events: none;
   margin: 0;
-}
-nav #task_list h2:after {
-  content: "↻";
-  transform: rotate(75deg);
-  display: inline-block;
-  font-size: 0.7em;
-  position: relative;
-  left: 7px;
-  bottom: 1px;
-  opacity: 0.3;
-  cursor: pointer;
-  pointer-events: all;
-}
-nav #task_list ul {
-  margin-top: 5px;
-  list-style: none;
-}
-
-.screen {
-  z-index: 1;
-  display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: black;
-  opacity: 0;
-  transition: 0.3s ease-in-out;
-}
-.screen.open {
-  opacity: 0.15;
-}
-.screen.hidden {
-  display: none;
+  padding: 0;
+  font-family: Open Sans, sans-serif;
 }
 
 main {
-  box-sizing: border-box;
-  padding: 0;
   position: fixed;
-  right: 0;
   top: 0;
-  width: calc(100% - 20px);
+  left: 0;
   height: 100vh;
-  background: #fff;
+  width: 100vw;
+  transition: width 0.2s;
+  display: flex;
+  flex-direction: column;
 }
 
-.dialogue {
-  position: absolute;
-  top: 0;
-  width: calc(100% - 20px);
-  background: #fff;
-  padding: 20px;
-  border-bottom: 1px solid #ddd;
-  min-height: 113px;
-}
-.dialogue .prompt {
-  margin-top: 0;
-  width: calc(100% - 165px);
-}
-.dialogue.locked .option {
-  pointer-events: none;
-  opacity: 0.5;
+main.sidebar {
+  width: calc(100vw - 250px);
 }
 
-.option input {
-  display: none;
+#header_menu {
+  width: 100%;
+  height: 100px;
+  display: flex;
 }
-.option label {
+#header_menu .logo {
   display: inline-block;
-  margin: 5px 0 0 40px;
-  border: 1px solid #ddd;
-  padding: 5px 15px;
-  background: #f8f8f8;
+  background: center/cover url("../resources/liquid-logo.png");
+  width: 76px;
+  height: 44px;
+  margin: 27px 20px;
 }
-.option label:hover {
+#header_menu .title_menu {
+  display: flex;
+  flex-direction: column;
+}
+#header_menu .title_menu .title {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  font-size: 20px;
+}
+#header_menu .title_menu .menus {
+  display: flex;
+  flex-direction: row;
+  margin-top: 7px;
+  color: #777777;
+}
+#header_menu .title_menu .menus .menu {
+  height: 20px;
+}
+#header_menu .title_menu .menus .menu span {
   cursor: pointer;
-  background: #fff;
+  padding: 0 5px 2px 5px;
 }
-.option input:checked ~ label {
-  background: #b5c4e5;
-}
-
-#throwin_data {
+#header_menu .title_menu .menus .menu .items {
   position: absolute;
-  right: 20px;
-  padding: 20px;
+  display: none;
+  background: #fff;
+  border: 1px solid #eee;
+  z-index: 4;
+  padding: 5px 0;
+  color: #000;
 }
-
-#throwin_data > * {
+#header_menu .title_menu .menus .menu .items a {
   display: block;
-  text-align: center;
+  cursor: pointer;
+  padding: 0 10px;
 }
-
-#throwin_data > input {
+#header_menu .title_menu .menus .menu .items a:hover {
+  background: #eee;
+}
+#header_menu .title_menu .menus .menu:hover span {
+  background: #eee;
+}
+#header_menu .title_menu .menus .menu.open span {
+  background: #eee;
+}
+#header_menu .title_menu .menus .menu.open .items {
+  display: block;
+}
+#header_menu .title_menu .menus.on,
+#header_menu .title_menu .menus:hover {
+  color: #000;
+}
+#header_menu .throwin_button {
+  margin-left: auto;
+  margin-right: 27px;
+  margin-top: 27px;
+}
+#header_menu .throwin_button input {
   display: none;
 }
-
-#throwin_data > label {
+#header_menu .throwin_button label[for$=file] {
+  display: flex;
   align-items: center;
-  text-align: center;
-  padding: 10px;
-  border: 1px solid #274fa5;
-  color: white;
-  font-size: 1.2em;
-  line-height: 1.2em;
+  padding: 10px 15px;
+  font-size: 16px;
   cursor: pointer;
-  background: #6e92dd;
+  background: #3ec435;
+  color: #fff;
+  border-radius: 5px;
 }
-#throwin_data > label:hover {
+#header_menu .throwin_button label[for$=file]:hover {
   filter: brightness(0.9);
 }
-#throwin_data > label:active {
+#header_menu .throwin_button label[for$=file]:active {
+  filter: brightness(0.8);
+}
+#header_menu .throwin_button label[for$=file] div {
+  display: inline-block;
+  opacity: 1;
+  background: center/cover url("../resources/ico-file.png");
+  filter: invert(1) brightness(3);
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+}
+
+#dialog {
+  position: absolute;
+  z-index: 3;
+  top: 23px;
+  left: 105px;
+  width: calc(100vw - 260px);
+}
+
+main.sidebar #dialog {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: 250px;
+  border-left: 1px solid black;
+  border-top: none;
+  overflow: hidden;
+  transition: right 0.2s;
+}
+
+#dialogue {
+  padding: 10px 15px;
+}
+#dialogue .prompt {
+  margin: 0 0 5px 0;
+}
+#dialogue.locked .option {
+  pointer-events: none;
+  opacity: 0.4;
+}
+#dialogue .option {
+  display: inline-block;
+  margin-right: 15px;
+}
+#dialogue .option input {
+  display: none;
+}
+#dialogue .option label {
+  display: inline-block;
+  margin: 5px 0;
+  padding: 5px 15px;
+  background: #56a0e9;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+}
+#dialogue .option label:hover {
+  filter: brightness(0.9);
+}
+#dialogue .option input:checked ~ label {
   filter: brightness(0.8);
 }
 
-#throwin_data > span {
-  font-size: 0.7em;
-  margin: 5px 0;
+#toolbar {
+  height: 0px;
 }
 
-#tab_container::after {
-  content: "No files yet!";
-  display: block;
-  position: fixed;
-  bottom: 50px;
-  left: 0;
-  width: calc(100% - 20px);
-  margin: 10px;
-  z-index: -1;
-  text-align: center;
-  padding-bottom: 30vh;
+#tabview {
+  border-top: 1px solid black;
+  width: inherit;
+  flex-grow: 1;
 }
 
-.tabs {
-  position: absolute;
-  bottom: 7px;
-  left: 20px;
-  width: calc(100% - 20px);
+main.sidebar #tabs {
+  height: calc(100vh - 100px - 0px);
+}
+main.sidebar #tabs #throwin_set {
+  height: calc(100vh - 100px - 0px - 45px);
 }
 
-.tab {
-  display: inline;
-  margin: 0;
-  font-size: 0;
+#tabs {
+  width: inherit;
+  height: calc(100vh - 100px - 0px - 0px);
 }
-.tab * {
-  font-size: initial;
+#tabs #throwin_set {
+  height: calc(100vh - 100px - 0px - 0px - 45px);
 }
-.tab > input {
-  display: none;
-}
-.tab > label {
-  position: relative;
-  font-size: initial;
-  box-sizing: border-box;
-  padding: 10px 25px 20px 25px;
-  color: #888;
-  border: 1px solid #bbb;
-  border-left: none;
+#tabs #throwin_set .throwin {
+  width: 100%;
+  height: inherit;
   background: #fff;
+  display: none;
+  position: relative;
 }
-.tab:first-child > label {
-  border-left: 1px solid #bbb;
-}
-.tab > label:hover {
-  color: #333;
-  cursor: pointer;
-}
-.tab > input:checked ~ label {
-  color: #333;
-  border-top: 3px solid #6890e8;
-  border-radius: 2px 2px 0 0;
-}
-.tab > input:checked ~ label:hover {
-  bottom: 0;
-}
-.tab .throwin {
+#tabs #throwin_set .throwin.active {
   display: block;
-  position: absolute;
-  bottom: 50px;
-  left: 0;
-  width: calc(100% - 20px);
-  z-index: 0;
-  border: 1px solid #bbb;
 }
-.tab .throwin > div {
-  display: block;
-  height: 60vh;
-  background: white;
-}
-.tab .throwin .text {
+#tabs #throwin_set .throwin .text {
   white-space: pre;
   overflow-x: auto;
   font-family: "Ubuntu Mono", monospace;
   padding: 10px;
+  height: inherit;
 }
-.tab .throwin .table {
-  height: calc(60vh + 20px);
+#tabs #throwin_set .throwin .table {
+  height: inherit;
 }
-.tab .throwin .json_select {
+#tabs #throwin_set .throwin .json_select {
   overflow-x: auto;
   padding: 10px;
+  height: inherit;
 }
-.tab .throwin .json_select > label {
+#tabs #throwin_set .throwin .json_select > label {
   padding: 0;
   display: inline-block;
 }
-.tab .throwin .json_select > label:last-of-type {
+#tabs #throwin_set .throwin .json_select > label:last-of-type {
   margin-bottom: 5px;
 }
-.tab .throwin .json_select > label input {
+#tabs #throwin_set .throwin .json_select > label input {
   display: none;
 }
-.tab .throwin .json_select > label > span {
+#tabs #throwin_set .throwin .json_select > label > span {
   opacity: 0.5;
   cursor: pointer;
 }
-.tab .throwin .json_select > label > span span {
+#tabs #throwin_set .throwin .json_select > label > span span {
   display: none;
 }
-.tab .throwin .json_select > label > span:before {
+#tabs #throwin_set .throwin .json_select > label > span:before {
   content: "☐ ";
 }
-.tab .throwin .json_select > label input:checked ~ span {
+#tabs #throwin_set .throwin .json_select > label input:checked ~ span {
   opacity: 1;
 }
-.tab .throwin .json_select > label input:checked ~ span:before {
+#tabs #throwin_set .throwin .json_select > label input:checked ~ span:before {
   content: "☑ ";
 }
-.tab .throwin .json_select > label:hover > span, .tab .throwin .json_select > label:hover input:checked ~ span {
+#tabs #throwin_set .throwin .json_select > label:hover > span, #tabs #throwin_set .throwin .json_select > label:hover input:checked ~ span {
   opacity: 0.7;
 }
-.tab .throwin .json_select > label:hover > span span, .tab .throwin .json_select > label:hover input:checked ~ span span {
+#tabs #throwin_set .throwin .json_select > label:hover > span span, #tabs #throwin_set .throwin .json_select > label:hover input:checked ~ span span {
   display: inline;
 }
-.tab .throwin .json_select input[type=button] {
+#tabs #throwin_set .throwin .json_select input[type=button] {
   display: none;
 }
-.tab .throwin .json_select label[for^=json_submit] {
+#tabs #throwin_set .throwin .json_select label[for^=json_submit] {
   position: absolute;
   top: 20px;
   right: 35px;
@@ -311,20 +272,62 @@ main {
   border-radius: 5px;
   cursor: pointer;
 }
-.tab .throwin .json_select label[for^=json_submit]:hover {
+#tabs #throwin_set .throwin .json_select label[for^=json_submit]:hover {
   filter: brightness(0.9);
 }
-.tab .throwin .json_select label[for^=json_submit]:active {
+#tabs #throwin_set .throwin .json_select label[for^=json_submit]:active {
   filter: brightness(0.8);
 }
-.tab .throwin .json_select label[for^=json_submit]:before {
+#tabs #throwin_set .throwin .json_select label[for^=json_submit]:before {
   content: "✓ ";
   font-weight: bold;
 }
-
-input:checked ~ .throwin {
+#tabs #throwin_set .throwin .webpage {
+  height: inherit;
+}
+#tabs #throwin_set .throwin .webpage iframe {
+  height: inherit;
+  width: 100%;
+  border: none;
+}
+#tabs #button_set {
+  display: flex;
+  align-items: flex-end;
+  width: inherit;
+  background: #eee;
+  height: 45px;
+}
+#tabs #button_set .tab_button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 20px;
+  border: 1px solid lightgrey;
+  border-left: none;
+  background: #fff;
+  cursor: pointer;
+  overflow: hidden;
+}
+#tabs #button_set .tab_button.active::before {
+  content: "";
   display: block;
-  z-index: 9;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background: #56a0e9;
+}
+
+#tabs::after {
+  position: absolute;
+  content: "No files yet!";
+  display: block;
+  width: 100%;
+  z-index: -1;
+  text-align: center;
+  padding-top: calc(50vh - 100px);
 }
 
 /* Tabulator overrides */

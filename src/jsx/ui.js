@@ -1,7 +1,7 @@
 const UI = {
-    toggleClass(el, name) { document.querySelector(el).classList.toggle(name); },
-    addClass(el, name) { document.querySelector(el).classList.add(name); },
-    removeClass(el, name) { document.querySelector(el).classList.remove(name); },
+    toggleClass(sel, name) { let el = document.querySelector(sel); if(el) el.classList.toggle(name); },
+    addClass(sel, name) { let el = document.querySelector(sel); if(el) el.classList.add(name); },
+    removeClass(sel, name) { let el = document.querySelector(sel); if(el) el.classList.remove(name); },
 
     init() {
         this.render();
@@ -87,26 +87,53 @@ const UI = {
         menus: [
             {
                 title: 'File',
-                items: []
+                items: [
+                    { name: 'Send Table Data', func: sendTableData },
+                ]
             },
             {
                 title: 'Edit',
-                items: []
+                items: [
+                    { name: 'Toggle Checkbox Column', func: toggleCheckboxColumn },
+                ]
             },
             {
-                title: 'Test',
+                title: 'Insert',
                 items: [
-                    { name: 'Add Check Column', func: addCheckColumn },
-                    { name: 'Add Text Column', func: addCheckColumn },
-                    { name: 'Basic Column Filter', func: addCheckColumn },
-                    { name: 'Custom Column Filter', func: addCheckColumn },
-                    { name: 'Clear Filters', func: addCheckColumn },
+                    { name: 'Checkbox Column', func: insertCheckboxColumn },
+                    { name: 'Text Column', func: insertTextColumn },
+                ]
+            },
+            {
+                title: 'Data',
+                items: [
+                    { name: 'Filter Column', func: filterColumn },
+                    { name: 'Multi-Column Filter', func: filterCustom },
+                    { name: 'Clear Filters', func: clearFilters },
                 ]
             }
         ],
+        hover_open: false,
 
-        toggle() {
-            UI.toggleClass('#header .menus', 'open');
+        control(i, hover) {
+            if(hover && !this.hover_open) return;
+
+            if(!hover){
+                this.hover_open = !this.hover_open;
+                UI.toggleClass('.menus', 'on');
+
+                if(!this.hover_open){
+                    this.close();
+                    return;
+                }
+            }
+            
+            this.close();
+            UI.addClass(`#header .menus [i="${i}"]`, 'open');
+        },
+
+        close() {
+            UI.removeClass('#header .menus .menu.open', 'open');
         },
 
         render() {
@@ -127,7 +154,6 @@ const UI = {
                 action = a[1],
                 elem = document.querySelector(target),
                 command = () => { this.event_map[event]() };
-                console.log(elem);
 
                 if(elem){
                     elem.removeEventListener(action, command);

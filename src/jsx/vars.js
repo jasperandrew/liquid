@@ -204,12 +204,12 @@ function sendTableData() {
 	
 }
 
-function addCheckColumn() {
+function insertCheckboxColumn() {
 	let col_name = window.prompt('Give a name for the new checkbox column:','checked');
 	DATA.Throwin.get(UI.TabView.getActive()).getTableObject().addColumn({title:col_name,field:col_name,formatter:triTickFormatter, cellClick:triTickCellClick },true);
 }
 
-function addTextColumn() {
+function insertTextColumn() {
 	let col_name = window.prompt('Give a name for the new text column:','notes');
 	DATA.Throwin.get(UI.TabView.getActive()).getTableObject().addColumn({title:col_name,field:col_name,editor:true},true);
 }
@@ -232,4 +232,18 @@ function clearFilters() {
 
 function lockDialogue() {
 	UI.toggleClass('#dialogue','locked');
+}
+
+function toggleCheckboxColumn() {
+// 	let tab = Liquid.tabManager.getTab(n);
+// 	if(tab !== false){
+// 		if(tab.getType() !== 'table'){
+// 			console.error(`tab ${n} isn\'t a table tab`);
+// 			return false;
+// 		}
+// 		let tab_object = tab.getTableObject();
+// 		tab_object.toggleColumn('selection');
+// 	}else{
+// 		console.log(`invalid  tab: ${n}`);
+// 	}
 }

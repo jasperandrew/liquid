@@ -18,21 +18,21 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var Tab =
+var Throwin =
 /*#__PURE__*/
 function () {
-  function Tab(name, extension, rawdata) {
-    _classCallCheck(this, Tab);
+  function Throwin(name, extension, rawdata) {
+    _classCallCheck(this, Throwin);
 
     this.name = name;
     this.rawdata = rawdata;
     this.extension = extension;
     this.title = this.name.split('/').pop();
-    this.id = Liquid.tabManager.tabs.length + 1;
-    this.tab_type = null;
+    this.id = DATA.Throwin.data.length + 1;
+    this.type = null;
   }
 
-  _createClass(Tab, [{
+  _createClass(Throwin, [{
     key: "getName",
     value: function getName() {
       return this.name;
@@ -58,9 +58,9 @@ function () {
       return this.type;
     }
   }, {
-    key: "getComponent",
-    value: function getComponent() {
-      return React.createElement(TabComponent, {
+    key: "getThrowinComponent",
+    value: function getThrowinComponent() {
+      return React.createElement(ThrowinComponent, {
         key: this.id,
         n: this.id,
         title: this.title,
@@ -86,38 +86,38 @@ function () {
     }
   }]);
 
-  return Tab;
+  return Throwin;
 }();
 
-var TextTab =
+var TextThrowin =
 /*#__PURE__*/
-function (_Tab) {
-  _inherits(TextTab, _Tab);
+function (_Throwin) {
+  _inherits(TextThrowin, _Throwin);
 
-  function TextTab(name, extension, rawdata) {
+  function TextThrowin(name, extension, rawdata) {
     var _this;
 
-    _classCallCheck(this, TextTab);
+    _classCallCheck(this, TextThrowin);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TextTab).call(this, name, extension, rawdata));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(TextThrowin).call(this, name, extension, rawdata));
     _this.type = 'text';
     return _this;
   }
 
-  return TextTab;
-}(Tab);
+  return TextThrowin;
+}(Throwin);
 
-var TableTab =
+var TableThrowin =
 /*#__PURE__*/
-function (_Tab2) {
-  _inherits(TableTab, _Tab2);
+function (_Throwin2) {
+  _inherits(TableThrowin, _Throwin2);
 
-  function TableTab(name, extension, rawdata) {
+  function TableThrowin(name, extension, rawdata) {
     var _this2;
 
-    _classCallCheck(this, TableTab);
+    _classCallCheck(this, TableThrowin);
 
-    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(TableTab).call(this, name, extension, rawdata));
+    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(TableThrowin).call(this, name, extension, rawdata));
     _this2.type = 'table';
     _this2.object = null;
     _this2.rawdata = {
@@ -141,7 +141,7 @@ function (_Tab2) {
     return _this2;
   }
 
-  _createClass(TableTab, [{
+  _createClass(TableThrowin, [{
     key: "getTableObject",
     value: function getTableObject() {
       return this.object;
@@ -153,43 +153,61 @@ function (_Tab2) {
     }
   }]);
 
-  return TableTab;
-}(Tab);
+  return TableThrowin;
+}(Throwin);
 
-var JSONTab =
+var JSONThrowin =
 /*#__PURE__*/
-function (_Tab3) {
-  _inherits(JSONTab, _Tab3);
+function (_Throwin3) {
+  _inherits(JSONThrowin, _Throwin3);
 
-  function JSONTab(name, extension, rawdata) {
+  function JSONThrowin(name, extension, rawdata) {
     var _this3;
 
-    _classCallCheck(this, JSONTab);
+    _classCallCheck(this, JSONThrowin);
 
-    _this3 = _possibleConstructorReturn(this, _getPrototypeOf(JSONTab).call(this, name, extension, rawdata));
+    _this3 = _possibleConstructorReturn(this, _getPrototypeOf(JSONThrowin).call(this, name, extension, rawdata));
     _this3.type = 'json';
     _this3.object = null;
     return _this3;
   }
 
-  return JSONTab;
-}(Tab);
+  return JSONThrowin;
+}(Throwin);
 
-var JSONSelectTab =
+var JSONSelectThrowin =
 /*#__PURE__*/
-function (_JSONTab) {
-  _inherits(JSONSelectTab, _JSONTab);
+function (_JSONThrowin) {
+  _inherits(JSONSelectThrowin, _JSONThrowin);
 
-  function JSONSelectTab(name, extension, rawdata) {
+  function JSONSelectThrowin(name, extension, rawdata) {
     var _this4;
 
-    _classCallCheck(this, JSONSelectTab);
+    _classCallCheck(this, JSONSelectThrowin);
 
-    _this4 = _possibleConstructorReturn(this, _getPrototypeOf(JSONSelectTab).call(this, name, extension, rawdata));
+    _this4 = _possibleConstructorReturn(this, _getPrototypeOf(JSONSelectThrowin).call(this, name, extension, rawdata));
     _this4.type = 'json_select';
     _this4.object = null;
     return _this4;
   }
 
-  return JSONSelectTab;
-}(JSONTab);
+  return JSONSelectThrowin;
+}(JSONThrowin);
+
+var WebPageThrowin =
+/*#__PURE__*/
+function (_Throwin4) {
+  _inherits(WebPageThrowin, _Throwin4);
+
+  function WebPageThrowin(name, extension, rawdata) {
+    var _this5;
+
+    _classCallCheck(this, WebPageThrowin);
+
+    _this5 = _possibleConstructorReturn(this, _getPrototypeOf(WebPageThrowin).call(this, name, extension, rawdata));
+    _this5.type = 'webpage';
+    return _this5;
+  }
+
+  return WebPageThrowin;
+}(Throwin);

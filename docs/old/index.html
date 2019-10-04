@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Liquid Data</title>
+
+		<link rel="stylesheet" href="styles/tabulator_bootstrap.min.css">
+		<link rel="stylesheet" href="styles/style.css">
+	</head>
+
+<body>
+	<nav onclick="UI.toggleNav('nav')"></nav>
+	<div class="screen hidden" onclick="UI.toggleNav('screen')"></div>
+	<main>
+		<div id="top">
+			<div id="dialogue_container"></div>
+			<div id="throwin_data">
+				<input id="throwin_file" type="file" />
+				<input id="throwin_text" type="button" />
+				<label for="throwin_file">Throw-in File</label>
+				<span>- OR -</span>
+				<label for="throwin_text">Throw-in Text</label>	
+			</div>
+		</div>
+		<div id="tab_container"></div>			
+	</main>
+
+	<script src="scripts/react.development.js" crossorigin></script>
+	<script src="scripts/react-dom.development.js" crossorigin></script>
+	<script src="scripts/tabulator.js"></script>
+	<script src="scripts/jsep.js"></script>
+	<script src="scripts/classes.js"></script>
+	<script src="scripts/components.js"></script>
+	<script src="scripts/app.js"></script>
+	<script src="scripts/ui.js"></script>
+	<script>
+		Liquid.initialize();
+		// Liquid.tabManager.addTab('Nested Table Test', 'tsv', 'local', {
+		// 	cols: [
+		// 		{title:"country", field:"country"},
+		// 		{title:"start_date", field:"start_date"},
+		// 		{title:"end_date", field:"end_date"}
+		// 	],
+		// 	rows: [
+		// 		{country: 'Canada', start_date: '2016-02-07', end_date: '2016-02-21', attrib_handles: [
+		// 			{handle: "simpleplan"},
+		// 			{handle: "lyzabethlopex"},
+		// 			{handle: "propertybrothers"},
+		// 			{handle: "laurdiy"},
+		// 			{handle: "matthewsantoro"},
+		// 			{handle: "thebunnymomma"}
+		// 		], new_ma: [
+		// 			{new_mau_count: "6308", user_state: "VeryLight"},
+		// 			{new_mau_count: "1792", user_state: "HeavyNonTweeter"},
+		// 			{new_mau_count: "800", user_state: "MediumTweeter"},
+		// 			{new_mau_count: "1392", user_state: "HeavyTweeter"},
+		// 			{new_mau_count: "1372", user_state: "MediumNonTweeter"},
+		// 			{new_mau_count: "356", user_state: "New"}
+		// 		]},
+		// 		{country: 'India', start_date: '2016-03-08', end_date: '2016-03-31', attrib_handles: [
+		// 			{handle: "MissMalini"},
+		// 			{handle: "Zivame"},
+		// 			{handle: "SuperwomanII"}
+		// 		], new_ma: [
+		// 			{new_mau_count: "3154", user_state: "VeryLight"},
+		// 			{new_mau_count: "896", user_state: "HeavyNonTweeter"},
+		// 			{new_mau_count: "400", user_state: "MediumTweeter"},
+		// 			{new_mau_count: "696", user_state: "HeavyTweeter"},
+		// 			{new_mau_count: "686", user_state: "MediumNonTweeter"},
+		// 			{new_mau_count: "178", user_state: "New"}
+		// 		]},
+		// 		{country: 'Brazil', start_date: '2016-02-10', end_date: '2016-02-28', attrib_handles: [
+		// 			{handle: "zanfa"},
+		// 			{handle: "Ravanha69"},
+		// 			{handle: "rodpocket"},
+		// 			{handle: "twittzendo"},
+		// 			{handle: "garciahiago"},
+		// 			{handle: "Febatista"},
+		// 			{handle: "5g"},
+		// 			{handle: "mikeavelico"},
+		// 			{handle: "danilo_sanches"},
+		// 			{handle: "naotefresqueia"},
+		// 			{handle: "Luiz1227_"},
+		// 			{handle: "murilocardoso"},
+		// 			{handle: "pqpvoces"},
+		// 			{handle: "revelandoverso"},
+		// 			{handle: "luualvesup"},
+		// 			{handle: "verineas"},
+		// 			{handle: "poxaduduh"},
+		// 			{handle: "PedroMiranda14"},
+		// 			{handle: "aborteiro"},
+		// 			{handle: "felipezando"},
+		// 			{handle: "humdaora"},
+		// 			{handle: "cinepop"},
+		// 			{handle: "aeciodepapelao"},
+		// 			{handle: "MarianaBelem"},
+		// 			{handle: "luscas"},
+		// 			{handle: "mrcoaurelio"},
+		// 			{handle: "ollgotica"},
+		// 			{handle: "brunofabil"},
+		// 			{handle: "itspedrito"},
+		// 			{handle: "lpfeelipe"},
+		// 			{handle: "williianss"},
+		// 			{handle: "marcoscastro"},
+		// 			{handle: "oficialalailton"},
+		// 			{handle: "MultiChato"},
+		// 			{handle: "lordevoidemort"},
+		// 			{handle: "chernoca"},
+		// 			{handle: "iahgos"},
+		// 			{handle: "dramatizaw"},
+		// 			{handle: "RealMarioBrasil"},
+		// 			{handle: "SerpaMichel"},
+		// 			{handle: "SenhorSatanas"},
+		// 			{handle: "Smillepls"},
+		// 			{handle: "tofumandocrack"},
+		// 			{handle: "afonso3d"},
+		// 			{handle: "relatojovens"},
+		// 			{handle: "DaviSantanaBr"},
+		// 			{handle: "euidiotices"},
+		// 			{handle: "cabeludinh"},
+		// 			{handle: "soumaravilhaa"},
+		// 			{handle: "alinedaniellebg"},
+		// 			{handle: "detremura"},
+		// 			{handle: "luanlovato"},
+		// 			{handle: "tadaora"},
+		// 			{handle: "xuxanarecord"},
+		// 			{handle: "Jhonatan_Peres"},
+		// 			{handle: "Cleyt"},
+		// 			{handle: "C4iO"},
+		// 			{handle: "xuxanave"},
+		// 			{handle: "Iamdanielcandia"},
+		// 			{handle: "attackstyies"},
+		// 			{handle: "comentv"},
+		// 			{handle: "Umjovemzoas"},
+		// 			{handle: "hygorfelipee"},
+		// 			{handle: "Humberto"},
+		// 			{handle: "zueirovcs"},
+		// 			{handle: "eduardocilto"},
+		// 			{handle: "fatodewhatsapp"},
+		// 			{handle: "jeffersonline_"},
+		// 			{handle: "jabutihigor"},
+		// 			{handle: "louabusado"},
+		// 			{handle: "hausofvitor"},
+		// 			{handle: "algumgustavo"},
+		// 			{handle: "LannesDelRey"},
+		// 			{handle: "A_Pomba"},
+		// 			{handle: "christian_fig"},
+		// 			{handle: "meninobatman"},
+		// 			{handle: "launcastro"},
+		// 			{handle: "nathaanf_"},
+		// 			{handle: "fatosex"},
+		// 			{handle: "Trouxalizado"},
+		// 			{handle: "jampa"},
+		// 			{handle: "legalizandra"},
+		// 			{handle: "Citaveis"},
+		// 			{handle: "magnotizo"},
+		// 			{handle: "neconery"},
+		// 			{handle: "BRKsEDU"},
+		// 			{handle: "SystemOfADio"},
+		// 			{handle: "Whoiscarlos"},
+		// 			{handle: "lanabebada"},
+		// 			{handle: "isaacroosevelt"},
+		// 			{handle: "musicascito"},
+		// 			{handle: "evelynregly"},
+		// 			{handle: "LugasTV"},
+		// 			{handle: "jornalistavitor"},
+		// 			{handle: "twittferr"},
+		// 			{handle: "adrean"},
+		// 			{handle: "vsfmael"},
+		// 			{handle: "jbsizzler"},
+		// 			{handle: "ProjetoJBTrick"},
+		// 			{handle: "oficialnatinho"},
+		// 			{handle: "MrWillSilva"},
+		// 			{handle: "Complicarei"},
+		// 			{handle: "UmDrogalizado"},
+		// 			{handle: "vitoriasalim"},
+		// 			{handle: "lullylucky"},
+		// 			{handle: "renett_"},
+		// 			{handle: "_satty"},
+		// 			{handle: "taviao"},
+		// 			{handle: "majutrindadef"},
+		// 			{handle: "KIDRALWS"},
+		// 			{handle: "rebeldeloved"},
+		// 			{handle: "nuvencinza_"},
+		// 			{handle: "TwittouFatos"},
+		// 			{handle: "cuecavip"},
+		// 			{handle: "Revoltalizado"},
+		// 			{handle: "boulevard_vo"},
+		// 			{handle: "lucasfelix"},
+		// 			{handle: "ProfessorDum"},
+		// 			{handle: "DoutorTrouxa"},
+		// 			{handle: "SocrateSantana"},
+		// 			{handle: "VoceNaoSabiaQ"},
+		// 			{handle: "positividadediz"},
+		// 			{handle: "recitoumpb"},
+		// 			{handle: "desamei"},
+		// 			{handle: "HumoroTal"},
+		// 			{handle: "starkzoeiro"},
+		// 			{handle: "reportercult"},
+		// 			{handle: "isabelaafreitas"},
+		// 			{handle: "projetooo"},
+		// 			{handle: "Faveladofalou_"},
+		// 			{handle: "arafamorena"},
+		// 			{handle: "tarcisioramoss"},
+		// 			{handle: "dieegosuficiel"},
+		// 			{handle: "RecitouOriente"},
+		// 			{handle: "chenriqqee_"},
+		// 			{handle: "josias_brina"},
+		// 			{handle: "claceloca"},
+		// 			{handle: "BartCharmoso"},
+		// 			{handle: "__hugorodrigues"}
+		// 		], new_ma: [
+		// 			{new_mau_count: "219203", user_state: "VeryLight"},
+		// 			{new_mau_count: "62272", user_state: "HeavyNonTweeter"},
+		// 			{new_mau_count: "27800", user_state: "MediumTweeter"},
+		// 			{new_mau_count: "48372", user_state: "HeavyTweeter"},
+		// 			{new_mau_count: "47677", user_state: "MediumNonTweeter"},
+		// 			{new_mau_count: "12371", user_state: "New"}
+		// 		]},
+		// 		{country: 'UK', start_date: '2016-01-31', end_date: '2016-03-01', attrib_handles: [
+		// 			{handle: "AntoSharp"},
+		// 			{handle: "arron_crascall"},
+		// 			{handle: "Bencharmanart"},
+		// 			{handle: "CheekyHoussein"},
+		// 			{handle: "dapperlaughs"},
+		// 			{handle: "daz_black"},
+		// 			{handle: "DougieStew"},
+		// 			{handle: "hash_tag_arthur"},
+		// 			{handle: "HuwSamuel"},
+		// 			{handle: "JoeOnVine"},
+		// 			{handle: "LeslieWai"},
+		// 			{handle: "Lsimmonds49"},
+		// 			{handle: "MarkAllen321"},
+		// 			{handle: "MarkTweeted"},
+		// 			{handle: "OllieMcKendrick"},
+		// 			{handle: "randall_toby"},
+		// 			{handle: "SenanByrne"},
+		// 			{handle: "the_stuggybear"},
+		// 			{handle: "tom_harlock"}
+		// 		], new_ma: [
+		// 			{new_mau_count: "28386", user_state: "VeryLight"},
+		// 			{new_mau_count: "8064", user_state: "HeavyNonTweeter"},
+		// 			{new_mau_count: "3600", user_state: "MediumTweeter"},
+		// 			{new_mau_count: "6264", user_state: "HeavyTweeter"},
+		// 			{new_mau_count: "6174", user_state: "MediumNonTweeter"},
+		// 			{new_mau_count: "1602", user_state: "New"}
+		// 		]},
+		// 		{country: 'Germany', start_date: '2016-02-14', end_date: '2016-02-22', attrib_handles: [
+		// 			{handle: "dnertv"},
+		// 			{handle: "unge"},
+		// 			{handle: "dagibee"},
+		// 			{handle: "bibisbeauty"},
+		// 			{handle: "taddl"},
+		// 			{handle: "iblali"},
+		// 			{handle: "apecrime"},
+		// 			{handle: "therealliont"},
+		// 			{handle: "melinasophie"},
+		// 			{handle: "julienco_"},
+		// 			{handle: "julien_bam"},
+		// 			{handle: "lefloid"},
+		// 			{handle: "germanletsplay"},
+		// 			{handle: "gronkh"},
+		// 			{handle: "shirindavid"},
+		// 			{handle: "rewinside"},
+		// 			{handle: "samislimani"},
+		// 			{handle: "paolamariaone"},
+		// 			{handle: "dimakoslowski"},
+		// 			{handle: "bergmanntogo"}
+		// 		], new_ma: [
+		// 			{new_mau_count: "31540", user_state: "VeryLight"},
+		// 			{new_mau_count: "8960", user_state: "HeavyNonTweeter"},
+		// 			{new_mau_count: "4000", user_state: "MediumTweeter"},
+		// 			{new_mau_count: "6960", user_state: "HeavyTweeter"},
+		// 			{new_mau_count: "6860", user_state: "MediumNonTweeter"},
+		// 			{new_mau_count: "1780", user_state: "New"}
+		// 		]}
+		// 	],
+		// 	formatter: function(row){
+		// 		let sub_tables = [
+		// 			{
+		// 				name: 'attrib_handles',
+		// 				cols: [
+		// 					{title: 'handle', field: 'handle'}
+		// 				]
+		// 			},{
+		// 				name: 'new_ma',
+		// 				cols: [
+		// 					{title: 'new_mau_count', field: 'new_mau_count'},
+		// 					{title: 'user_state', field: 'user_state'}
+		// 				]
+		// 			}];
+
+		// 		for(let i in sub_tables){
+		// 			var holderEl = document.createElement("div");
+		// 			var tableEl = document.createElement("div");
+				
+		// 			holderEl.style.boxSizing = "border-box";
+		// 			holderEl.style.padding = "10px 30px 10px 10px";
+		// 			holderEl.style.borderTop = "1px solid #333";
+		// 			holderEl.style.borderBottom = "1px solid #333";
+		// 			holderEl.style.background = "#ddd";
+				
+		// 			tableEl.style.border = "1px solid #333";
+				
+		// 			holderEl.appendChild(tableEl);
+				
+		// 			row.getElement().appendChild(holderEl);
+
+		// 			var subTable = new Tabulator(tableEl, {
+		// 				layout: "fitColumns",
+		// 				data: row.getData()[sub_tables[i].name],
+		// 				columns: sub_tables[i].cols
+		// 			})
+		// 		}
+		// 	}
+		// });
+		// Liquid.tabManager.addTab('Nested Table', 'tsv', 'local', {
+		// 	cols: [
+		// 		{title:"Make", field:"make"},
+		// 		{title:"Model", field:"model"},
+		// 		{title:"Registration", field:"reg"},
+		// 		{title:"Color", field:"color"},
+		// 	],
+		// 	rows: [
+		// 		{id:1, make:"Ford", model:"focus", reg:"P232 NJP", color:"white", serviceHistory:[
+		// 			{date:"01/02/2016", engineer:"Steve Boberson", actions:"Changed oli filter"},
+		// 			{date:"07/02/2017", engineer:"Martin Stevenson", actions:"Break light broken"},
+		// 		]},
+		// 		{id:1, make:"BMW", model:"m3", reg:"W342 SEF", color:"red", serviceHistory:[
+		// 			{date:"22/05/2017", engineer:"Jimmy Brown", actions:"Aligned wheels"},
+		// 			{date:"11/02/2018", engineer:"Lotty Ferberson", actions:"Changed Oil"},
+		// 			{date:"04/04/2018", engineer:"Franco Martinez", actions:"Fixed Tracking"},
+		// 		]},
+		// 	],
+		// 	formatter: function(row){
+		// 			//create and style holder elements
+		// 		var holderEl = document.createElement("div");
+		// 		var tableEl = document.createElement("div");
+			
+		// 		holderEl.style.boxSizing = "border-box";
+		// 		holderEl.style.padding = "10px 30px 10px 10px";
+		// 		holderEl.style.borderTop = "1px solid #333";
+		// 		holderEl.style.borderBottom = "1px solid #333";
+		// 		holderEl.style.background = "#ddd";
+			
+		// 		tableEl.style.border = "1px solid #333";
+			
+		// 		holderEl.appendChild(tableEl);
+			
+		// 		row.getElement().appendChild(holderEl);
+			
+		// 		var subTable = new Tabulator(tableEl, {
+		// 			layout:"fitColumns",
+		// 			data:row.getData().serviceHistory,
+		// 			columns:[
+		// 				{title:"Date", field:"date", sorter:"date"},
+		// 				{title:"Engineer", field:"engineer"},
+		// 				{title:"Action", field:"actions"},
+		// 			]
+		// 		})
+		// 	}
+		// });
+		// Liquid.tabManager.addTab('Web API Call', 'tsv', 'fetch', 'https://jsonplaceholder.typicode.com/posts');
+		// Liquid.tabManager.addTab('Hard-coded Text', 'text', 'local', 'Lorem ipsum dolor sit amet, \n\nconsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
+		// Liquid.tabManager.addTab('JSON Selection', 'json_select', 'local', {a:'1',b:'2',c:'3'});
+		// Liquid.render();
+		// Liquid.getAllTasks();
+</script>
+</body>
+</html>

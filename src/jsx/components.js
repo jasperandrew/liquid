@@ -4,23 +4,30 @@ class HeaderMenuComponent extends React.Component {
 	}
 
 	render() {
+		let menuHTML = [];
+		let menus = this.props.menus;
+		for(let i in menus){
+			let itemHTML = [];
+			let items = menus[i].items;
+			for(let j in items){
+				let item = items[j];
+				itemHTML.push(<a key={j} onClick={() => {UI.HeaderMenu.close(); item.func();}}>{item.name}</a>);
+			}
+			menuHTML.push(
+				<div key={i} i={i} className='menu'>
+					<span onMouseOver={() => UI.HeaderMenu.control(i, true) } onClick={() => UI.HeaderMenu.control(i) }>{menus[i].title}</span>
+					<div className='items'>{itemHTML}</div>
+				</div>
+			);
+		}
+
 		return (
             <div id='header_menu'>
                 <div className='logo'></div>
                 <div className='title_menu'>
                     {/* <div className='title'>Liquid Data</div> */}
                     <div className='menus'>
-                        <div className='menu'><span onClick={() => UI.HeaderMenu.toggle() }>File</span>
-							<div className='contents'>
-								<div>Test 1</div>
-								<div>Test 2</div>
-								<div>Test 3</div>
-							</div>
-						</div>
-                        <div className='menu'>Edit</div>
-                        <div className='menu'>Insert</div>
-                        <div className='menu'>Data</div>
-                        <div className='menu'>Help</div>
+						{menuHTML}
                     </div>
                 </div>
                 <div className='throwin_button'>

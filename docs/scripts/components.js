@@ -18,91 +18,99 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-/************************************************************\
-*                         JSX CLASSES                        *
-\************************************************************/
-//////////// Dialogue question/answer stuff ////////////
-var OptionComponent =
+var HeaderMenuComponent =
 /*#__PURE__*/
 function (_React$Component) {
-  _inherits(OptionComponent, _React$Component);
+  _inherits(HeaderMenuComponent, _React$Component);
 
-  function OptionComponent(props) {
-    _classCallCheck(this, OptionComponent);
+  function HeaderMenuComponent(props) {
+    _classCallCheck(this, HeaderMenuComponent);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(OptionComponent).call(this, props));
+    return _possibleConstructorReturn(this, _getPrototypeOf(HeaderMenuComponent).call(this, props));
   }
 
-  _createClass(OptionComponent, [{
+  _createClass(HeaderMenuComponent, [{
+    key: "render",
+    value: function render() {
+      var menuHTML = [];
+      var menus = this.props.menus;
+
+      var _loop = function _loop(i) {
+        var itemHTML = [];
+        var items = menus[i].items;
+
+        var _loop2 = function _loop2(j) {
+          var item = items[j];
+          itemHTML.push(React.createElement("a", {
+            key: j,
+            onClick: function onClick() {
+              UI.HeaderMenu.close();
+              item.func();
+            }
+          }, item.name));
+        };
+
+        for (var j in items) {
+          _loop2(j);
+        }
+
+        menuHTML.push(React.createElement("div", {
+          key: i,
+          i: i,
+          className: "menu"
+        }, React.createElement("span", {
+          onMouseOver: function onMouseOver() {
+            return UI.HeaderMenu.control(i, true);
+          },
+          onClick: function onClick() {
+            return UI.HeaderMenu.control(i);
+          }
+        }, menus[i].title), React.createElement("div", {
+          className: "items"
+        }, itemHTML)));
+      };
+
+      for (var i in menus) {
+        _loop(i);
+      }
+
+      return React.createElement("div", {
+        id: "header_menu"
+      }, React.createElement("div", {
+        className: "logo"
+      }), React.createElement("div", {
+        className: "title_menu"
+      }, React.createElement("div", {
+        className: "menus"
+      }, menuHTML)), React.createElement("div", {
+        className: "throwin_button"
+      }, React.createElement("input", {
+        id: "throwin_file",
+        type: "file"
+      }), React.createElement("label", {
+        htmlFor: "throwin_file"
+      }, React.createElement("div", null), "Throw-in")));
+    }
+  }]);
+
+  return HeaderMenuComponent;
+}(React.Component);
+
+var ThrowinComponent =
+/*#__PURE__*/
+function (_React$Component2) {
+  _inherits(ThrowinComponent, _React$Component2);
+
+  function ThrowinComponent(props) {
+    _classCallCheck(this, ThrowinComponent);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ThrowinComponent).call(this, props));
+  }
+
+  _createClass(ThrowinComponent, [{
     key: "render",
     value: function render() {
       var _this = this;
-
-      return React.createElement("div", {
-        className: "option"
-      }, React.createElement("input", {
-        type: "radio",
-        id: 'opt' + this.props.i,
-        name: "options",
-        value: this.props.optId
-      }), React.createElement("label", {
-        htmlFor: 'opt' + this.props.i,
-        onClick: function onClick() {
-          return Liquid.dialogueManager.handleAnswer(_this.props.optId);
-        }
-      }, this.props.optText));
-    }
-  }]);
-
-  return OptionComponent;
-}(React.Component);
-
-var DialogueComponent =
-/*#__PURE__*/
-function (_React$Component2) {
-  _inherits(DialogueComponent, _React$Component2);
-
-  function DialogueComponent(props) {
-    _classCallCheck(this, DialogueComponent);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(DialogueComponent).call(this, props));
-  }
-
-  _createClass(DialogueComponent, [{
-    key: "render",
-    value: function render() {
-      var opts = Liquid.dialogueManager.history[0].options,
-          opts_jsx = [];
-      if (opts !== null) opts.forEach(function (opt) {
-        opts_jsx.push(opt.jsxElement);
-      });
-      return React.createElement("div", {
-        className: "dialogue"
-      }, React.createElement("p", {
-        className: "prompt"
-      }, this.props.prompt), opts_jsx);
-    }
-  }]);
-
-  return DialogueComponent;
-}(React.Component); //////////// Tab layout stuff ////////////
-
-
-var TabComponent =
-/*#__PURE__*/
-function (_React$Component3) {
-  _inherits(TabComponent, _React$Component3);
-
-  function TabComponent(props) {
-    _classCallCheck(this, TabComponent);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(TabComponent).call(this, props));
-  }
-
-  _createClass(TabComponent, [{
-    key: "render",
-    value: function render() {
-      var _this2 = this;
 
       var id = 'tab' + this.props.n;
       var innerHTML = [];
@@ -133,7 +141,7 @@ function (_React$Component3) {
             type: "button",
             id: 'json_submit_' + this.props.n,
             onClick: function onClick() {
-              return Liquid.tabManager.submitJSONvars('#t' + _this2.props.n);
+              return UI.TabView.submitJSONvars('#t' + _this.props.n);
             }
           }));
           innerHTML.push(React.createElement("label", {
@@ -150,33 +158,53 @@ function (_React$Component3) {
             }
           }));
           break;
-        // case 'table':
+
+        case 'webpage':
+          innerHTML.push(React.createElement("iframe", {
+            key: "1",
+            src: this.props.rawdata
+          }));
 
         default:
       }
 
       return React.createElement("div", {
-        className: "tab"
-      }, React.createElement("input", {
-        type: "radio",
-        id: id,
-        name: "tabs",
-        defaultChecked: this.props.n === Liquid.tabManager.active_tab ? true : false
-      }), React.createElement("label", {
-        onClick: function onClick() {
-          return Liquid.tabManager.setActiveTab(_this2.props.n);
-        },
-        htmlFor: id
-      }, this.props.title), React.createElement("div", {
-        className: "throwin"
-      }, React.createElement("div", {
         className: this.props.type,
         id: 't' + this.props.n
-      }, innerHTML)));
+      }, innerHTML);
     }
   }]);
 
-  return TabComponent;
+  return ThrowinComponent;
+}(React.Component);
+
+var TabButtonComponent =
+/*#__PURE__*/
+function (_React$Component3) {
+  _inherits(TabButtonComponent, _React$Component3);
+
+  function TabButtonComponent(props) {
+    _classCallCheck(this, TabButtonComponent);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(TabButtonComponent).call(this, props));
+  }
+
+  _createClass(TabButtonComponent, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var active = this.props.is_active ? ' active' : '';
+      return React.createElement("div", {
+        className: "tab_button".concat(active),
+        onClick: function onClick() {
+          return UI.TabView.setActive(_this2.props.n);
+        }
+      }, this.props.title);
+    }
+  }]);
+
+  return TabButtonComponent;
 }(React.Component);
 
 var TabViewComponent =
@@ -193,97 +221,98 @@ function (_React$Component4) {
   _createClass(TabViewComponent, [{
     key: "render",
     value: function render() {
-      var tabs = [];
-      Liquid.tabManager.tabs.forEach(function (t) {
-        tabs.push(t.getComponent());
+      var _this3 = this;
+
+      var throwin_set = [],
+          button_set = [];
+      DATA.Throwin.getAll().forEach(function (t, i) {
+        var is_active = _this3.props.active_tab === i + 1;
+        var active = is_active ? ' active' : '';
+        throwin_set.push(React.createElement("div", {
+          key: i,
+          className: "throwin".concat(active)
+        }, t.getThrowinComponent()));
+        button_set.push(React.createElement(TabButtonComponent, {
+          key: i,
+          n: t.id,
+          title: t.title,
+          is_active: is_active
+        }));
       });
       return React.createElement("div", {
-        className: "tabs"
-      }, tabs);
+        id: "tabs"
+      }, React.createElement("div", {
+        id: "throwin_set"
+      }, throwin_set), React.createElement("div", {
+        id: "button_set"
+      }, button_set));
     }
   }]);
 
   return TabViewComponent;
-}(React.Component); //////////// Menu stuff ////////////
-
-
-var TaskListComponent =
-/*#__PURE__*/
-function (_React$Component5) {
-  _inherits(TaskListComponent, _React$Component5);
-
-  function TaskListComponent(props) {
-    _classCallCheck(this, TaskListComponent);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(TaskListComponent).call(this, props));
-  }
-
-  _createClass(TaskListComponent, [{
-    key: "render",
-    value: function render() {
-      var tasks = [];
-      Liquid.menu.task_list.forEach(function (task) {
-        var i = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-        tasks.push(React.createElement("li", {
-          key: i++
-        }, task));
-      });
-      return React.createElement("div", {
-        id: "task_list"
-      }, React.createElement("h2", null, "Tasks"), React.createElement("ul", null, tasks));
-    }
-  }]);
-
-  return TaskListComponent;
 }(React.Component);
 
-var NavComponent =
+var OptionComponent =
 /*#__PURE__*/
-function (_React$Component6) {
-  _inherits(NavComponent, _React$Component6);
+function (_React$Component5) {
+  _inherits(OptionComponent, _React$Component5);
 
-  function NavComponent(props) {
-    _classCallCheck(this, NavComponent);
+  function OptionComponent(props) {
+    _classCallCheck(this, OptionComponent);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(NavComponent).call(this, props));
+    return _possibleConstructorReturn(this, _getPrototypeOf(OptionComponent).call(this, props));
   }
 
-  _createClass(NavComponent, [{
+  _createClass(OptionComponent, [{
     key: "render",
     value: function render() {
+      var _this4 = this;
+
       return React.createElement("div", {
-        id: "menu_container"
-      }, React.createElement("h1", null, "Liquid"), React.createElement(TaskListComponent, null), React.createElement("h2", null, "Testing Buttons"), React.createElement("button", {
+        className: 'option' + (this.props.isDefault ? ' default' : '')
+      }, React.createElement("input", {
+        type: "radio",
+        id: 'opt' + this.props.i,
+        name: "options",
+        value: this.props.optId
+      }), React.createElement("label", {
+        htmlFor: 'opt' + this.props.i,
         onClick: function onClick() {
-          return Liquid.menu.toggleCheckboxes(Liquid.tabManager.active_tab);
+          return DATA.Dialog.handleAnswer(_this4.props.optId);
         }
-      }, "Toggle Select Column"), React.createElement("button", {
-        onClick: function onClick() {
-          return sendTableData();
-        }
-      }, "Send Table Data"), React.createElement("button", {
-        onClick: function onClick() {
-          return addCheckColumn();
-        }
-      }, "Add New Checkbox Column"), React.createElement("button", {
-        onClick: function onClick() {
-          return addTextColumn();
-        }
-      }, "Add New Text Column"), React.createElement("button", {
-        onClick: function onClick() {
-          return filterColumn();
-        }
-      }, "Filter Column"), React.createElement("button", {
-        onClick: function onClick() {
-          return filterCustom();
-        }
-      }, "Custom Filter"), React.createElement("button", {
-        onClick: function onClick() {
-          return clearFilters();
-        }
-      }, "Clear Filters"));
+      }, this.props.optText));
     }
   }]);
 
-  return NavComponent;
+  return OptionComponent;
+}(React.Component);
+
+var DialogueComponent =
+/*#__PURE__*/
+function (_React$Component6) {
+  _inherits(DialogueComponent, _React$Component6);
+
+  function DialogueComponent(props) {
+    _classCallCheck(this, DialogueComponent);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(DialogueComponent).call(this, props));
+  }
+
+  _createClass(DialogueComponent, [{
+    key: "render",
+    value: function render() {
+      var opts = DATA.Dialog.get(0).options,
+          opts_jsx = [];
+      if (opts !== null) opts.forEach(function (opt) {
+        opts_jsx.push(opt.jsxElement);
+      });
+      return React.createElement("div", {
+        id: "dialogue"
+      }, React.createElement("p", {
+        className: "prompt"
+      }, this.props.prompt), opts_jsx);
+    }
+  }]);
+
+  return DialogueComponent;
 }(React.Component);

@@ -92,9 +92,10 @@ main.sidebar {
   color: #000;
 }
 #header_menu .throwin_button {
+  display: flex;
+  align-items: center;
   margin-left: auto;
   margin-right: 27px;
-  margin-top: 27px;
 }
 #header_menu .throwin_button input {
   display: none;
@@ -102,18 +103,13 @@ main.sidebar {
 #header_menu .throwin_button label[for$=file] {
   display: flex;
   align-items: center;
-  padding: 10px 15px;
+  padding: 10px 13px 10px 13px;
   font-size: 16px;
   cursor: pointer;
   background: #3ec435;
   color: #fff;
-  border-radius: 5px;
-}
-#header_menu .throwin_button label[for$=file]:hover {
-  filter: brightness(0.9);
-}
-#header_menu .throwin_button label[for$=file]:active {
-  filter: brightness(0.8);
+  border-radius: 5px 0 0 5px;
+  z-index: 1;
 }
 #header_menu .throwin_button label[for$=file] div {
   display: inline-block;
@@ -124,13 +120,63 @@ main.sidebar {
   height: 20px;
   margin-right: 6px;
 }
+#header_menu .throwin_button label[for$=file]:hover {
+  filter: brightness(0.9);
+}
+#header_menu .throwin_button label[for$=file]:active {
+  filter: brightness(0.8);
+}
+#header_menu .throwin_button #throwin_menu {
+  display: inline-block;
+  padding: 15px 10px 15px 10px;
+  cursor: pointer;
+  background: #3ec435;
+  color: #fff;
+  border-radius: 0 5px 5px 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  font-size: 9px;
+  z-index: 1;
+}
+#header_menu .throwin_button #throwin_menu:hover, #header_menu .throwin_button .throwin_button label[for$=file]:hover ~ #throwin_menu {
+  filter: brightness(0.9);
+}
+#header_menu .throwin_button #throwin_menu:active, #header_menu .throwin_button .throwin_button label[for$=file]:active ~ #throwin_menu {
+  filter: brightness(0.8);
+}
+#header_menu .throwin_button label[for$=text] {
+  position: absolute;
+  padding: 10px 22px 10px 22px;
+  font-size: 16px;
+  cursor: pointer;
+  background: #3ec435;
+  color: #fff;
+  border-radius: 5px;
+  z-index: 0;
+}
+#header_menu .throwin_button label[for$=text]:hover {
+  filter: brightness(0.9);
+}
+#header_menu .throwin_button label[for$=text]:active {
+  filter: brightness(0.8);
+}
+#header_menu .throwin_button.open label[for$=file] {
+  border-radius: 5px 0 0 0;
+}
+#header_menu .throwin_button.open #throwin_menu {
+  border-radius: 0 5px 0 0;
+}
+#header_menu .throwin_button.open label[for$=text] {
+  margin-top: 87px;
+  border-radius: 0 0 5px 5px;
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+}
 
 #dialog {
   position: absolute;
   z-index: 3;
   top: 23px;
   left: 105px;
-  width: calc(100vw - 260px);
+  width: calc(100vw - 280px);
 }
 
 main.sidebar #dialog {

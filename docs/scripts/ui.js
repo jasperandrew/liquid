@@ -143,7 +143,12 @@ var UI = {
       this.close();
       UI.addClass("#header .menus [i=\"".concat(i, "\"]"), 'open');
     },
-    close: function close() {
+    close: function close(all) {
+      if (all) {
+        console.log(all);
+        UI.removeClass('.menus', 'on');
+      }
+
       UI.removeClass('#header .menus .menu.open', 'open');
     },
     render: function render() {
@@ -152,6 +157,7 @@ var UI = {
       }), document.querySelector('#header'));
     }
   },
+  ThrowinMenu: {},
   EventHandler: {
     event_map: {
       '#throwin_file|change': DATA.Upload.file,

@@ -44,7 +44,7 @@ function (_React$Component) {
           itemHTML.push(React.createElement("a", {
             key: j,
             onClick: function onClick() {
-              UI.HeaderMenu.close();
+              UI.HeaderMenu.close(true);
               item.func();
             }
           }, item.name));
@@ -87,9 +87,22 @@ function (_React$Component) {
       }, React.createElement("input", {
         id: "throwin_file",
         type: "file"
+      }), React.createElement("input", {
+        id: "throwin_text",
+        type: "button"
       }), React.createElement("label", {
         htmlFor: "throwin_file"
-      }, React.createElement("div", null), "Throw-in")));
+      }, React.createElement("div", null), "Throw-in"), React.createElement("div", {
+        id: "throwin_menu",
+        onClick: function onClick() {
+          return UI.toggleClass('.throwin_button', 'open');
+        }
+      }, "\u25BC"), React.createElement("label", {
+        htmlFor: "throwin_text",
+        onClick: function onClick() {
+          return UI.removeClass('.throwin_button', 'open');
+        }
+      }, "Throw-in Text")));
     }
   }]);
 

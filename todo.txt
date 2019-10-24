@@ -23,6 +23,3 @@
 - html rendering
     - open in liquid tab (iframe)
     - whitespace pre in html display
-
-menus
-switch versions

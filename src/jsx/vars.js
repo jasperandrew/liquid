@@ -235,15 +235,15 @@ function lockDialogue() {
 }
 
 function toggleCheckboxColumn() {
-// 	let tab = Liquid.tabManager.getTab(n);
-// 	if(tab !== false){
-// 		if(tab.getType() !== 'table'){
-// 			console.error(`tab ${n} isn\'t a table tab`);
-// 			return false;
-// 		}
-// 		let tab_object = tab.getTableObject();
-// 		tab_object.toggleColumn('selection');
-// 	}else{
-// 		console.log(`invalid  tab: ${n}`);
-// 	}
+	let tab = DATA.Throwin.get(UI.TabView.getActive());
+	if(tab){
+		if(tab.getType() !== 'table'){
+			console.error(`current tab isn\'t a table tab`);
+			return false;
+		}
+		let tab_object = tab.getTableObject();
+		tab_object.toggleColumn('selection');
+	}else{
+		console.log(`invalid  tab`);
+	}
 }

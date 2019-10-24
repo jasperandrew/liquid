@@ -11,7 +11,7 @@ class HeaderMenuComponent extends React.Component {
 			let items = menus[i].items;
 			for(let j in items){
 				let item = items[j];
-				itemHTML.push(<a key={j} onClick={() => {UI.HeaderMenu.close(); item.func();}}>{item.name}</a>);
+				itemHTML.push(<a key={j} onClick={() => {UI.HeaderMenu.close(true); item.func();}}>{item.name}</a>);
 			}
 			menuHTML.push(
 				<div key={i} i={i} className='menu'>
@@ -32,12 +32,11 @@ class HeaderMenuComponent extends React.Component {
                 </div>
                 <div className='throwin_button'>
                     <input id="throwin_file" type="file" />
-                    {/* <input id="throwin_text" type="button" /> */}
+                    <input id="throwin_text" type="button" />
 
                     <label htmlFor="throwin_file"><div></div>Throw-in</label>
-                    {/* <div className='throwin_opts'>
-                        <label for="throwin_text">Throw-in Text</label>
-                    </div> */}
+					<div id='throwin_menu' onClick={() => UI.toggleClass('.throwin_button', 'open')}>▼</div>
+                    <label htmlFor="throwin_text" onClick={() => UI.removeClass('.throwin_button', 'open')}>Throw-in Text</label>
                 </div>
             </div>
 		);

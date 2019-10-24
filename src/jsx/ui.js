@@ -132,13 +132,21 @@ const UI = {
             UI.addClass(`#header .menus [i="${i}"]`, 'open');
         },
 
-        close() {
+        close(all) {
+            if(all){
+                console.log(all);
+                UI.removeClass('.menus', 'on');
+            }
             UI.removeClass('#header .menus .menu.open', 'open');
         },
 
         render() {
             ReactDOM.render(<HeaderMenuComponent menus={this.menus}/>, document.querySelector('#header'));
         }
+    },
+
+    ThrowinMenu: {
+        
     },
 
     EventHandler: {

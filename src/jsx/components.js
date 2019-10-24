@@ -49,7 +49,6 @@ class ThrowinComponent extends React.Component {
 	}
 
 	render() {
-		let id = 'tab' + this.props.n;
 		let innerHTML = [];
 		
 		switch(this.props.type){
@@ -58,10 +57,12 @@ class ThrowinComponent extends React.Component {
 				for(let name in this.props.rawdata){
 					let val = this.props.rawdata[name].toString();
 					if(val.length > 70) val = val.slice(0,70) + ' . . .';
+
+					let id = `json_select_t${this.props.n}_${name}`;
 					
 					innerHTML.push(
-						<label key={k++} htmlFor={'json_select_'+name}>
-							<input type='checkbox' keyname={name.toString()} keyval={val} id={'json_select_'+name} />
+						<label key={k++} htmlFor={id}>
+							<input type='checkbox' keyname={name.toString()} keyval={val} id={id} />
 							<span>{name}<span>{'=>'+val}</span></span>
 						</label>
 					);

@@ -125,7 +125,6 @@ function (_React$Component2) {
     value: function render() {
       var _this = this;
 
-      var id = 'tab' + this.props.n;
       var innerHTML = [];
 
       switch (this.props.type) {
@@ -135,14 +134,15 @@ function (_React$Component2) {
           for (var name in this.props.rawdata) {
             var val = this.props.rawdata[name].toString();
             if (val.length > 70) val = val.slice(0, 70) + ' . . .';
+            var id = "json_select_t".concat(this.props.n, "_").concat(name);
             innerHTML.push(React.createElement("label", {
               key: k++,
-              htmlFor: 'json_select_' + name
+              htmlFor: id
             }, React.createElement("input", {
               type: "checkbox",
               keyname: name.toString(),
               keyval: val,
-              id: 'json_select_' + name
+              id: id
             }), React.createElement("span", null, name, React.createElement("span", null, '=>' + val))));
             innerHTML.push(React.createElement("br", {
               key: k++

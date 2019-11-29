@@ -104,6 +104,7 @@ const DATA = {
 			switch(ans_id){
 				case 'upload':
 				case 'default_throwin_question_only':
+				case 'default_throwin_question_throw':
 					document.querySelector('label[for="throwin_file"]').click();
 					return;
 			}

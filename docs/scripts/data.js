@@ -46,8 +46,6 @@ var DATA = {
     });
   },
   handleResponse: function handleResponse(response_txt) {
-    var _this = this;
-
     var response_json;
 
     try {
@@ -59,10 +57,9 @@ var DATA = {
     }
 
     console.log('[DATA-IN]', response_json);
-    response_json['reply_contents'].forEach(function (section) {
-      var sec_data = response_json[section];
 
-      switch (section) {
+    function processReplyData(type, data) {
+      switch (type) {
         case 'status_ok':
           /* Handle change/hide dialogue */
           console.log('STATUS-OK');
@@ -70,52 +67,68 @@ var DATA = {
 
         case 'table_data':
           var rawdata = {
-            rows: sec_data.tbl_rows,
-            cols: sec_data.tbl_cols
+            rows: data.tbl_rows,
+            cols: data.tbl_cols
           };
           var extension = 'tsv';
-
-          _this.Throwin.add('table', sec_data.node_name, extension, rawdata);
-
+          DATA.Throwin.add('table', data.node_name, extension, rawdata);
           break;
 
         case 'text_file':
         case 'text_file2':
-          _this.Throwin.add('text', sec_data.node_name, sec_data.file_extension, sec_data.file_contents);
-
+          DATA.Throwin.add('text', data.node_name, data.file_extension, data.file_contents);
           break;
 
         case 'api_json':
-          _this.Throwin.add('text', sec_data.node_name, 'json', JSON.stringify(sec_data.json, null, 2)); // TODO // change to json tab type when that is implemented
+          DATA.Throwin.add('text', data.node_name, 'json', JSON.stringify(data.json, null, 2)); // TODO // change to json tab type when that is implemented
 
-
-          _this.Throwin.add('json_select', sec_data.node_name + '_select', null, sec_data.json_vars);
-
+          DATA.Throwin.add('json_select', data.node_name + '_select', null, data.json_vars);
           break;
 
         case 'user_question':
-          _this.Dialog.handleNew(sec_data);
-
+          DATA.Dialog.handleNew(data);
           break;
 
         case 'liquid_served_url':
-          var url = 'https://spurcell.pythonanywhere.com' + sec_data.relative_url;
-
-          _this.Throwin.add('webpage', sec_data.node_name, 'url', url);
-
+          var url = 'https://spurcell.pythonanywhere.com' + data.relative_url;
+          DATA.Throwin.add('webpage', data.node_name, 'url', url);
           break;
 
         default:
-          console.error('[DATA.handleResponse] unrecognized reply type: ' + section);
+          console.error('[DATA.handleResponse] unrecognized reply type: ' + type);
       }
-    });
+    }
+
+    var _loop = function _loop(section) {
+      var sec_data = response_json[section],
+          typename = typenameof(sec_data);
+
+      switch (typename) {
+        case 'Object':
+          processReplyData(section, sec_data);
+          break;
+
+        case 'Array':
+          sec_data.forEach(function (d) {
+            processReplyData(section, d);
+          });
+          break;
+
+        default:
+          console.error('[DATA.handleResponse] unrecognized data format: ' + typename);
+      }
+    };
+
+    for (var section in response_json) {
+      _loop(section);
+    }
   },
   Dialog: {
     data: [],
     // History of all questions
     // TODO // Create Option class and move this there
     handleAnswer: function handleAnswer(ans_id) {
-      var _this2 = this;
+      var _this = this;
 
       console.log('test');
 
@@ -142,9 +155,9 @@ var DATA = {
 
         if (res_json.reply_contents.indexOf('status_ok') !== -1) {
           if (res_json.status_ok.status === 'OK') {
-            _this2.data.unshift(WAIT_DIALOGUE);
+            _this.data.unshift(WAIT_DIALOGUE);
 
-            _this2.render();
+            _this.render();
           }
         }
 
@@ -265,25 +278,31 @@ var DATA = {
 
       reader.readAsText(file);
     },
-    text: function text() {
-      var text = prompt('Type or paste content here');
+    text: function text(_text) {
+      var name;
 
-      if (text === null | text === '') {
-        console.log('Text input canceled');
-        return;
-      }
+      if (_text === null || _text === undefined) {
+        _text = prompt('Type or paste content here');
 
-      var name = prompt('Give this file a name');
+        if (_text === null | _text === '') {
+          console.log('Text input canceled');
+          return;
+        }
 
-      if (name === null | name === '') {
-        console.log('Name input canceled');
-        return;
+        name = prompt('Give this file a name');
+
+        if (name === null | name === '') {
+          console.log('Name input canceled');
+          return;
+        }
+      } else {
+        name = _text.split(' ').join('_') + '.txt';
       }
 
       var json_data = {
         task_name: DATA.curr_task,
         cmd_name: 'throwin_text',
-        file_contents: text,
+        file_contents: _text,
         node_name: name
       };
       DATA.httpRequest({

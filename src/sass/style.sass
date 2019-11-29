@@ -93,24 +93,26 @@ main.sidebar
 		.menus:hover
 			color: #000
 	
-	.throwin_button
+	.throwin_input
 		display: flex
+		flex-direction: column
 		align-items: center
+		justify-content: center
 		margin-left: auto
 		margin-right: 27px
 
-		input
+		input[type='file']
 			display: none
 		
 		label[for$='file']
 			display: flex
 			align-items: center
-			padding: 10px 13px 10px 13px
+			padding: 10px 13px
 			font-size: 16px
 			cursor: pointer
 			background: #3ec435
 			color: #fff
-			border-radius: 5px 0 0 5px
+			border-radius: 5px
 			z-index: 1
 
 			div
@@ -127,46 +129,13 @@ main.sidebar
 		label[for$='file']:active
 			filter: brightness(0.8)
 
+		input[type='text']
+			margin-top: 5px
+			// height: 20px
+			// min-height: 20px
+			width: 150px
+			// max-width: 200px
 
-		#throwin_menu
-			display: inline-block
-			padding: 15px 10px 15px 10px
-			cursor: pointer
-			background: #3ec435
-			color: #fff
-			border-radius: 0 5px 5px 0
-			border-left: 1px solid rgba(255,255,255,0.5)
-			font-size: 9px
-			z-index: 1
-		#throwin_menu:hover, .throwin_button label[for$='file']:hover ~ #throwin_menu
-			filter: brightness(0.9)
-		#throwin_menu:active, .throwin_button label[for$='file']:active ~ #throwin_menu
-			filter: brightness(0.8)
-
-		label[for$='text']
-			position: absolute
-			padding: 10px 22px 10px 22px
-			font-size: 16px
-			cursor: pointer
-			background: #3ec435
-			color: #fff
-			border-radius: 5px
-			z-index: 0
-		label[for$='text']:hover
-			filter: brightness(0.9)
-		label[for$='text']:active
-			filter: brightness(0.8)
-
-	.throwin_button.open
-		label[for$='file']
-			border-radius: 5px 0 0 0
-		#throwin_menu
-			border-radius: 0 5px 0 0
-		label[for$='text']
-			margin-top: 87px
-			border-radius: 0 0 5px 5px
-			border-top: 1px solid rgba(255,255,255,0.5)
-			z-index: 1
 
 #dialog
 	// height: $nav_hgt

@@ -91,27 +91,29 @@ main.sidebar {
 #header_menu .title_menu .menus:hover {
   color: #000;
 }
-#header_menu .throwin_button {
+#header_menu .throwin_input {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   margin-left: auto;
   margin-right: 27px;
 }
-#header_menu .throwin_button input {
+#header_menu .throwin_input input[type=file] {
   display: none;
 }
-#header_menu .throwin_button label[for$=file] {
+#header_menu .throwin_input label[for$=file] {
   display: flex;
   align-items: center;
-  padding: 10px 13px 10px 13px;
+  padding: 10px 13px;
   font-size: 16px;
   cursor: pointer;
   background: #3ec435;
   color: #fff;
-  border-radius: 5px 0 0 5px;
+  border-radius: 5px;
   z-index: 1;
 }
-#header_menu .throwin_button label[for$=file] div {
+#header_menu .throwin_input label[for$=file] div {
   display: inline-block;
   opacity: 1;
   background: center/cover url("../resources/ico-file.png");
@@ -120,56 +122,15 @@ main.sidebar {
   height: 20px;
   margin-right: 6px;
 }
-#header_menu .throwin_button label[for$=file]:hover {
+#header_menu .throwin_input label[for$=file]:hover {
   filter: brightness(0.9);
 }
-#header_menu .throwin_button label[for$=file]:active {
+#header_menu .throwin_input label[for$=file]:active {
   filter: brightness(0.8);
 }
-#header_menu .throwin_button #throwin_menu {
-  display: inline-block;
-  padding: 15px 10px 15px 10px;
-  cursor: pointer;
-  background: #3ec435;
-  color: #fff;
-  border-radius: 0 5px 5px 0;
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
-  font-size: 9px;
-  z-index: 1;
-}
-#header_menu .throwin_button #throwin_menu:hover, #header_menu .throwin_button .throwin_button label[for$=file]:hover ~ #throwin_menu {
-  filter: brightness(0.9);
-}
-#header_menu .throwin_button #throwin_menu:active, #header_menu .throwin_button .throwin_button label[for$=file]:active ~ #throwin_menu {
-  filter: brightness(0.8);
-}
-#header_menu .throwin_button label[for$=text] {
-  position: absolute;
-  padding: 10px 22px 10px 22px;
-  font-size: 16px;
-  cursor: pointer;
-  background: #3ec435;
-  color: #fff;
-  border-radius: 5px;
-  z-index: 0;
-}
-#header_menu .throwin_button label[for$=text]:hover {
-  filter: brightness(0.9);
-}
-#header_menu .throwin_button label[for$=text]:active {
-  filter: brightness(0.8);
-}
-#header_menu .throwin_button.open label[for$=file] {
-  border-radius: 5px 0 0 0;
-}
-#header_menu .throwin_button.open #throwin_menu {
-  border-radius: 0 5px 0 0;
-}
-#header_menu .throwin_button.open label[for$=text] {
-  margin-top: 87px;
-  border-radius: 0 0 5px 5px;
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
-  z-index: 1;
+#header_menu .throwin_input input[type=text] {
+  margin-top: 5px;
+  width: 150px;
 }
 
 #dialog {

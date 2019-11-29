@@ -152,7 +152,11 @@ const UI = {
     EventHandler: {
         event_map: {
             '#throwin_file|change': DATA.Upload.file,
-            '#throwin_text|click': DATA.Upload.text,
+            '#throwin_text|change': () => {
+                let input = document.querySelector('#throwin_text');
+                DATA.Upload.text(input.value);
+                input.value = "";
+            },
         },
 
         init() {

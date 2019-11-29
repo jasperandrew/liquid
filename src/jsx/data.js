@@ -53,37 +53,46 @@ const DATA = {
 		}
 		console.log('[DATA-IN]',response_json);
 
-		response_json['reply_contents'].forEach(section => {
-			let sec_data = response_json[section];
-			switch(section){
+		function processReplyData(type, data) {
+			switch(type){
 				case 'status_ok': 
 					/* Handle change/hide dialogue */ console.log('STATUS-OK'); break;
 				case 'table_data':
 					let rawdata = {
-						rows:sec_data.tbl_rows,
-						cols:sec_data.tbl_cols
+						rows:data.tbl_rows,
+						cols:data.tbl_cols
 					};
 					let extension = 'tsv';
-					this.Throwin.add('table', sec_data.node_name, extension, rawdata);
+					DATA.Throwin.add('table', data.node_name, extension, rawdata);
 					break;
 				case 'text_file':
 				case 'text_file2':
-					this.Throwin.add('text', sec_data.node_name, sec_data.file_extension, sec_data.file_contents);
+					DATA.Throwin.add('text', data.node_name, data.file_extension, data.file_contents);
 					break;
 				case 'api_json':
-					this.Throwin.add('text', sec_data.node_name, 'json', JSON.stringify(sec_data.json, null, 2)); // TODO // change to json tab type when that is implemented
-					this.Throwin.add('json_select', sec_data.node_name+'_select', null, sec_data.json_vars);
+					DATA.Throwin.add('text', data.node_name, 'json', JSON.stringify(data.json, null, 2)); // TODO // change to json tab type when that is implemented
+					DATA.Throwin.add('json_select', data.node_name+'_select', null, data.json_vars);
 					break;
 				case 'user_question':
-					this.Dialog.handleNew(sec_data); break;
+					DATA.Dialog.handleNew(data); break;
 				case 'liquid_served_url':
-					let url = 'https://spurcell.pythonanywhere.com' + sec_data.relative_url;
-					this.Throwin.add('webpage', sec_data.node_name, 'url', url);
+					let url = 'https://spurcell.pythonanywhere.com' + data.relative_url;
+					DATA.Throwin.add('webpage', data.node_name, 'url', url);
 					break;
 				default:
-					console.error('[DATA.handleResponse] unrecognized reply type: ' + section);
+					console.error('[DATA.handleResponse] unrecognized reply type: ' + type);
 			}
-		});
+		}
+
+		for(let section in response_json){
+			let sec_data = response_json[section], 
+				typename = typenameof(sec_data);
+			switch(typename){
+				case 'Object': processReplyData(section, sec_data); break;
+				case 'Array': sec_data.forEach(d => { processReplyData(section, d) }); break;
+				default: console.error('[DATA.handleResponse] unrecognized data format: ' + typename)
+			}
+		}
 	},
 
     Dialog: {
@@ -213,16 +222,22 @@ const DATA = {
 			reader.readAsText(file);
 		},
 
-		text() {
-			let text = prompt('Type or paste content here');
-			if(text === null | text === ''){
-				console.log('Text input canceled');
-				return;
-			}
-			let name = prompt('Give this file a name');
-			if(name === null | name === ''){
-				console.log('Name input canceled');
-				return;
+		text(text) {
+			let name;
+			if(text === null || text === undefined){
+				text = prompt('Type or paste content here');
+				if(text === null | text === ''){
+					console.log('Text input canceled');
+					return;
+				}
+
+				name = prompt('Give this file a name');
+				if(name === null | name === ''){
+					console.log('Name input canceled');
+					return;
+				}
+			}else{
+				name = text.split(' ').join('_') + '.txt';
 			}
 			
 			let json_data = {

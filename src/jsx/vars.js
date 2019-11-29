@@ -247,3 +247,7 @@ function toggleCheckboxColumn() {
 		console.log(`invalid  tab`);
 	}
 }
+
+function typenameof(x) {
+	return x ? x.constructor.name : x;
+}

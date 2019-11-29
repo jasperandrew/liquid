@@ -83,26 +83,16 @@ function (_React$Component) {
       }, React.createElement("div", {
         className: "menus"
       }, menuHTML)), React.createElement("div", {
-        className: "throwin_button"
+        className: "throwin_input"
       }, React.createElement("input", {
         id: "throwin_file",
         type: "file"
-      }), React.createElement("input", {
-        id: "throwin_text",
-        type: "button"
       }), React.createElement("label", {
         htmlFor: "throwin_file"
-      }, React.createElement("div", null), "Throw-in"), React.createElement("div", {
-        id: "throwin_menu",
-        onClick: function onClick() {
-          return UI.toggleClass('.throwin_button', 'open');
-        }
-      }, "\u25BC"), React.createElement("label", {
-        htmlFor: "throwin_text",
-        onClick: function onClick() {
-          return UI.removeClass('.throwin_button', 'open');
-        }
-      }, "Throw-in Text")));
+      }, React.createElement("div", null), "Throw-in"), React.createElement("input", {
+        id: "throwin_text",
+        type: "text"
+      })));
     }
   }]);
 

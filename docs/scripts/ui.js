@@ -161,7 +161,11 @@ var UI = {
   EventHandler: {
     event_map: {
       '#throwin_file|change': DATA.Upload.file,
-      '#throwin_text|click': DATA.Upload.text
+      '#throwin_text|change': function throwin_textChange() {
+        var input = document.querySelector('#throwin_text');
+        DATA.Upload.text(input.value);
+        input.value = "";
+      }
     },
     init: function init() {
       var _this = this;

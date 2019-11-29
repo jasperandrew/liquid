@@ -30,13 +30,10 @@ class HeaderMenuComponent extends React.Component {
 						{menuHTML}
                     </div>
                 </div>
-                <div className='throwin_button'>
+                <div className='throwin_input'>
                     <input id="throwin_file" type="file" />
-                    <input id="throwin_text" type="button" />
-
                     <label htmlFor="throwin_file"><div></div>Throw-in</label>
-					<div id='throwin_menu' onClick={() => UI.toggleClass('.throwin_button', 'open')}>▼</div>
-                    <label htmlFor="throwin_text" onClick={() => UI.removeClass('.throwin_button', 'open')}>Throw-in Text</label>
+					<input id="throwin_text" type="text"></input>
                 </div>
             </div>
 		);

@@ -60,7 +60,7 @@ class ThrowinComponent extends React.Component {
 					innerHTML.push(
 						<label key={k++} htmlFor={id}>
 							<input type='checkbox' keyname={name.toString()} keyval={val} id={id} />
-							<span>{name}<span>{'=>'+val}</span></span>
+							<span>{name}<span>{'→'+val}</span></span>
 						</label>
 					);
 					innerHTML.push(<br key={k++}/>);

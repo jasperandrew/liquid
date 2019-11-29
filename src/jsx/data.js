@@ -100,7 +100,6 @@ const DATA = {
 
         // TODO // Create Option class and move this there
         handleAnswer(ans_id) {
-			console.log('test');
 			switch(ans_id){
 				case 'upload':
 				case 'default_throwin_question_only':

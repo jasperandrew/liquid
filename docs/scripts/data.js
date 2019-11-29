@@ -130,8 +130,6 @@ var DATA = {
     handleAnswer: function handleAnswer(ans_id) {
       var _this = this;
 
-      console.log('test');
-
       switch (ans_id) {
         case 'upload':
         case 'default_throwin_question_only':

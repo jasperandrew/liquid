@@ -133,7 +133,7 @@ function (_React$Component2) {
               keyname: name.toString(),
               keyval: val,
               id: id
-            }), React.createElement("span", null, name, React.createElement("span", null, '=>' + val))));
+            }), React.createElement("span", null, name, React.createElement("span", null, '→' + val))));
             innerHTML.push(React.createElement("br", {
               key: k++
             }));

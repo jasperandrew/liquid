@@ -33,9 +33,14 @@ in_test=""
 #--------------------------------------------#
 
 build () {
-	echo "[Info] Building files$in_test...\n"
+	echo "[Info] Building files$in_test..."
 	npx babel $js_src -d $js_out
 	npx sass $css_src:$css_out
+}
+
+clean () {
+	echo "[Info] Cleaning files"
+	rm *.log
 }
 
 help () {
@@ -44,32 +49,30 @@ help () {
 }
 
 install () {
-	echo "[Info] Installing NPM modules...\n"
+	echo "[Info] Installing NPM modules..."
     npm -D i $babel $react $sass
 	echo $babel_config > .babelrc
 }
 
 server () {
-	echo "[Info] Starting server$in_test...\n"
+	echo "[Info] Starting server$in_test on port $serve_port..."
 	trap "kill 0" EXIT
-	cd $serve_dir && python3 -m http.server $serve_port
+	cd $serve_dir && python3 -m http.server $serve_port > ../util.server.log 2>&1 &
 	wait
 }
 
 start () {
-	echo -e "[Info] Watching files and starting HTTP server$in_test...\n"
 	trap "kill 0" EXIT
-	cd $serve_dir && python3 -m http.server $serve_port &> /dev/null &
-	npx babel --verbose -w $js_src -d $js_out &
-	npx sass --watch $css_src:$css_out &
+	server &
+	watch &
 	wait
 }
 
 watch () {
-	echo "[Info] Watching files$in_test...\n"
+	echo "[Info] Watching files for changes$in_test..."
 	trap "kill 0" EXIT
-	npx babel --verbose -w $js_src -d $js_out &
-	npx sass --watch $css_src:$css_out &
+	npx babel --verbose -w $js_src -d $js_out > util.babel.log 2>&1 &
+	npx sass --watch $css_src:$css_out > util.sass.log 2>&1 &
 	wait
 }
 
@@ -95,14 +98,17 @@ case "$#" in
 ;&
 
 1)
-	if [[ $1 == "build" ]]; then build
-	elif [[ $1 == "help" ]]; then help
-	elif [[ $1 == "install" ]]; then install
-	elif [[ $1 == "server" ]]; then server
-	elif [[ $1 == "start" ]]; then start
-	elif [[ $1 == "watch" ]]; then watch
-	else echo "[Error] Invalid argument: $1"
-	fi
+	case "$1" in
+	"build"|"b") build ;;
+	"clean"|"c") clean ;;
+	"help"|"h") help ;;
+	"install"|"i") install ;;
+	"kill"|"k") kill ;;
+	"server"|"s") server ;;
+	"serverwatch"|"sw") start ;;
+	"watch"|"w") watch ;;
+	*) echo "[Error] Invalid argument: $1" ;;
+	esac
 ;;
 
 *) echo "[Error] Too many arguments" ;;

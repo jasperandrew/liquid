@@ -3,7 +3,7 @@ class HeaderMenuComponent extends React.Component {
 		super(props);
 	}
 
-	render() {
+	render() {  // TODO // Make item and menu into components
 		let menuHTML = [];
 		let menus = this.props.menus;
 		for(let i in menus){
@@ -119,7 +119,7 @@ class TabViewComponent extends React.Component {
 	}
 }
 
-class OptionComponent extends React.Component {
+class ReplyButtonComponent extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -128,7 +128,25 @@ class OptionComponent extends React.Component {
 		return (
 			<div className={'option' + (this.props.isDefault ? ' default' : '')}>
 				<input type='radio' id={'opt' + this.props.i} name='options' value={this.props.optId}/>
-				<label htmlFor={'opt' + this.props.i} onClick={() => DATA.Dialog.handleAnswer(this.props.optId)}>{this.props.optText}</label>
+				<label htmlFor={'opt' + this.props.i} onClick={() => DATA.Dialog.handleAnswer(this.props.optId, 'button')}>{this.props.optText}</label>
+			</div>
+		);
+	}
+}
+
+class ReplyTextComponent extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		let keydown_handler = (e) => {
+			if(e.key === 'Enter') DATA.Dialog.handleAnswer(this.props.optId, 'text');
+		}
+
+		return (
+			<div className={'option' + (this.props.isDefault ? ' default' : '')}>
+				<input type='text' id={'opt' + this.props.i} placeholder={this.props.optText} onKeyDown={keydown_handler}/>
 			</div>
 		);
 	}
@@ -140,16 +158,16 @@ class DialogueComponent extends React.Component {
 	}
 
 	render() {
-		let opts = DATA.Dialog.get(0).options,
-			opts_jsx = [];
+		let reply_opts = DATA.Dialog.get(0).reply_opts,
+			reply_opts_jsx = [];
 
-		if(opts !== null)
-			opts.forEach(opt => { opts_jsx.push(opt.jsxElement); });
+		if(reply_opts !== null)
+			reply_opts.forEach(opt => { reply_opts_jsx.push(opt.jsxElement); });
 
 		return (
 			<div id='dialogue'>
 				<p className='prompt'>{this.props.prompt}</p>
-				{opts_jsx}
+				{reply_opts_jsx}
 			</div>
 		);
 	}

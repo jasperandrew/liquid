@@ -167,7 +167,7 @@ main.sidebar #dialog {
   display: inline-block;
   margin-right: 15px;
 }
-#dialogue .option input {
+#dialogue .option input[type=radio] {
   display: none;
 }
 #dialogue .option label {

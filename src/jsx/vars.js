@@ -3,15 +3,16 @@ const INIT_DIALOGUE = {
 	prompt: 'Let\'s begin.  Choose the \'wizard\' interview or just start throwing in input and output files with the blue button.',
 	id: null,
 	data: null,
-	options: [
+	type: 'button',
+	reply_opts: [
 		{
-			jsxElement: <OptionComponent key={1} i={1} isDefault={0} optText='Start the interview wizard' optId='wizard'/>,
+			jsxElement: <ReplyButtonComponent key={1} i={1} isDefault={0} optText='Start the interview wizard' optId='wizard'/>,
 			isDefault: 0,
 			optText: 'Start the interview wizard',
 			optId: 'wizard',
 		},
 		{
-			jsxElement: <OptionComponent key={2} i={2} isDefault={0} optText='Upload ("Throw in") a file from your computer' optId='upload'/>,
+			jsxElement: <ReplyButtonComponent key={2} i={2} isDefault={0} optText='Upload ("Throw in") a file from your computer' optId='upload'/>,
 			isDefault: 0,
 			optText: 'Upload ("Throw in") a file from your computer',
 			optId: 'upload',

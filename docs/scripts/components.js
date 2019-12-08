@@ -32,6 +32,7 @@ function (_React$Component) {
   _createClass(HeaderMenuComponent, [{
     key: "render",
     value: function render() {
+      // TODO // Make item and menu into components
       var menuHTML = [];
       var menus = this.props.menus;
 
@@ -255,18 +256,18 @@ function (_React$Component4) {
   return TabViewComponent;
 }(React.Component);
 
-var OptionComponent =
+var ReplyButtonComponent =
 /*#__PURE__*/
 function (_React$Component5) {
-  _inherits(OptionComponent, _React$Component5);
+  _inherits(ReplyButtonComponent, _React$Component5);
 
-  function OptionComponent(props) {
-    _classCallCheck(this, OptionComponent);
+  function ReplyButtonComponent(props) {
+    _classCallCheck(this, ReplyButtonComponent);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(OptionComponent).call(this, props));
+    return _possibleConstructorReturn(this, _getPrototypeOf(ReplyButtonComponent).call(this, props));
   }
 
-  _createClass(OptionComponent, [{
+  _createClass(ReplyButtonComponent, [{
     key: "render",
     value: function render() {
       var _this4 = this;
@@ -281,19 +282,53 @@ function (_React$Component5) {
       }), React.createElement("label", {
         htmlFor: 'opt' + this.props.i,
         onClick: function onClick() {
-          return DATA.Dialog.handleAnswer(_this4.props.optId);
+          return DATA.Dialog.handleAnswer(_this4.props.optId, 'button');
         }
       }, this.props.optText));
     }
   }]);
 
-  return OptionComponent;
+  return ReplyButtonComponent;
+}(React.Component);
+
+var ReplyTextComponent =
+/*#__PURE__*/
+function (_React$Component6) {
+  _inherits(ReplyTextComponent, _React$Component6);
+
+  function ReplyTextComponent(props) {
+    _classCallCheck(this, ReplyTextComponent);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(ReplyTextComponent).call(this, props));
+  }
+
+  _createClass(ReplyTextComponent, [{
+    key: "render",
+    value: function render() {
+      var _this5 = this;
+
+      var keydown_handler = function keydown_handler(e) {
+        if (e.key === 'Enter') DATA.Dialog.handleAnswer(_this5.props.optId, 'text');
+      };
+
+      return React.createElement("div", {
+        className: 'option' + (this.props.isDefault ? ' default' : '')
+      }, React.createElement("input", {
+        type: "text",
+        id: 'opt' + this.props.i,
+        placeholder: this.props.optText,
+        onKeyDown: keydown_handler
+      }));
+    }
+  }]);
+
+  return ReplyTextComponent;
 }(React.Component);
 
 var DialogueComponent =
 /*#__PURE__*/
-function (_React$Component6) {
-  _inherits(DialogueComponent, _React$Component6);
+function (_React$Component7) {
+  _inherits(DialogueComponent, _React$Component7);
 
   function DialogueComponent(props) {
     _classCallCheck(this, DialogueComponent);
@@ -304,16 +339,16 @@ function (_React$Component6) {
   _createClass(DialogueComponent, [{
     key: "render",
     value: function render() {
-      var opts = DATA.Dialog.get(0).options,
-          opts_jsx = [];
-      if (opts !== null) opts.forEach(function (opt) {
-        opts_jsx.push(opt.jsxElement);
+      var reply_opts = DATA.Dialog.get(0).reply_opts,
+          reply_opts_jsx = [];
+      if (reply_opts !== null) reply_opts.forEach(function (opt) {
+        reply_opts_jsx.push(opt.jsxElement);
       });
       return React.createElement("div", {
         id: "dialogue"
       }, React.createElement("p", {
         className: "prompt"
-      }, this.props.prompt), opts_jsx);
+      }, this.props.prompt), reply_opts_jsx);
     }
   }]);
 

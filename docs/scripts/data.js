@@ -86,7 +86,11 @@ var DATA = {
           break;
 
         case 'user_question':
-          DATA.Dialog.handleNew(data);
+          DATA.Dialog.handleNew(data, 'button');
+          break;
+
+        case 'user_text_input':
+          DATA.Dialog.handleNew(data, 'text');
           break;
 
         case 'liquid_served_url':
@@ -127,25 +131,46 @@ var DATA = {
     data: [],
     // History of all questions
     // TODO // Create Option class and move this there
-    handleAnswer: function handleAnswer(ans_id) {
+    handleAnswer: function handleAnswer(ans_id, type) {
       var _this = this;
 
-      switch (ans_id) {
-        case 'upload':
-        case 'default_throwin_question_only':
-        case 'default_throwin_question_throw':
-          document.querySelector('label[for="throwin_file"]').click();
-          return;
+      var json_data;
+
+      switch (type) {
+        case 'button':
+          switch (ans_id) {
+            case 'upload':
+            case 'default_throwin_question_only':
+            case 'default_throwin_question_throw':
+              document.querySelector('label[for="throwin_file"]').click();
+              return;
+
+            default:
+              json_data = {
+                task_name: DATA.curr_task,
+                // will vary with tasks
+                cmd_name: 'user_answer',
+                answ_id: ans_id,
+                qst_opaque_data: this.data[0].data
+              };
+          }
+
+          break;
+
+        case 'text':
+          json_data = {
+            task_name: DATA.curr_task,
+            // will vary with tasks
+            cmd_name: 'user_answer_text_input',
+            qst_id: ans_id,
+            qst_opaque_data: this.data[0].data
+          };
+          break;
+
+        default:
       }
 
       if (ans_id === '' || ans_id === undefined) return;
-      var json_data = {
-        task_name: DATA.curr_task,
-        // will vary with tasks
-        cmd_name: 'user_answer',
-        answ_id: ans_id,
-        qst_opaque_data: this.data[0].data
-      };
       console.log('[ANSWER-OUT]', json_data);
       DATA.httpRequest({
         json_data: json_data
@@ -163,44 +188,63 @@ var DATA = {
         DATA.handleResponse(res_text);
       }); // this.command_map[ans_id]();
     },
-    handleNew: function handleNew(json) {
+    handleNew: function handleNew(json, type) {
       // console.log('[QUESTION-IN]',json);
       if (json === undefined) {
         this.data.unshift(WAIT_DIALOGUE);
       } else {
-        if (!json.error) {
-          this.add(json.qst_text, json.qst_id, json.qst_opaque_data, json.answ_cands);
-        } else {
-          this.add(json.error, null, null, null);
-        }
+        this.add(json, type); // if(!json.error){
+        // 	this.add(json.qst_text, json.qst_id, json.qst_opaque_data, json.answ_cands);
+        // }else{
+        // 	this.add(json.error, null, null, null);
+        // }
       }
 
       UI.DialogView.render();
     },
-    add: function add(text, id, data, answ_cands) {
-      var options = [];
+    add: function add(json, type) {
+      var reply_opts = [];
 
-      for (var i in answ_cands) {
-        var opt = answ_cands[i];
-        options.push({
-          jsxElement: React.createElement(OptionComponent, {
-            key: i + 1,
-            i: i + 1,
-            isDefault: 0,
-            optText: opt.answ_text,
-            optId: opt.answ_id
-          }),
-          isDefault: 0,
-          opt_text: opt.answ_text,
-          opt_id: opt.answ_id
-        });
+      switch (type) {
+        case 'button':
+          for (var i in json.answ_cands) {
+            var opt = json.answ_cands[i];
+            reply_opts.push({
+              jsxElement: React.createElement(ReplyButtonComponent, {
+                key: i + 1,
+                i: i + 1,
+                isDefault: 0,
+                optText: opt.answ_text,
+                optId: opt.answ_id
+              }),
+              isDefault: 0,
+              opt_text: opt.answ_text,
+              opt_id: opt.answ_id
+            });
+          }
+
+          break;
+
+        case 'text':
+          reply_opts.push({
+            jsxElement: React.createElement(ReplyTextComponent, {
+              key: 1,
+              i: 1,
+              optId: json.qst_id,
+              optText: 'Press [Enter] to submit'
+            })
+          });
+          break;
+
+        default:
       }
 
       this.data.unshift({
-        prompt: text,
-        id: id,
-        data: data,
-        options: options
+        prompt: json.qst_text,
+        id: json.qst_id,
+        data: json.qst_opaque_data,
+        type: type,
+        reply_opts: reply_opts
       });
     },
     get: function get(n) {

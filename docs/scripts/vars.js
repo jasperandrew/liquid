@@ -5,8 +5,9 @@ var INIT_DIALOGUE = {
   prompt: 'Let\'s begin.  Choose the \'wizard\' interview or just start throwing in input and output files with the blue button.',
   id: null,
   data: null,
-  options: [{
-    jsxElement: React.createElement(OptionComponent, {
+  type: 'button',
+  reply_opts: [{
+    jsxElement: React.createElement(ReplyButtonComponent, {
       key: 1,
       i: 1,
       isDefault: 0,
@@ -17,7 +18,7 @@ var INIT_DIALOGUE = {
     optText: 'Start the interview wizard',
     optId: 'wizard'
   }, {
-    jsxElement: React.createElement(OptionComponent, {
+    jsxElement: React.createElement(ReplyButtonComponent, {
       key: 2,
       i: 2,
       isDefault: 0,

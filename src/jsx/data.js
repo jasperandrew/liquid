@@ -81,6 +81,9 @@ const DATA = {
 					let url = 'https://spurcell.pythonanywhere.com' + data.relative_url;
 					DATA.Throwin.add('webpage', data.node_name, 'url', url);
 					break;
+				case 'error_message':
+					alert(data.message);
+					break;
 				default:
 					console.error('[DATA.handleResponse] unrecognized reply type: ' + type);
 			}
@@ -121,12 +124,15 @@ const DATA = {
 					}
 					break;
 				case 'text':
+					let input = document.querySelector('.option > input[type="text"]');
 					json_data = {
 						task_name: DATA.curr_task, // will vary with tasks
 						cmd_name: 'user_answer_text_input',
 						qst_id: ans_id,
+						text_answer: input.value,
 						qst_opaque_data: this.data[0].data
 					};
+					input.value = '';
 					break;
 				default:
 			}

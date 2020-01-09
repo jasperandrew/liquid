@@ -132,6 +132,7 @@ const UI = {
         },
 
         updateMenus(menu_json) {
+            menu_json[menu_json.length] = this.menus[0]; // manually add test menu item
             this.menus = menu_json;
             this.render();
         },

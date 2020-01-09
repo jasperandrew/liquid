@@ -4,6 +4,15 @@ const DATA = {
     init() {
         this.httpRequest({
 			json_data: {
+				cmd_name: 'init',
+			}
+		})
+		.then(text => {
+			this.handleResponse(text);
+		});
+
+        this.httpRequest({
+			json_data: {
 				task_name: this.curr_task, // will vary with tasks
 				cmd_name: 'new_task',
 				overwrite: true
@@ -55,8 +64,11 @@ const DATA = {
 
 		function processReplyData(type, data) {
 			switch(type){
+				case 'init_data':
+					UI.HeaderMenu.updateMenus(data.menus);
 				case 'status_ok': 
-					/* Handle change/hide dialogue */ console.log('STATUS-OK'); break;
+					/* Handle change/hide dialogue */ 
+					console.log('STATUS-OK'); break;
 				case 'table_data':
 					let rawdata = {
 						rows:data.tbl_rows,
@@ -82,10 +94,10 @@ const DATA = {
 					DATA.Throwin.add('webpage', data.node_name, 'url', url);
 					break;
 				case 'error_message':
-					alert(data.message);
+					alert('⚠ ' + data.message);
 					break;
 				default:
-					console.error('[DATA.handleResponse] unrecognized reply type: ' + type);
+					console.warn('[DATA.handleResponse] unrecognized reply type: ' + type);
 			}
 		}
 

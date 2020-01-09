@@ -1,17 +1,29 @@
-class HeaderMenuComponent extends React.Component {
+class TopMenuItemComponent extends React.Component {
 	constructor(props) {
 		super(props);
 	}
 
-	render() {  // TODO // Make item and menu into components
+	render() {
+		return (
+			<a onClick={() => {UI.HeaderMenu.close(true); this.props.func();}}>{this.props.name}</a>
+		);
+	}
+}
+
+class TopMenuBarComponent extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
 		let menuHTML = [];
 		let menus = this.props.menus;
 		for(let i in menus){
 			let itemHTML = [];
-			let items = menus[i].items;
+			let items = menus[i].menu_items;
 			for(let j in items){
 				let item = items[j];
-				itemHTML.push(<a key={j} onClick={() => {UI.HeaderMenu.close(true); item.func();}}>{item.name}</a>);
+				itemHTML.push(<TopMenuItemComponent key={j} func={UI.HeaderMenu.menu_funcs[item.menu_item_id]} name={item.menu_item_text} />);
 			}
 			menuHTML.push(
 				<div key={i} i={i} className='menu'>
@@ -22,13 +34,25 @@ class HeaderMenuComponent extends React.Component {
 		}
 
 		return (
+			<div className='menus'>
+				{menuHTML}
+			</div>
+		);
+	}
+}
+
+class HeaderComponent extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {  // TODO // Make item and menu into components
+		return (
             <div id='header_menu'>
                 <div className='logo'></div>
                 <div className='title_menu'>
                     {/* <div className='title'>Liquid Data</div> */}
-                    <div className='menus'>
-						{menuHTML}
-                    </div>
+                    <TopMenuBarComponent menus={this.props.menus} />
                 </div>
                 <div className='throwin_input'>
                     <input id="throwin_file" type="file" />

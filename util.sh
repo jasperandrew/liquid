@@ -61,18 +61,18 @@ server () {
 	wait
 }
 
-start () {
-	trap "kill 0" EXIT
-	server &
-	watch &
-	wait
-}
-
 watch () {
 	echo "[Info] Watching files for changes$in_test..."
 	trap "kill 0" EXIT
 	npx babel --verbose -w $js_src -d $js_out > util.babel.log 2>&1 &
 	npx sass --watch $css_src:$css_out > util.sass.log 2>&1 &
+	wait
+}
+
+serverwatch () {
+	trap "kill 0" EXIT
+	server &
+	watch &
 	wait
 }
 
@@ -103,10 +103,9 @@ case "$#" in
 	"clean"|"c") clean ;;
 	"help"|"h") help ;;
 	"install"|"i") install ;;
-	"kill"|"k") kill ;;
 	"server"|"s") server ;;
-	"serverwatch"|"sw") start ;;
 	"watch"|"w") watch ;;
+	"serverwatch"|"sw") serverwatch ;;
 	*) echo "[Error] Invalid argument: $1" ;;
 	esac
 ;;

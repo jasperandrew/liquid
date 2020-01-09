@@ -5,6 +5,15 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 var DATA = {
   curr_task: 'liquid_gui',
   init: function init() {
+    var _this = this;
+
+    this.httpRequest({
+      json_data: {
+        cmd_name: 'init'
+      }
+    }).then(function (text) {
+      _this.handleResponse(text);
+    });
     this.httpRequest({
       json_data: {
         task_name: this.curr_task,
@@ -60,6 +69,9 @@ var DATA = {
 
     function processReplyData(type, data) {
       switch (type) {
+        case 'init_data':
+          UI.HeaderMenu.updateMenus(data.menus);
+
         case 'status_ok':
           /* Handle change/hide dialogue */
           console.log('STATUS-OK');
@@ -99,11 +111,11 @@ var DATA = {
           break;
 
         case 'error_message':
-          alert(data.message);
+          alert('⚠ ' + data.message);
           break;
 
         default:
-          console.error('[DATA.handleResponse] unrecognized reply type: ' + type);
+          console.warn('[DATA.handleResponse] unrecognized reply type: ' + type);
       }
     }
 
@@ -136,7 +148,7 @@ var DATA = {
     // History of all questions
     // TODO // Create Option class and move this there
     handleAnswer: function handleAnswer(ans_id, type) {
-      var _this = this;
+      var _this2 = this;
 
       var json_data;
 
@@ -186,9 +198,9 @@ var DATA = {
 
         if (res_json.reply_contents.indexOf('status_ok') !== -1) {
           if (res_json.status_ok.status === 'OK') {
-            _this.data.unshift(WAIT_DIALOGUE);
+            _this2.data.unshift(WAIT_DIALOGUE);
 
-            _this.render();
+            _this2.render();
           }
         }
 

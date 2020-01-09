@@ -93,39 +93,22 @@ var UI = {
   },
   HeaderMenu: {
     menus: [{
-      title: 'File',
-      items: [{
-        name: 'Send Table Data',
-        func: sendTableData
-      }]
-    }, {
-      title: 'Edit',
-      items: [{
-        name: 'Toggle Checkbox Column',
-        func: toggleCheckboxColumn
-      }]
-    }, {
-      title: 'Insert',
-      items: [{
-        name: 'Checkbox Column',
-        func: insertCheckboxColumn
-      }, {
-        name: 'Text Column',
-        func: insertTextColumn
-      }]
-    }, {
-      title: 'Data',
-      items: [{
-        name: 'Filter Column',
-        func: filterColumn
-      }, {
-        name: 'Multi-Column Filter',
-        func: filterCustom
-      }, {
-        name: 'Clear Filters',
-        func: clearFilters
+      title: 'Test',
+      menu_items: [{
+        menu_item_text: 'Exec Menu Item Test',
+        menu_item_id: 'exec_mun_item_test'
       }]
     }],
+    menu_funcs: {
+      send_table_data: sendTableData,
+      toggle_checkbox_column: toggleCheckboxColumn,
+      insert_checkbox_column: insertCheckboxColumn,
+      insert_text_column: insertTextColumn,
+      filter_column: filterColumn,
+      multi_column_filter: filterCustom,
+      clear_filters: clearFilters,
+      exec_mun_item_test: execMenuItemTest
+    },
     hover_open: false,
     control: function control(i, hover) {
       if (hover && !this.hover_open) return;
@@ -151,8 +134,12 @@ var UI = {
 
       UI.removeClass('#header .menus .menu.open', 'open');
     },
+    updateMenus: function updateMenus(menu_json) {
+      this.menus = menu_json;
+      this.render();
+    },
     render: function render() {
-      ReactDOM.render(React.createElement(HeaderMenuComponent, {
+      ReactDOM.render(React.createElement(HeaderComponent, {
         menus: this.menus
       }), document.querySelector('#header'));
     }

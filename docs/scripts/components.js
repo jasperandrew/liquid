@@ -18,41 +18,63 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var HeaderMenuComponent =
+var TopMenuItemComponent =
 /*#__PURE__*/
 function (_React$Component) {
-  _inherits(HeaderMenuComponent, _React$Component);
+  _inherits(TopMenuItemComponent, _React$Component);
 
-  function HeaderMenuComponent(props) {
-    _classCallCheck(this, HeaderMenuComponent);
+  function TopMenuItemComponent(props) {
+    _classCallCheck(this, TopMenuItemComponent);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(HeaderMenuComponent).call(this, props));
+    return _possibleConstructorReturn(this, _getPrototypeOf(TopMenuItemComponent).call(this, props));
   }
 
-  _createClass(HeaderMenuComponent, [{
+  _createClass(TopMenuItemComponent, [{
     key: "render",
     value: function render() {
-      // TODO // Make item and menu into components
+      var _this = this;
+
+      return React.createElement("a", {
+        onClick: function onClick() {
+          UI.HeaderMenu.close(true);
+
+          _this.props.func();
+        }
+      }, this.props.name);
+    }
+  }]);
+
+  return TopMenuItemComponent;
+}(React.Component);
+
+var TopMenuBarComponent =
+/*#__PURE__*/
+function (_React$Component2) {
+  _inherits(TopMenuBarComponent, _React$Component2);
+
+  function TopMenuBarComponent(props) {
+    _classCallCheck(this, TopMenuBarComponent);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(TopMenuBarComponent).call(this, props));
+  }
+
+  _createClass(TopMenuBarComponent, [{
+    key: "render",
+    value: function render() {
       var menuHTML = [];
       var menus = this.props.menus;
 
       var _loop = function _loop(i) {
         var itemHTML = [];
-        var items = menus[i].items;
-
-        var _loop2 = function _loop2(j) {
-          var item = items[j];
-          itemHTML.push(React.createElement("a", {
-            key: j,
-            onClick: function onClick() {
-              UI.HeaderMenu.close(true);
-              item.func();
-            }
-          }, item.name));
-        };
+        var items = menus[i].menu_items;
 
         for (var j in items) {
-          _loop2(j);
+          var item = items[j];
+          itemHTML.push(React.createElement(TopMenuItemComponent, {
+            key: j,
+            func: UI.HeaderMenu.menu_funcs[item.menu_item_id],
+            name: item.menu_item_text
+          }));
         }
 
         menuHTML.push(React.createElement("div", {
@@ -76,14 +98,38 @@ function (_React$Component) {
       }
 
       return React.createElement("div", {
+        className: "menus"
+      }, menuHTML);
+    }
+  }]);
+
+  return TopMenuBarComponent;
+}(React.Component);
+
+var HeaderComponent =
+/*#__PURE__*/
+function (_React$Component3) {
+  _inherits(HeaderComponent, _React$Component3);
+
+  function HeaderComponent(props) {
+    _classCallCheck(this, HeaderComponent);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(HeaderComponent).call(this, props));
+  }
+
+  _createClass(HeaderComponent, [{
+    key: "render",
+    value: function render() {
+      // TODO // Make item and menu into components
+      return React.createElement("div", {
         id: "header_menu"
       }, React.createElement("div", {
         className: "logo"
       }), React.createElement("div", {
         className: "title_menu"
-      }, React.createElement("div", {
-        className: "menus"
-      }, menuHTML)), React.createElement("div", {
+      }, React.createElement(TopMenuBarComponent, {
+        menus: this.props.menus
+      })), React.createElement("div", {
         className: "throwin_input"
       }, React.createElement("input", {
         id: "throwin_file",
@@ -97,13 +143,13 @@ function (_React$Component) {
     }
   }]);
 
-  return HeaderMenuComponent;
+  return HeaderComponent;
 }(React.Component);
 
 var ThrowinComponent =
 /*#__PURE__*/
-function (_React$Component2) {
-  _inherits(ThrowinComponent, _React$Component2);
+function (_React$Component4) {
+  _inherits(ThrowinComponent, _React$Component4);
 
   function ThrowinComponent(props) {
     _classCallCheck(this, ThrowinComponent);
@@ -114,7 +160,7 @@ function (_React$Component2) {
   _createClass(ThrowinComponent, [{
     key: "render",
     value: function render() {
-      var _this = this;
+      var _this2 = this;
 
       var innerHTML = [];
 
@@ -145,7 +191,7 @@ function (_React$Component2) {
             type: "button",
             id: 'json_submit_' + this.props.n,
             onClick: function onClick() {
-              return UI.TabView.submitJSONvars('#t' + _this.props.n);
+              return UI.TabView.submitJSONvars('#t' + _this2.props.n);
             }
           }));
           innerHTML.push(React.createElement("label", {
@@ -184,8 +230,8 @@ function (_React$Component2) {
 
 var TabButtonComponent =
 /*#__PURE__*/
-function (_React$Component3) {
-  _inherits(TabButtonComponent, _React$Component3);
+function (_React$Component5) {
+  _inherits(TabButtonComponent, _React$Component5);
 
   function TabButtonComponent(props) {
     _classCallCheck(this, TabButtonComponent);
@@ -196,13 +242,13 @@ function (_React$Component3) {
   _createClass(TabButtonComponent, [{
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var active = this.props.is_active ? ' active' : '';
       return React.createElement("div", {
         className: "tab_button".concat(active),
         onClick: function onClick() {
-          return UI.TabView.setActive(_this2.props.n);
+          return UI.TabView.setActive(_this3.props.n);
         }
       }, this.props.title);
     }
@@ -213,8 +259,8 @@ function (_React$Component3) {
 
 var TabViewComponent =
 /*#__PURE__*/
-function (_React$Component4) {
-  _inherits(TabViewComponent, _React$Component4);
+function (_React$Component6) {
+  _inherits(TabViewComponent, _React$Component6);
 
   function TabViewComponent(props) {
     _classCallCheck(this, TabViewComponent);
@@ -225,12 +271,12 @@ function (_React$Component4) {
   _createClass(TabViewComponent, [{
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       var throwin_set = [],
           button_set = [];
       DATA.Throwin.getAll().forEach(function (t, i) {
-        var is_active = _this3.props.active_tab === i + 1;
+        var is_active = _this4.props.active_tab === i + 1;
         var active = is_active ? ' active' : '';
         throwin_set.push(React.createElement("div", {
           key: i,
@@ -258,8 +304,8 @@ function (_React$Component4) {
 
 var ReplyButtonComponent =
 /*#__PURE__*/
-function (_React$Component5) {
-  _inherits(ReplyButtonComponent, _React$Component5);
+function (_React$Component7) {
+  _inherits(ReplyButtonComponent, _React$Component7);
 
   function ReplyButtonComponent(props) {
     _classCallCheck(this, ReplyButtonComponent);
@@ -270,7 +316,7 @@ function (_React$Component5) {
   _createClass(ReplyButtonComponent, [{
     key: "render",
     value: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
       return React.createElement("div", {
         className: 'option' + (this.props.isDefault ? ' default' : '')
@@ -282,7 +328,7 @@ function (_React$Component5) {
       }), React.createElement("label", {
         htmlFor: 'opt' + this.props.i,
         onClick: function onClick() {
-          return DATA.Dialog.handleAnswer(_this4.props.optId, 'button');
+          return DATA.Dialog.handleAnswer(_this5.props.optId, 'button');
         }
       }, this.props.optText));
     }
@@ -293,8 +339,8 @@ function (_React$Component5) {
 
 var ReplyTextComponent =
 /*#__PURE__*/
-function (_React$Component6) {
-  _inherits(ReplyTextComponent, _React$Component6);
+function (_React$Component8) {
+  _inherits(ReplyTextComponent, _React$Component8);
 
   function ReplyTextComponent(props) {
     _classCallCheck(this, ReplyTextComponent);
@@ -305,10 +351,10 @@ function (_React$Component6) {
   _createClass(ReplyTextComponent, [{
     key: "render",
     value: function render() {
-      var _this5 = this;
+      var _this6 = this;
 
       var keydown_handler = function keydown_handler(e) {
-        if (e.key === 'Enter') DATA.Dialog.handleAnswer(_this5.props.optId, 'text');
+        if (e.key === 'Enter') DATA.Dialog.handleAnswer(_this6.props.optId, 'text');
       };
 
       return React.createElement("div", {
@@ -327,8 +373,8 @@ function (_React$Component6) {
 
 var DialogueComponent =
 /*#__PURE__*/
-function (_React$Component7) {
-  _inherits(DialogueComponent, _React$Component7);
+function (_React$Component9) {
+  _inherits(DialogueComponent, _React$Component9);
 
   function DialogueComponent(props) {
     _classCallCheck(this, DialogueComponent);

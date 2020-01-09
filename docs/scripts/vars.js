@@ -329,3 +329,16 @@ function toggleCheckboxColumn() {
 function typenameof(x) {
   return x ? x.constructor.name : x;
 }
+
+function execMenuItemTest() {
+  DATA.httpRequest({
+    json_data: {
+      cmd_name: 'exec_menu_item',
+      menu_item_id: 'filter_column',
+      menu_item_text: 'Filter Column',
+      task_name: 'dentists'
+    }
+  }).then(function (res_text) {
+    alert(res_text);
+  });
+}

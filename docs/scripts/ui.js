@@ -134,11 +134,26 @@ var UI = {
 
       UI.removeClass('#header .menus .menu.open', 'open');
     },
-    updateMenus: function updateMenus(menu_json) {
+    initMenus: function initMenus(menu_json) {
       menu_json[menu_json.length] = this.menus[0]; // manually add test menu item
 
       this.menus = menu_json;
       this.render();
+    },
+    runMenuFunc: function runMenuFunc(id) {
+      this.menu_funcs[id]();
+    },
+    sendMenuClick: function sendMenuClick(id) {
+      DATA.httpRequest({
+        json_data: {
+          cmd_name: 'exec_menu_item',
+          menu_item_id: id,
+          menu_item_text: 'Is This Field Necessary?',
+          task_name: DATA.curr_task
+        }
+      }).then(function (res_text) {
+        DATA.handleResponse(res_text);
+      });
     },
     render: function render() {
       ReactDOM.render(React.createElement(HeaderComponent, {

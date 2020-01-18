@@ -131,12 +131,30 @@ const UI = {
             UI.removeClass('#header .menus .menu.open', 'open');
         },
 
-        updateMenus(menu_json) {
+        initMenus(menu_json) {
             menu_json[menu_json.length] = this.menus[0]; // manually add test menu item
             this.menus = menu_json;
             this.render();
         },
 
+        runMenuFunc(id) {
+            this.menu_funcs[id]();
+        },
+
+        sendMenuClick(id) {
+            DATA.httpRequest({
+                json_data: {
+                    cmd_name: 'exec_menu_item',
+                    menu_item_id: id,
+                    menu_item_text: 'Is This Field Necessary?',
+                    task_name: DATA.curr_task
+                }
+            })
+            .then(res_text => {
+                DATA.handleResponse(res_text);
+            });        
+        },
+        
         render() {
             ReactDOM.render(<HeaderComponent menus={this.menus}/>, document.querySelector('#header'));
         }

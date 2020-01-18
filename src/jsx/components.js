@@ -5,7 +5,7 @@ class TopMenuItemComponent extends React.Component {
 
 	render() {
 		return (
-			<a onClick={() => {UI.HeaderMenu.close(true); this.props.func();}}>{this.props.name}</a>
+			<a onClick={() => {UI.HeaderMenu.close(true); UI.HeaderMenu.sendMenuClick(this.props.id);}}>{this.props.name}</a>
 		);
 	}
 }
@@ -23,7 +23,7 @@ class TopMenuBarComponent extends React.Component {
 			let items = menus[i].menu_items;
 			for(let j in items){
 				let item = items[j];
-				itemHTML.push(<TopMenuItemComponent key={j} func={UI.HeaderMenu.menu_funcs[item.menu_item_id]} name={item.menu_item_text} />);
+				itemHTML.push(<TopMenuItemComponent key={j} id={item.menu_item_id} name={item.menu_item_text} />);
 			}
 			menuHTML.push(
 				<div key={i} i={i} className='menu'>

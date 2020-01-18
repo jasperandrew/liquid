@@ -65,7 +65,7 @@ const DATA = {
 		function processReplyData(type, data) {
 			switch(type){
 				case 'init_data':
-					UI.HeaderMenu.updateMenus(data.menus);
+					UI.HeaderMenu.initMenus(data.menus);
 				case 'status_ok': 
 					/* Handle change/hide dialogue */ 
 					console.log('STATUS-OK'); break;
@@ -93,9 +93,13 @@ const DATA = {
 					let url = 'https://spurcell.pythonanywhere.com' + data.relative_url;
 					DATA.Throwin.add('webpage', data.node_name, 'url', url);
 					break;
+				case 'exec_menu_item':
+					UI.HeaderMenu.runMenuFunc(data.menu_item_id);
+					break;
 				case 'error_message':
 					alert('⚠ ' + data.message);
 					break;
+				case 'reply_contents': break; // TODO // remove eventually
 				default:
 					console.warn('[DATA.handleResponse] unrecognized reply type: ' + type);
 			}

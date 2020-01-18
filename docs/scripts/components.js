@@ -37,8 +37,7 @@ function (_React$Component) {
       return React.createElement("a", {
         onClick: function onClick() {
           UI.HeaderMenu.close(true);
-
-          _this.props.func();
+          UI.HeaderMenu.sendMenuClick(_this.props.id);
         }
       }, this.props.name);
     }
@@ -72,7 +71,7 @@ function (_React$Component2) {
           var item = items[j];
           itemHTML.push(React.createElement(TopMenuItemComponent, {
             key: j,
-            func: UI.HeaderMenu.menu_funcs[item.menu_item_id],
+            id: item.menu_item_id,
             name: item.menu_item_text
           }));
         }

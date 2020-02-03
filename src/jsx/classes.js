@@ -10,9 +10,11 @@ class Throwin {
 
     getName() { return this.name; }
 
-    getRawData() { return this.rawdata; }
-
     getExtension() { return this.extension; }
+
+    getFullName() { return this.name + '.' + this.extension; }
+
+    getRawData() { return this.rawdata; }
 
     getID() {return this.id; }
 
@@ -20,6 +22,13 @@ class Throwin {
 
     getThrowinComponent() {
         return <ThrowinComponent key={this.id} n={this.id} title={this.title} rawdata={this.rawdata} type={this.type}/>;
+    }
+
+    download() {
+        saveAs(
+            new Blob([this.rawdata], {type: "text/plain;charset=utf-8"}),
+            this.getFullName()
+        );
     }
 
     static getFormat(extension) {
@@ -62,6 +71,13 @@ class TableThrowin extends Throwin {
     getTableObject() { return this.object; }
 
     setTableObject(object) { this.object = object; }
+
+    // Overload
+    download() {
+        let delim = ',';
+        if(this.extension === 'tsv') delim = '\t';
+        this.object.download('csv', this.getFullName(), {delimiter:delim});
+    }
 }
 
 class JSONThrowin extends Throwin {

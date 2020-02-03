@@ -267,3 +267,7 @@ function execMenuItemTest() {
 	});
 
 }
+
+function downloadCurrentTab() {
+	DATA.Throwin.get(UI.TabView.active_tab).download();
+}

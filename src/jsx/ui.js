@@ -89,6 +89,7 @@ const UI = {
                 title: 'Test',
                 menu_items: [
                     { menu_item_text: 'Exec Menu Item Test', menu_item_id: 'exec_mun_item_test' },
+                    { menu_item_text: 'Download Current Tab', menu_item_id: 'download_current_tab' }
                 ]
             }
         ],
@@ -101,6 +102,7 @@ const UI = {
             filter_column: filterColumn,
             multi_column_filter: filterCustom,
             clear_filters: clearFilters,
+            download_current_tab: downloadCurrentTab,
             exec_mun_item_test: execMenuItemTest
         },
 

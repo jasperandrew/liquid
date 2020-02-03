@@ -38,14 +38,19 @@ function () {
       return this.name;
     }
   }, {
-    key: "getRawData",
-    value: function getRawData() {
-      return this.rawdata;
-    }
-  }, {
     key: "getExtension",
     value: function getExtension() {
       return this.extension;
+    }
+  }, {
+    key: "getFullName",
+    value: function getFullName() {
+      return this.name + '.' + this.extension;
+    }
+  }, {
+    key: "getRawData",
+    value: function getRawData() {
+      return this.rawdata;
     }
   }, {
     key: "getID",
@@ -67,6 +72,13 @@ function () {
         rawdata: this.rawdata,
         type: this.type
       });
+    }
+  }, {
+    key: "download",
+    value: function download() {
+      saveAs(new Blob([this.rawdata], {
+        type: "text/plain;charset=utf-8"
+      }), this.getFullName());
     }
   }], [{
     key: "getFormat",
@@ -150,6 +162,16 @@ function (_Throwin2) {
     key: "setTableObject",
     value: function setTableObject(object) {
       this.object = object;
+    } // Overload
+
+  }, {
+    key: "download",
+    value: function download() {
+      var delim = ',';
+      if (this.extension === 'tsv') delim = '\t';
+      this.object.download('csv', this.getFullName(), {
+        delimiter: delim
+      });
     }
   }]);
 

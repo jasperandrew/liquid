@@ -241,7 +241,7 @@ const DATA = {
 		},
 
         get(n) { return this.data[n-1] || null; },
-        getAll() { return this.data; },
+		getAll() { return this.data; }
     },
 
     Upload: {

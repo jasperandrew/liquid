@@ -287,10 +287,3 @@ Tabulator.prototype.extendModule("download", "downloaders", {
         setFileContents(tsv_data, 'text/tsv');
     }
 });
-
-Tabulator.prototype.extendModule("download", "downloaders", {
-    string:function(columns, data, options){
-        var fileContents = data.toString();
-        return 'data:application/txt;charset=utf-8,' + encodeURIComponent(fileContents);
-    }
-});

@@ -43,7 +43,7 @@ const UI = {
 							layout:'fitData',
 							placeholder:'Loading...',
 							movableColumns: true,
-							rowFormatter: data.formatter
+                            rowFormatter: data.formatter
 						});
 
 						obj.setColumns(data.cols);

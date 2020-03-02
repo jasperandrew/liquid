@@ -167,11 +167,19 @@ function (_Throwin2) {
   }, {
     key: "download",
     value: function download() {
-      var delim = ',';
-      if (this.extension === 'tsv') delim = '\t';
-      this.object.download('csv', this.getFullName(), {
-        delimiter: delim
-      });
+      var type = 'csv';
+
+      switch (this.extension) {
+        case 'tsv':
+          type = 'tsv';
+          break;
+
+        default:
+      }
+
+      var name = prompt('Give the file a name', this.getFullName());
+      if (!name || name === '') name = this.getFullName();
+      this.object.download(type, name);
     }
   }]);
 

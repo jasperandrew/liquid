@@ -271,3 +271,26 @@ function execMenuItemTest() {
 function downloadCurrentTab() {
 	DATA.Throwin.get(UI.TabView.active_tab).download();
 }
+
+Tabulator.prototype.extendModule("download", "downloaders", {
+    tsv:function(columns, data, options, setFileContents){
+		// console.log(columns, data, options);
+		let tsv_data = '', tab = '';
+		for(let row in data){
+			for(let col in columns){
+				tsv_data += tab + data[row][columns[col].field];
+				tab = '\t';
+			}
+			tsv_data += '\n';
+			tab = '';
+		}
+        setFileContents(tsv_data, 'text/tsv');
+    }
+});
+
+Tabulator.prototype.extendModule("download", "downloaders", {
+    string:function(columns, data, options){
+        var fileContents = data.toString();
+        return 'data:application/txt;charset=utf-8,' + encodeURIComponent(fileContents);
+    }
+});

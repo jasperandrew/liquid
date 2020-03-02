@@ -74,9 +74,14 @@ class TableThrowin extends Throwin {
 
     // Overload
     download() {
-        let delim = ',';
-        if(this.extension === 'tsv') delim = '\t';
-        this.object.download('csv', this.getFullName(), {delimiter:delim});
+        let type = 'csv';
+        switch(this.extension){
+            case 'tsv': type = 'tsv'; break;
+            default:
+        }
+        let name = prompt('Give the file a name', this.getFullName());
+        if(!name || name === '') name = this.getFullName();
+        this.object.download(type, name);
     }
 }
 

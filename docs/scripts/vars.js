@@ -335,7 +335,6 @@ function execMenuItemTest() {
     json_data: {
       cmd_name: 'exec_menu_item',
       menu_item_id: 'filter_column',
-      menu_item_text: 'Filter Column',
       task_name: 'dentists'
     }
   }).then(function (res_text) {
@@ -349,13 +348,20 @@ function downloadCurrentTab() {
 
 Tabulator.prototype.extendModule("download", "downloaders", {
   tsv: function tsv(columns, data, options, setFileContents) {
-    // console.log(columns, data, options);
     var tsv_data = '',
         tab = '';
 
-    for (var row in data) {
-      for (var col in columns) {
-        tsv_data += tab + data[row][columns[col].field];
+    for (var i in columns) {
+      tsv_data += tab + columns[i].title;
+      tab = '\t';
+    }
+
+    tsv_data += '\n';
+    tab = '';
+
+    for (var _i in data) {
+      for (var j in columns) {
+        tsv_data += tab + data[_i][columns[j].field];
         tab = '\t';
       }
 
@@ -364,11 +370,5 @@ Tabulator.prototype.extendModule("download", "downloaders", {
     }
 
     setFileContents(tsv_data, 'text/tsv');
-  }
-});
-Tabulator.prototype.extendModule("download", "downloaders", {
-  string: function string(columns, data, options) {
-    var fileContents = data.toString();
-    return 'data:application/txt;charset=utf-8,' + encodeURIComponent(fileContents);
   }
 });

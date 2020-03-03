@@ -76,9 +76,12 @@ function () {
   }, {
     key: "download",
     value: function download() {
+      var name = prompt('Give the file a name', this.getFullName());
+      if (name === null) return;
+      if (name === '') name = this.getFullName();
       saveAs(new Blob([this.rawdata], {
         type: "text/plain;charset=utf-8"
-      }), this.getFullName());
+      }), name);
     }
   }], [{
     key: "getFormat",
@@ -178,7 +181,8 @@ function (_Throwin2) {
       }
 
       var name = prompt('Give the file a name', this.getFullName());
-      if (!name || name === '') name = this.getFullName();
+      if (name === null) return;
+      if (name === '') name = this.getFullName();
       this.object.download(type, name);
     }
   }]);
@@ -219,7 +223,16 @@ function (_JSONThrowin) {
     _this4.type = 'json_select';
     _this4.object = null;
     return _this4;
-  }
+  } // Overload
+
+
+  _createClass(JSONSelectThrowin, [{
+    key: "download",
+    value: function download() {
+      // Download disabled
+      return;
+    }
+  }]);
 
   return JSONSelectThrowin;
 }(JSONThrowin);
@@ -237,7 +250,16 @@ function (_Throwin4) {
     _this5 = _possibleConstructorReturn(this, _getPrototypeOf(WebPageThrowin).call(this, name, extension, rawdata));
     _this5.type = 'webpage';
     return _this5;
-  }
+  } // Overload
+
+
+  _createClass(WebPageThrowin, [{
+    key: "download",
+    value: function download() {
+      // Download disabled
+      return;
+    }
+  }]);
 
   return WebPageThrowin;
 }(Throwin);

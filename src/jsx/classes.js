@@ -26,11 +26,9 @@ class Throwin {
 
     download() {
         let name = prompt('Give the file a name', this.getFullName());
-        if(!name || name === '') name = this.getFullName();
-        saveAs(
-            new Blob([this.rawdata], {type: "text/plain;charset=utf-8"}),
-            name
-        );
+        if(name === null) return;
+        if(name === '') name = this.getFullName();
+        saveAs(new Blob([this.rawdata], {type: "text/plain;charset=utf-8"}), name);
     }
 
     static getFormat(extension) {
@@ -82,7 +80,8 @@ class TableThrowin extends Throwin {
             default:
         }
         let name = prompt('Give the file a name', this.getFullName());
-        if(!name || name === '') name = this.getFullName();
+        if(name === null) return;
+        if(name === '') name = this.getFullName();
         this.object.download(type, name);
     }
 }
@@ -101,11 +100,23 @@ class JSONSelectThrowin extends JSONThrowin {
         this.type = 'json_select';
         this.object = null;
     }
+
+    // Overload
+    download() {
+        // Download disabled
+        return;
+    }
 }
 
 class WebPageThrowin extends Throwin {
     constructor(name, extension, rawdata) {
         super(name, extension, rawdata);
         this.type = 'webpage';
+    }
+
+    // Overload
+    download() {
+        // Download disabled
+        return;
     }
 }

@@ -258,7 +258,6 @@ function execMenuItemTest() {
 		json_data: {
 			cmd_name: 'exec_menu_item',
 			menu_item_id: 'filter_column',
-			menu_item_text: 'Filter Column',
 			task_name: 'dentists'
 		}
 	})
@@ -274,11 +273,17 @@ function downloadCurrentTab() {
 
 Tabulator.prototype.extendModule("download", "downloaders", {
     tsv:function(columns, data, options, setFileContents){
-		// console.log(columns, data, options);
 		let tsv_data = '', tab = '';
-		for(let row in data){
-			for(let col in columns){
-				tsv_data += tab + data[row][columns[col].field];
+		for(let i in columns){
+			tsv_data += tab + columns[i].title;
+			tab = '\t';
+		}
+		tsv_data += '\n';
+
+		tab = '';
+		for(let i in data){
+			for(let j in columns){
+				tsv_data += tab + data[i][columns[j].field];
 				tab = '\t';
 			}
 			tsv_data += '\n';

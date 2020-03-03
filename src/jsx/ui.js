@@ -148,7 +148,6 @@ const UI = {
                 json_data: {
                     cmd_name: 'exec_menu_item',
                     menu_item_id: id,
-                    menu_item_text: 'Is This Field Necessary?',
                     task_name: DATA.curr_task
                 }
             })

@@ -17,8 +17,7 @@
     "url": "https://github.com/jasperandrew/liquid/issues"
   },
   "homepage": "https://github.com/jasperandrew/liquid#readme",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",

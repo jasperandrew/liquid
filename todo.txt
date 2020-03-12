@@ -18,8 +18,10 @@
     - empty (null, '', undefined)
     - wildcard ?
 
-- download throwins
-
 - html rendering
     - open in liquid tab (iframe)
     - whitespace pre in html display
+
+- fix menubar behavior
+- fix "Go" cell downloads
+- fix empty (undefined) cell downloads

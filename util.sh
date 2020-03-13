@@ -5,7 +5,7 @@
 #--------------------------------------------#
 
 build () {
-	echo "[Info] Building files..."
+	echo -n "[Info] Building files..."
 	npx babel src/jsx/ -d docs/scripts/
 	npx sass src/sass/:docs/styles/
 }
@@ -17,7 +17,12 @@ clean () {
 
 help () {
 	echo "Jasper's Project Streamline Utility Script"
-	echo ""
+	echo "    build, b         Build project"
+	echo "    clean, c         Clean log files"
+	echo "    help, h          Display this help message"
+	echo "    server, s        Run a basic http server on docs/"
+	echo "    watch, w         Watch files for changes"
+	echo "    start, all, a    Start the server and watch processes"
 }
 
 server () {

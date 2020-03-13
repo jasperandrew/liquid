@@ -372,3 +372,19 @@ Tabulator.prototype.extendModule("download", "downloaders", {
     setFileContents(tsv_data, 'text/tsv');
   }
 });
+
+function downloadData(data, filename) {
+  var mime = "text/plain",
+      // TODO // Calculate mime type
+  blob = new Blob([data], {
+    type: mime
+  }),
+      name = filename || "liquid_download.txt",
+      element = document.createElement('a');
+  element.setAttribute('href', window.URL.createObjectURL(blob));
+  element.setAttribute('download', name);
+  element.style.display = 'none';
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+}

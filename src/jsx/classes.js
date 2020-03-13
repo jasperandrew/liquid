@@ -28,7 +28,7 @@ class Throwin {
         let name = prompt('Give the file a name', this.getFullName());
         if(name === null) return;
         if(name === '') name = this.getFullName();
-        saveAs(new Blob([this.rawdata], {type: "text/plain;charset=utf-8"}), name);
+        downloadData(this.rawdata, name);
     }
 
     static getFormat(extension) {

@@ -1,6 +1,6 @@
 "use strict";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
@@ -18,9 +18,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var Throwin =
-/*#__PURE__*/
-function () {
+var Throwin = /*#__PURE__*/function () {
   function Throwin(name, extension, rawdata) {
     _classCallCheck(this, Throwin);
 
@@ -79,9 +77,7 @@ function () {
       var name = prompt('Give the file a name', this.getFullName());
       if (name === null) return;
       if (name === '') name = this.getFullName();
-      saveAs(new Blob([this.rawdata], {
-        type: "text/plain;charset=utf-8"
-      }), name);
+      downloadData(this.rawdata, name);
     }
   }], [{
     key: "getFormat",
@@ -104,9 +100,7 @@ function () {
   return Throwin;
 }();
 
-var TextThrowin =
-/*#__PURE__*/
-function (_Throwin) {
+var TextThrowin = /*#__PURE__*/function (_Throwin) {
   _inherits(TextThrowin, _Throwin);
 
   function TextThrowin(name, extension, rawdata) {
@@ -122,9 +116,7 @@ function (_Throwin) {
   return TextThrowin;
 }(Throwin);
 
-var TableThrowin =
-/*#__PURE__*/
-function (_Throwin2) {
+var TableThrowin = /*#__PURE__*/function (_Throwin2) {
   _inherits(TableThrowin, _Throwin2);
 
   function TableThrowin(name, extension, rawdata) {
@@ -190,9 +182,7 @@ function (_Throwin2) {
   return TableThrowin;
 }(Throwin);
 
-var JSONThrowin =
-/*#__PURE__*/
-function (_Throwin3) {
+var JSONThrowin = /*#__PURE__*/function (_Throwin3) {
   _inherits(JSONThrowin, _Throwin3);
 
   function JSONThrowin(name, extension, rawdata) {
@@ -209,9 +199,7 @@ function (_Throwin3) {
   return JSONThrowin;
 }(Throwin);
 
-var JSONSelectThrowin =
-/*#__PURE__*/
-function (_JSONThrowin) {
+var JSONSelectThrowin = /*#__PURE__*/function (_JSONThrowin) {
   _inherits(JSONSelectThrowin, _JSONThrowin);
 
   function JSONSelectThrowin(name, extension, rawdata) {
@@ -237,9 +225,7 @@ function (_JSONThrowin) {
   return JSONSelectThrowin;
 }(JSONThrowin);
 
-var WebPageThrowin =
-/*#__PURE__*/
-function (_Throwin4) {
+var WebPageThrowin = /*#__PURE__*/function (_Throwin4) {
   _inherits(WebPageThrowin, _Throwin4);
 
   function WebPageThrowin(name, extension, rawdata) {

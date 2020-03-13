@@ -1,6 +1,6 @@
 "use strict";
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -18,9 +18,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var TopMenuItemComponent =
-/*#__PURE__*/
-function (_React$Component) {
+var TopMenuItemComponent = /*#__PURE__*/function (_React$Component) {
   _inherits(TopMenuItemComponent, _React$Component);
 
   function TopMenuItemComponent(props) {
@@ -46,9 +44,7 @@ function (_React$Component) {
   return TopMenuItemComponent;
 }(React.Component);
 
-var TopMenuBarComponent =
-/*#__PURE__*/
-function (_React$Component2) {
+var TopMenuBarComponent = /*#__PURE__*/function (_React$Component2) {
   _inherits(TopMenuBarComponent, _React$Component2);
 
   function TopMenuBarComponent(props) {
@@ -105,9 +101,7 @@ function (_React$Component2) {
   return TopMenuBarComponent;
 }(React.Component);
 
-var HeaderComponent =
-/*#__PURE__*/
-function (_React$Component3) {
+var HeaderComponent = /*#__PURE__*/function (_React$Component3) {
   _inherits(HeaderComponent, _React$Component3);
 
   function HeaderComponent(props) {
@@ -145,9 +139,7 @@ function (_React$Component3) {
   return HeaderComponent;
 }(React.Component);
 
-var ThrowinComponent =
-/*#__PURE__*/
-function (_React$Component4) {
+var ThrowinComponent = /*#__PURE__*/function (_React$Component4) {
   _inherits(ThrowinComponent, _React$Component4);
 
   function ThrowinComponent(props) {
@@ -227,9 +219,7 @@ function (_React$Component4) {
   return ThrowinComponent;
 }(React.Component);
 
-var TabButtonComponent =
-/*#__PURE__*/
-function (_React$Component5) {
+var TabButtonComponent = /*#__PURE__*/function (_React$Component5) {
   _inherits(TabButtonComponent, _React$Component5);
 
   function TabButtonComponent(props) {
@@ -256,9 +246,7 @@ function (_React$Component5) {
   return TabButtonComponent;
 }(React.Component);
 
-var TabViewComponent =
-/*#__PURE__*/
-function (_React$Component6) {
+var TabViewComponent = /*#__PURE__*/function (_React$Component6) {
   _inherits(TabViewComponent, _React$Component6);
 
   function TabViewComponent(props) {
@@ -301,9 +289,7 @@ function (_React$Component6) {
   return TabViewComponent;
 }(React.Component);
 
-var ReplyButtonComponent =
-/*#__PURE__*/
-function (_React$Component7) {
+var ReplyButtonComponent = /*#__PURE__*/function (_React$Component7) {
   _inherits(ReplyButtonComponent, _React$Component7);
 
   function ReplyButtonComponent(props) {
@@ -336,9 +322,7 @@ function (_React$Component7) {
   return ReplyButtonComponent;
 }(React.Component);
 
-var ReplyTextComponent =
-/*#__PURE__*/
-function (_React$Component8) {
+var ReplyTextComponent = /*#__PURE__*/function (_React$Component8) {
   _inherits(ReplyTextComponent, _React$Component8);
 
   function ReplyTextComponent(props) {
@@ -370,9 +354,7 @@ function (_React$Component8) {
   return ReplyTextComponent;
 }(React.Component);
 
-var DialogueComponent =
-/*#__PURE__*/
-function (_React$Component9) {
+var DialogueComponent = /*#__PURE__*/function (_React$Component9) {
   _inherits(DialogueComponent, _React$Component9);
 
   function DialogueComponent(props) {

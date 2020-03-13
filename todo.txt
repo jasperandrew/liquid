@@ -25,3 +25,4 @@
 - fix menubar behavior
 - fix "Go" cell downloads
 - fix empty (undefined) cell downloads
+- put util functions in Liquid.UTIL

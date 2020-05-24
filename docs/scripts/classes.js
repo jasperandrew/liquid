@@ -132,6 +132,16 @@ var TableThrowin = /*#__PURE__*/function (_Throwin2) {
       rows: rawdata.rows
     };
 
+    function formatHTML(cell, formatterParams, onRendered) {
+      var val = cell.getValue();
+
+      if (isHyperlink(val)) {
+        return "<a href=\"".concat(val, "\">").concat(val, "</a>");
+      } else {
+        return val;
+      }
+    }
+
     if (typeof rawdata.cols[0] === "string") {
       // Temporary check to see if cols are string or object
       rawdata.cols.forEach(function (col) {
@@ -144,6 +154,10 @@ var TableThrowin = /*#__PURE__*/function (_Throwin2) {
     } else {
       _this2.rawdata.cols = rawdata.cols;
     }
+
+    _this2.rawdata.cols.forEach(function (col) {
+      return col.formatter = formatHTML;
+    });
 
     return _this2;
   }

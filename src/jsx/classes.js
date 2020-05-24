@@ -61,11 +61,23 @@ class TableThrowin extends Throwin {
             cols: [],
             rows: rawdata.rows
         };
+
+        function formatHTML(cell, formatterParams, onRendered){
+            const val = cell.getValue();
+            if (isHyperlink(val)) {
+                return `<a href="${val}">${val}</a>`;
+            } else {
+                return val;
+            }
+        }
+
         if(typeof(rawdata.cols[0]) === "string"){ // Temporary check to see if cols are string or object
             rawdata.cols.forEach(col => this.rawdata.cols.push({ title:col, field:col, editor:true }));
         }else{
             this.rawdata.cols = rawdata.cols;
         }
+
+        this.rawdata.cols.forEach(col => col.formatter = formatHTML);
     }
 
     getTableObject() { return this.object; }

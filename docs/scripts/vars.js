@@ -388,3 +388,9 @@ function downloadData(data, filename) {
   element.click();
   document.body.removeChild(element);
 }
+
+function isHyperlink(string) {
+  if (!string) return false;
+  if (string.startsWith('https://') || string.startsWith('http://')) return true;
+  return false;
+}

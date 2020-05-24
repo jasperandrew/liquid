@@ -6,11 +6,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 *                           GLOBALS                          *
 \************************************************************/
 // TODO // Move these somewhere
-f;
+
 /************************************************************\
 *                         LIQUID APP                         *
 \************************************************************/
-
 var Liquid = {
   curr_task: 'liquid_gui',
   initialize: function initialize() {

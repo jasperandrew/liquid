@@ -6,7 +6,7 @@
 
 build () {
     echo -n "[Info] Building files..."
-    npx babel src/jsx/ -d docs/scripts/
+    npx babel src/js/ -d docs/scripts/
     npx sass src/sass/:docs/styles/
 }
 
@@ -35,7 +35,7 @@ server () {
 watch () {
     echo "[Info] Watching files for changes..."
     trap "kill 0" EXIT
-    npx babel --verbose -w src/jsx/ -d docs/scripts/ > util.babel.log 2>&1 &
+    npx babel --verbose -w src/js/ -d docs/scripts/ > util.babel.log 2>&1 &
     npx sass --watch src/sass/:docs/styles/ > util.sass.log 2>&1 &
     wait
 }

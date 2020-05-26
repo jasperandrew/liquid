@@ -1,8 +1,5 @@
-- new task, tasks on sidebar
 - lock question once clicked
-- check todo list
-- find a different way to render color text (stop using dangerouslySetInnerHTML)
-- tabs overlap with dialogue
+- find a different way to render color text (stop using dangerouslySetInnerHTML) BBCode?
 
 - nested tables
 
@@ -23,6 +20,6 @@
     - whitespace pre in html display
 
 - fix menubar behavior
-- fix "Go" cell downloads
 - fix empty (undefined) cell downloads
 - put util functions in Liquid.UTIL
+- improve url detect logic

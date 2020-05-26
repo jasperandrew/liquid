@@ -65,7 +65,7 @@ class TableThrowin extends Throwin {
         function formatHTML(cell, formatterParams, onRendered){
             const val = cell.getValue();
             if (isHyperlink(val)) {
-                return `<a href="${val}">${val}</a>`;
+                return `<a href="${val}" target="new">${val}</a>`;
             } else {
                 return val;
             }

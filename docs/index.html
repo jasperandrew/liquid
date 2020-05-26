@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>Liquid Data</title>
+    <head>
+        <meta charset="utf-8">
+        <title>Liquid Data</title>
 
-		<link rel="stylesheet" href="styles/tabulator_bootstrap.min.css">
-		<link rel="stylesheet" href="styles/style.css">
-	</head>
+        <link rel="stylesheet" href="styles/tabulator_bootstrap.min.css">
+        <link rel="stylesheet" href="styles/style.css">
+    </head>
 
 <body>
-	<main>
-		<div id="top">
-			<div id="header"></div>
-			<div id="dialog"></div>
-		</div>
-		<div id="toolbar"></div>
-		<div id="tabview"></div>
-	</main>
-	<div id="shade"></div>
+    <main>
+        <div id="top">
+            <div id="header"></div>
+            <div id="dialog"></div>
+        </div>
+        <div id="toolbar"></div>
+        <div id="tabview"></div>
+    </main>
+    <div id="shade"></div>
 
-	<script src="scripts/react.development.js" crossorigin></script>
-	<script src="scripts/react-dom.development.js" crossorigin></script>
-	<script src="scripts/tabulator.js"></script>
-	<script src="scripts/jsep.js"></script>
-	<script src="scripts/components.js"></script>
-	<script src="scripts/file-saver.js"></script>
-	<script src="scripts/vars.js"></script>
-	<script src="scripts/data.js"></script>
-	<script src="scripts/ui.js"></script>
-	<script src="scripts/classes.js"></script>
-	<!-- <script src="scripts/app.js"></script> -->
-	<script>
-		// Would you like to leave the page message
-		window.onbeforeunload = function() { return true; };
+    <script src="scripts/react.development.js" crossorigin></script>
+    <script src="scripts/react-dom.development.js" crossorigin></script>
+    <script src="scripts/tabulator.js"></script>
+    <script src="scripts/jsep.js"></script>
+    <script src="scripts/components.js"></script>
+    <script src="scripts/file-saver.js"></script>
+    <script src="scripts/vars.js"></script>
+    <script src="scripts/data.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/classes.js"></script>
+    <!-- <script src="scripts/app.js"></script> -->
+    <script>
+        // Would you like to leave the page message
+        window.onbeforeunload = function() { return true; };
 
-		// Liquid.initialize();
-		DATA.init();
-		UI.init();
-		// DATA.Throwin.add('text','test','txt','testing, 1, 2');
-		// DATA.Throwin.add('text','test two','txt','testing, 1, 2, \n3');
-		UI.render();
-	</script>
+        // Liquid.initialize();
+        DATA.init();
+        UI.init();
+        // DATA.Throwin.add('text','test','txt','testing, 1, 2');
+        // DATA.Throwin.add('text','test two','txt','testing, 1, 2, \n3');
+        // UI.render();
+    </script>
 </body>
 </html>

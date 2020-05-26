@@ -136,7 +136,7 @@ var TableThrowin = /*#__PURE__*/function (_Throwin2) {
       var val = cell.getValue();
 
       if (isHyperlink(val)) {
-        return "<a href=\"".concat(val, "\">").concat(val, "</a>");
+        return "<a href=\"".concat(val, "\" target=\"new\">").concat(val, "</a>");
       } else {
         return val;
       }

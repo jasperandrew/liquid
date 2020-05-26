@@ -8,328 +8,328 @@ $tool_hgt: 0px//30px
 $button_hgt: 45px
 
 *
-	box-sizing: border-box
-	font-size: 13px
+    box-sizing: border-box
+    font-size: 13px
 
 body
-	margin: 0
-	padding: 0
-	font-family: Open Sans, sans-serif
+    margin: 0
+    padding: 0
+    font-family: Open Sans, sans-serif
 
 main
-	position: fixed
-	top: 0
-	left: 0
-	height: 100vh
-	width: 100vw
-	transition: width 0.2s
-	display: flex
-	flex-direction: column
+    position: fixed
+    top: 0
+    left: 0
+    height: 100vh
+    width: 100vw
+    transition: width 0.2s
+    display: flex
+    flex-direction: column
 
 main.sidebar
-	width: $main_wdt_nav
+    width: $main_wdt_nav
 
 #header_menu
-	width: 100%
-	height: $head_hgt
-	display: flex
-	// align-items: center
+    width: 100%
+    height: $head_hgt
+    display: flex
+    // align-items: center
 
-	$logo_wdt: 50px
-	.logo
-		display: inline-block
-		background: center/cover url('../resources/liquid-logo.png')
-		width: 76px//$logo_wdt
-		height: 44px//$logo_wdt
-		margin: 27px 20px//($head_hgt - $logo_wdt) / 2
+    $logo_wdt: 50px
+    .logo
+        display: inline-block
+        background: center/cover url('../resources/liquid-logo.png')
+        width: 76px//$logo_wdt
+        height: 44px//$logo_wdt
+        margin: 27px 20px//($head_hgt - $logo_wdt) / 2
 
-	.title_menu
-		display: flex
-		flex-direction: column
-		// justify-content: space-around
+    .title_menu
+        display: flex
+        flex-direction: column
+        // justify-content: space-around
 
-		.title
-			display: inline-block
-			padding: 0
-			margin: 0
-			font-size: 20px
+        .title
+            display: inline-block
+            padding: 0
+            margin: 0
+            font-size: 20px
 
-		.menus
-			display: flex
-			flex-direction: row
-			margin-top: 7px
-			color: #777777
-			
-			.menu
-				height: 20px
-				span
-					cursor: pointer
-					padding: 0 5px 2px 5px
+        .menus
+            display: flex
+            flex-direction: row
+            margin-top: 7px
+            color: #777777
+            
+            .menu
+                height: 20px
+                span
+                    cursor: pointer
+                    padding: 0 5px 2px 5px
 
-				.items
-					position: absolute
-					display: none
-					background: #fff
-					border: 1px solid #eee
-					z-index: 4
-					padding: 5px 0
-					color: #000
-					a
-						display: block
-						cursor: pointer
-						padding: 0 10px
-					a:hover
-						background: #eee
+                .items
+                    position: absolute
+                    display: none
+                    background: #fff
+                    border: 1px solid #eee
+                    z-index: 4
+                    padding: 5px 0
+                    color: #000
+                    a
+                        display: block
+                        cursor: pointer
+                        padding: 0 10px
+                    a:hover
+                        background: #eee
 
-			.menu:hover
-				span
-					background: #eee
-			.menu.open
-				span
-					background: #eee
-				.items
-					display: block
-		.menus.on,
-		.menus:hover
-			color: #000
-	
-	.throwin_input
-		display: flex
-		flex-direction: column
-		align-items: center
-		justify-content: center
-		margin-left: auto
-		margin-right: 27px
+            .menu:hover
+                span
+                    background: #eee
+            .menu.open
+                span
+                    background: #eee
+                .items
+                    display: block
+        .menus.on,
+        .menus:hover
+            color: #000
+    
+    .throwin_input
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: center
+        margin-left: auto
+        margin-right: 27px
 
-		input[type='file']
-			display: none
-		
-		label[for$='file']
-			display: flex
-			align-items: center
-			padding: 10px 13px
-			font-size: 16px
-			cursor: pointer
-			background: #3ec435
-			color: #fff
-			border-radius: 5px
-			z-index: 1
+        input[type='file']
+            display: none
+        
+        label[for$='file']
+            display: flex
+            align-items: center
+            padding: 10px 13px
+            font-size: 16px
+            cursor: pointer
+            background: #3ec435
+            color: #fff
+            border-radius: 5px
+            z-index: 1
 
-			div
-				display: inline-block
-				opacity: 1
-				background: center/cover url('../resources/ico-file.png')
-				filter: invert(1) brightness(3)
-				width: 20px
-				height: 20px
-				margin-right: 6px
+            div
+                display: inline-block
+                opacity: 1
+                background: center/cover url('../resources/ico-file.png')
+                filter: invert(1) brightness(3)
+                width: 20px
+                height: 20px
+                margin-right: 6px
 
-		label[for$='file']:hover
-			filter: brightness(0.9)
-		label[for$='file']:active
-			filter: brightness(0.8)
+        label[for$='file']:hover
+            filter: brightness(0.9)
+        label[for$='file']:active
+            filter: brightness(0.8)
 
-		input[type='text']
-			margin-top: 5px
-			// height: 20px
-			// min-height: 20px
-			width: 150px
-			// max-width: 200px
+        input[type='text']
+            margin-top: 5px
+            // height: 20px
+            // min-height: 20px
+            width: 150px
+            // max-width: 200px
 
 
 #dialog
-	// height: $nav_hgt
-	position: absolute
-	z-index: 3
-	top: 23px
-	left: 105px
-	width: calc(100vw - 280px)
+    // height: $nav_hgt
+    position: absolute
+    z-index: 3
+    top: 23px
+    left: 105px
+    width: calc(100vw - 280px)
 
 main.sidebar #dialog
-	position: fixed
-	top: 0
-	right: 0
-	height: 100vh
-	width: $nav_wdt
-	border-left: 1px solid black
-	border-top: none
-	overflow: hidden
-	transition: right 0.2s
+    position: fixed
+    top: 0
+    right: 0
+    height: 100vh
+    width: $nav_wdt
+    border-left: 1px solid black
+    border-top: none
+    overflow: hidden
+    transition: right 0.2s
 
 #dialogue
-	padding: 10px 15px
+    padding: 10px 15px
 
-	.prompt
-		margin: 0 0 5px 0
+    .prompt
+        margin: 0 0 5px 0
 
-	&.locked
-		.option
-			pointer-events: none
-			opacity: 0.4
+    &.locked
+        .option
+            pointer-events: none
+            opacity: 0.4
 
 
-	.option
-		display: inline-block
-		margin-right: 15px
+    .option
+        display: inline-block
+        margin-right: 15px
 
-		input[type="radio"]
-			display: none
+        input[type="radio"]
+            display: none
 
-		label
-			display: inline-block
-			margin: 5px 0
-			padding: 5px 15px
-			background: #56a0e9
-			color: #fff
-			cursor: pointer
-			border-radius: 4px
-		label:hover
-			filter: brightness(0.9)
-		input:checked ~ label
-			filter: brightness(0.8)
+        label
+            display: inline-block
+            margin: 5px 0
+            padding: 5px 15px
+            background: #56a0e9
+            color: #fff
+            cursor: pointer
+            border-radius: 4px
+        label:hover
+            filter: brightness(0.9)
+        input:checked ~ label
+            filter: brightness(0.8)
 
 #toolbar
-	height: $tool_hgt
-	//border-top: 1px solid black
+    height: $tool_hgt
+    //border-top: 1px solid black
 
 #tabview
-	border-top: 1px solid black
-	width: inherit
-	flex-grow: 1
+    border-top: 1px solid black
+    width: inherit
+    flex-grow: 1
 
 main.sidebar #tabs
-	height: calc(100vh - #{$head_hgt} - #{$tool_hgt})
-	#throwin_set
-		height: calc(100vh - #{$head_hgt} - #{$tool_hgt} - #{$button_hgt})
+    height: calc(100vh - #{$head_hgt} - #{$tool_hgt})
+    #throwin_set
+        height: calc(100vh - #{$head_hgt} - #{$tool_hgt} - #{$button_hgt})
 
 #tabs
-	width: inherit
-	height: calc(100vh - #{$head_hgt} - #{$nav_hgt} - #{$tool_hgt})
+    width: inherit
+    height: calc(100vh - #{$head_hgt} - #{$nav_hgt} - #{$tool_hgt})
 
-	#throwin_set
-		height: calc(100vh - #{$head_hgt} - #{$nav_hgt} - #{$tool_hgt} - #{$button_hgt})
-		.throwin
-			width: 100%
-			height: inherit
-			background: #fff
-			display: none
-			position: relative
-		
-		.throwin.active
-			display: block
+    #throwin_set
+        height: calc(100vh - #{$head_hgt} - #{$nav_hgt} - #{$tool_hgt} - #{$button_hgt})
+        .throwin
+            width: 100%
+            height: inherit
+            background: #fff
+            display: none
+            position: relative
+        
+        .throwin.active
+            display: block
 
-		.throwin .text
-			white-space: pre
-			overflow-x: auto
-			font-family: "Ubuntu Mono", monospace
-			padding: 10px
-			height: inherit
-		
-		.throwin .table
-			height: inherit
+        .throwin .text
+            white-space: pre
+            overflow-x: auto
+            font-family: "Ubuntu Mono", monospace
+            padding: 10px
+            height: inherit
+        
+        .throwin .table
+            height: inherit
 
-		.throwin .json_select
-			overflow-x: auto
-			padding: 10px
-			height: inherit
+        .throwin .json_select
+            overflow-x: auto
+            padding: 10px
+            height: inherit
 
-			> label
-				padding: 0
-				display: inline-block
-				&:last-of-type
-					margin-bottom: 5px
-				input
-					display: none
-				> span
-					opacity: 0.5
-					cursor: pointer
-					span
-						display: none
-					&:before
-						content: '☐ '
-				input:checked ~ span
-					opacity: 1
-					&:before
-						content: '☑ '
-				&:hover
-					> span, input:checked ~ span
-						opacity: 0.7
-						span
-							display: inline
-			input[type="button"]
-				display: none
-			label[for^="json_submit"]
-				position: absolute
-				top: 20px
-				right: 35px
-				background-color: #3ec435
-				color: #fff
-				padding: 10px 15px 
-				border-radius: 5px
-				cursor: pointer
-				&:hover
-					filter: brightness(0.9)
-				&:active
-					filter: brightness(0.8)
-				&:before
-					content: '✓ '
-					font-weight: bold
+            > label
+                padding: 0
+                display: inline-block
+                &:last-of-type
+                    margin-bottom: 5px
+                input
+                    display: none
+                > span
+                    opacity: 0.5
+                    cursor: pointer
+                    span
+                        display: none
+                    &:before
+                        content: '☐ '
+                input:checked ~ span
+                    opacity: 1
+                    &:before
+                        content: '☑ '
+                &:hover
+                    > span, input:checked ~ span
+                        opacity: 0.7
+                        span
+                            display: inline
+            input[type="button"]
+                display: none
+            label[for^="json_submit"]
+                position: absolute
+                top: 20px
+                right: 35px
+                background-color: #3ec435
+                color: #fff
+                padding: 10px 15px 
+                border-radius: 5px
+                cursor: pointer
+                &:hover
+                    filter: brightness(0.9)
+                &:active
+                    filter: brightness(0.8)
+                &:before
+                    content: '✓ '
+                    font-weight: bold
 
-		.throwin .webpage
-			height: inherit
+        .throwin .webpage
+            height: inherit
 
-			iframe
-				height: inherit
-				width: 100%
-				border: none
+            iframe
+                height: inherit
+                width: 100%
+                border: none
 
-	#button_set
-		display: flex
-		align-items: flex-end
-		width: inherit
-		background: #eee
-		height: 45px
+    #button_set
+        display: flex
+        align-items: flex-end
+        width: inherit
+        background: #eee
+        height: 45px
 
-		.tab_button
-			position: relative
-			display: flex
-			align-items: center
-			height: $button_hgt - 5px
-			padding: 0 20px
-			border: 1px solid lightgrey
-			border-left: none
-			background: #fff
-			cursor: pointer
-			overflow: hidden
+        .tab_button
+            position: relative
+            display: flex
+            align-items: center
+            height: $button_hgt - 5px
+            padding: 0 20px
+            border: 1px solid lightgrey
+            border-left: none
+            background: #fff
+            cursor: pointer
+            overflow: hidden
 
-		.tab_button.active::before
-			content: ''
-			display: block
-			position: absolute
-			top: 0
-			left: 0
-			height: 3px
-			width: 100%
-			background: #56a0e9
+        .tab_button.active::before
+            content: ''
+            display: block
+            position: absolute
+            top: 0
+            left: 0
+            height: 3px
+            width: 100%
+            background: #56a0e9
 
 #tabs::after
-	position: absolute
-	content: 'No files yet!'
-	display: block
-	width: 100%
-	z-index: -1
-	text-align: center
-	padding-top: calc(50vh - #{$head_hgt})
+    position: absolute
+    content: 'No files yet!'
+    display: block
+    width: 100%
+    z-index: -1
+    text-align: center
+    padding-top: calc(50vh - #{$head_hgt})
 
 
 /* Tabulator overrides */
 .tabulator
-	margin-bottom: 0
+    margin-bottom: 0
 
 .tabulator-cell
-	height: auto !important
-	font-size: 13px !important
-	&.tabulator-editing
-		padding-left: 3px !important
-		& input
-			font-size: 13px !important
+    height: auto !important
+    font-size: 13px !important
+    &.tabulator-editing
+        padding-left: 3px !important
+        & input
+            font-size: 13px !important

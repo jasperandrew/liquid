@@ -19,7 +19,6 @@
     - open in liquid tab (iframe)
     - whitespace pre in html display
 
-- fix menubar behavior
 - fix empty (undefined) cell downloads
 - put util functions in Liquid.UTIL
 - improve url detect logic

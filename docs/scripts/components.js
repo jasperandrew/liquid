@@ -34,8 +34,7 @@ var TopMenuItemComponent = /*#__PURE__*/function (_React$Component) {
 
       return React.createElement("a", {
         onClick: function onClick() {
-          UI.HeaderMenu.close(true);
-          UI.HeaderMenu.sendMenuClick(_this.props.id);
+          return UI.HeaderMenu.sendMenuClick(_this.props.id);
         }
       }, this.props.name);
     }
@@ -78,10 +77,10 @@ var TopMenuBarComponent = /*#__PURE__*/function (_React$Component2) {
           className: "menu"
         }, React.createElement("span", {
           onMouseOver: function onMouseOver() {
-            return UI.HeaderMenu.control(i, true);
+            return UI.HeaderMenu.hover(i);
           },
           onClick: function onClick() {
-            return UI.HeaderMenu.control(i);
+            return UI.HeaderMenu.toggle(i);
           }
         }, menus[i].title), React.createElement("div", {
           className: "items"
@@ -111,8 +110,15 @@ var HeaderComponent = /*#__PURE__*/function (_React$Component3) {
   }
 
   _createClass(HeaderComponent, [{
+    key: "handleTextInput",
+    value: function handleTextInput(e) {
+      if (e.key === 'Enter') DATA.Upload.text();
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       // TODO // Make item and menu into components
       return React.createElement("div", {
         id: "header_menu"
@@ -126,12 +132,18 @@ var HeaderComponent = /*#__PURE__*/function (_React$Component3) {
         className: "throwin_input"
       }, React.createElement("input", {
         id: "throwin_file",
-        type: "file"
+        type: "file",
+        onChange: function onChange() {
+          return DATA.Upload.file();
+        }
       }), React.createElement("label", {
         htmlFor: "throwin_file"
       }, React.createElement("div", null), "Throw-in"), React.createElement("input", {
         id: "throwin_text",
-        type: "text"
+        type: "text",
+        onKeyDown: function onKeyDown(e) {
+          return _this2.handleTextInput(e);
+        }
       })));
     }
   }]);
@@ -151,7 +163,7 @@ var ThrowinComponent = /*#__PURE__*/function (_React$Component4) {
   _createClass(ThrowinComponent, [{
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       var innerHTML = [];
 
@@ -182,7 +194,7 @@ var ThrowinComponent = /*#__PURE__*/function (_React$Component4) {
             type: "button",
             id: 'json_submit_' + this.props.n,
             onClick: function onClick() {
-              return UI.TabView.submitJSONvars('#t' + _this2.props.n);
+              return UI.TabView.submitJSONvars('#t' + _this3.props.n);
             }
           }));
           innerHTML.push(React.createElement("label", {
@@ -231,13 +243,13 @@ var TabButtonComponent = /*#__PURE__*/function (_React$Component5) {
   _createClass(TabButtonComponent, [{
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       var active = this.props.is_active ? ' active' : '';
       return React.createElement("div", {
         className: "tab_button".concat(active),
         onClick: function onClick() {
-          return UI.TabView.setActive(_this3.props.n);
+          return UI.TabView.setActive(_this4.props.n);
         }
       }, this.props.title);
     }
@@ -258,12 +270,12 @@ var TabViewComponent = /*#__PURE__*/function (_React$Component6) {
   _createClass(TabViewComponent, [{
     key: "render",
     value: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
       var throwin_set = [],
           button_set = [];
       DATA.Throwin.getAll().forEach(function (t, i) {
-        var is_active = _this4.props.active_tab === i + 1;
+        var is_active = _this5.props.active_tab === i + 1;
         var active = is_active ? ' active' : '';
         throwin_set.push(React.createElement("div", {
           key: i,
@@ -301,7 +313,7 @@ var ReplyButtonComponent = /*#__PURE__*/function (_React$Component7) {
   _createClass(ReplyButtonComponent, [{
     key: "render",
     value: function render() {
-      var _this5 = this;
+      var _this6 = this;
 
       return React.createElement("div", {
         className: 'option' + (this.props.isDefault ? ' default' : '')
@@ -313,7 +325,7 @@ var ReplyButtonComponent = /*#__PURE__*/function (_React$Component7) {
       }), React.createElement("label", {
         htmlFor: 'opt' + this.props.i,
         onClick: function onClick() {
-          return DATA.Dialog.handleAnswer(_this5.props.optId, 'button');
+          return DATA.Dialog.handleAnswer(_this6.props.optId, 'button');
         }
       }, this.props.optText));
     }
@@ -334,10 +346,10 @@ var ReplyTextComponent = /*#__PURE__*/function (_React$Component8) {
   _createClass(ReplyTextComponent, [{
     key: "render",
     value: function render() {
-      var _this6 = this;
+      var _this7 = this;
 
       var keydown_handler = function keydown_handler(e) {
-        if (e.key === 'Enter') DATA.Dialog.handleAnswer(_this6.props.optId, 'text');
+        if (e.key === 'Enter') DATA.Dialog.handleAnswer(_this7.props.optId, 'text');
       };
 
       return React.createElement("div", {

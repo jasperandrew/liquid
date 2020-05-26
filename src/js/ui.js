@@ -5,7 +5,6 @@ const UI = {
 
     init() {
         this.render();
-        this.EventHandler.init();
     },
 
     render() {
@@ -108,29 +107,30 @@ const UI = {
 
         hover_open: false,
 
-        control(i, hover) {
-            if(hover && !this.hover_open) return;
-
-            if(!hover){
-                this.hover_open = !this.hover_open;
-                UI.toggleClass('.menus', 'on');
-
-                if(!this.hover_open){
-                    this.close();
-                    return;
-                }
+        toggle(i) {
+            if (!this.hover_open) {
+                this.hover_open = true;
+                UI.addClass('.menus', 'on');
+                UI.addClass(`#header .menus [i="${i}"]`, 'open');
+            } else {
+                this.close();
             }
-            
-            this.close();
-            UI.addClass(`#header .menus [i="${i}"]`, 'open');
         },
 
-        close(all) {
-            if(all){
-                console.log(all);
-                UI.removeClass('.menus', 'on');
-            }
+        clickAway(e) {
+            if (!e.target.closest('.menus')) this.close();
+        },
+
+        close() {
             UI.removeClass('#header .menus .menu.open', 'open');
+            UI.removeClass('.menus', 'on');
+            this.hover_open = false;
+        },
+
+        hover(i) {
+            if (!this.hover_open) return;
+            UI.removeClass('#header .menus .menu.open', 'open');
+            UI.addClass(`#header .menus [i="${i}"]`, 'open');
         },
 
         initMenus(menu_json) {
@@ -144,6 +144,7 @@ const UI = {
         },
 
         sendMenuClick(id) {
+            this.close(true);
             DATA.httpRequest({
                 json_data: {
                     cmd_name: 'exec_menu_item',
@@ -163,31 +164,5 @@ const UI = {
 
     ThrowinMenu: {
         
-    },
-
-    EventHandler: {
-        event_map: {
-            '#throwin_file|change': DATA.Upload.file,
-            '#throwin_text|change': () => {
-                let input = document.querySelector('#throwin_text');
-                DATA.Upload.text(input.value);
-                input.value = "";
-            },
-        },
-
-        init() {
-            for(let event in this.event_map){
-                let a = event.split('|'),
-                target = a[0],
-                action = a[1],
-                elem = document.querySelector(target),
-                command = () => { this.event_map[event]() };
-
-                if(elem){
-                    elem.removeEventListener(action, command);
-                    elem.addEventListener(action, command);	
-                }
-            }
-        }
     }
 }

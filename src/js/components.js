@@ -5,7 +5,7 @@ class TopMenuItemComponent extends React.Component {
 
     render() {
         return (
-            <a onClick={() => {UI.HeaderMenu.close(true); UI.HeaderMenu.sendMenuClick(this.props.id);}}>{this.props.name}</a>
+            <a onClick={() => UI.HeaderMenu.sendMenuClick(this.props.id)} >{this.props.name}</a>
         );
     }
 }
@@ -27,7 +27,7 @@ class TopMenuBarComponent extends React.Component {
             }
             menuHTML.push(
                 <div key={i} i={i} className='menu'>
-                    <span onMouseOver={() => UI.HeaderMenu.control(i, true) } onClick={() => UI.HeaderMenu.control(i) }>{menus[i].title}</span>
+                    <span onMouseOver={() => UI.HeaderMenu.hover(i)} onClick={() => UI.HeaderMenu.toggle(i)} >{menus[i].title}</span>
                     <div className='items'>{itemHTML}</div>
                 </div>
             );
@@ -46,6 +46,10 @@ class HeaderComponent extends React.Component {
         super(props);
     }
 
+    handleTextInput(e) {
+        if (e.key === 'Enter') DATA.Upload.text();
+    }
+
     render() {  // TODO // Make item and menu into components
         return (
             <div id='header_menu'>
@@ -55,9 +59,9 @@ class HeaderComponent extends React.Component {
                     <TopMenuBarComponent menus={this.props.menus} />
                 </div>
                 <div className='throwin_input'>
-                    <input id="throwin_file" type="file" />
+                    <input id="throwin_file" type="file" onChange={() => DATA.Upload.file() } />
                     <label htmlFor="throwin_file"><div></div>Throw-in</label>
-                    <input id="throwin_text" type="text"></input>
+                    <input id="throwin_text" type="text" onKeyDown={(e) => this.handleTextInput(e) } />
                 </div>
             </div>
         );

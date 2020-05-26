@@ -274,8 +274,13 @@ const DATA = {
             reader.readAsText(file);
         },
 
-        text(text) {
-            let name;
+        text() {
+            let input = document.querySelector('#throwin_text'),
+                text = input.value,
+                name;
+            
+            input.value = "";
+
             if(text === null || text === undefined){
                 text = prompt('Type or paste content here');
                 if(text === null | text === ''){

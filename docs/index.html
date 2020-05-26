@@ -25,14 +25,14 @@
     <script src="scripts/jsep.js"></script>
     <script src="scripts/components.js"></script>
     <script src="scripts/file-saver.js"></script>
-    <script src="scripts/vars.js"></script>
+    <script src="scripts/global.js"></script>
     <script src="scripts/data.js"></script>
     <script src="scripts/ui.js"></script>
     <script src="scripts/classes.js"></script>
     <!-- <script src="scripts/app.js"></script> -->
     <script>
         // Would you like to leave the page message
-        window.onbeforeunload = function() { return true; };
+        window.onbeforeunload = () => { return true; };
 
         // Liquid.initialize();
         DATA.init();

@@ -60,6 +60,7 @@ main.sidebar {
 #header_menu .title_menu .menus .menu span {
   cursor: pointer;
   padding: 0 5px 2px 5px;
+  border-radius: 3px;
 }
 #header_menu .title_menu .menus .menu .items {
   position: absolute;

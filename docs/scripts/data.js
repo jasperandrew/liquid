@@ -348,13 +348,16 @@ var DATA = {
 
       reader.readAsText(file);
     },
-    text: function text(_text) {
-      var name;
+    text: function text() {
+      var input = document.querySelector('#throwin_text'),
+          text = input.value,
+          name;
+      input.value = "";
 
-      if (_text === null || _text === undefined) {
-        _text = prompt('Type or paste content here');
+      if (text === null || text === undefined) {
+        text = prompt('Type or paste content here');
 
-        if (_text === null | _text === '') {
+        if (text === null | text === '') {
           console.log('Text input canceled');
           return;
         }
@@ -366,13 +369,13 @@ var DATA = {
           return;
         }
       } else {
-        name = _text.split(' ').join('_') + '.txt';
+        name = text.split(' ').join('_') + '.txt';
       }
 
       var json_data = {
         task_name: DATA.curr_task,
         cmd_name: 'throwin_text',
-        file_contents: _text,
+        file_contents: text,
         node_name: name
       };
       DATA.httpRequest({

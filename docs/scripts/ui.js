@@ -15,7 +15,6 @@ var UI = {
   },
   init: function init() {
     this.render();
-    this.EventHandler.init();
   },
   render: function render() {
     this.DialogView.render();
@@ -114,29 +113,27 @@ var UI = {
       exec_mun_item_test: execMenuItemTest
     },
     hover_open: false,
-    control: function control(i, hover) {
-      if (hover && !this.hover_open) return;
-
-      if (!hover) {
-        this.hover_open = !this.hover_open;
-        UI.toggleClass('.menus', 'on');
-
-        if (!this.hover_open) {
-          this.close();
-          return;
-        }
+    toggle: function toggle(i) {
+      if (!this.hover_open) {
+        this.hover_open = true;
+        UI.addClass('.menus', 'on');
+        UI.addClass("#header .menus [i=\"".concat(i, "\"]"), 'open');
+      } else {
+        this.close();
       }
-
-      this.close();
-      UI.addClass("#header .menus [i=\"".concat(i, "\"]"), 'open');
     },
-    close: function close(all) {
-      if (all) {
-        console.log(all);
-        UI.removeClass('.menus', 'on');
-      }
-
+    clickAway: function clickAway(e) {
+      if (!e.target.closest('.menus')) this.close();
+    },
+    close: function close() {
       UI.removeClass('#header .menus .menu.open', 'open');
+      UI.removeClass('.menus', 'on');
+      this.hover_open = false;
+    },
+    hover: function hover(i) {
+      if (!this.hover_open) return;
+      UI.removeClass('#header .menus .menu.open', 'open');
+      UI.addClass("#header .menus [i=\"".concat(i, "\"]"), 'open');
     },
     initMenus: function initMenus(menu_json) {
       menu_json[menu_json.length] = this.menus[0]; // manually add test menu item
@@ -148,6 +145,7 @@ var UI = {
       this.menu_funcs[id]();
     },
     sendMenuClick: function sendMenuClick(id) {
+      this.close(true);
       DATA.httpRequest({
         json_data: {
           cmd_name: 'exec_menu_item',
@@ -164,37 +162,5 @@ var UI = {
       }), document.querySelector('#header'));
     }
   },
-  ThrowinMenu: {},
-  EventHandler: {
-    event_map: {
-      '#throwin_file|change': DATA.Upload.file,
-      '#throwin_text|change': function throwin_textChange() {
-        var input = document.querySelector('#throwin_text');
-        DATA.Upload.text(input.value);
-        input.value = "";
-      }
-    },
-    init: function init() {
-      var _this = this;
-
-      var _loop = function _loop(event) {
-        var a = event.split('|'),
-            target = a[0],
-            action = a[1],
-            elem = document.querySelector(target),
-            command = function command() {
-          _this.event_map[event]();
-        };
-
-        if (elem) {
-          elem.removeEventListener(action, command);
-          elem.addEventListener(action, command);
-        }
-      };
-
-      for (var event in this.event_map) {
-        _loop(event);
-      }
-    }
-  }
+  ThrowinMenu: {}
 };

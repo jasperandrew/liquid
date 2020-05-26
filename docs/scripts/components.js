@@ -119,7 +119,6 @@ var HeaderComponent = /*#__PURE__*/function (_React$Component3) {
     value: function render() {
       var _this2 = this;
 
-      // TODO // Make item and menu into components
       return React.createElement("div", {
         id: "header_menu"
       }, React.createElement("div", {

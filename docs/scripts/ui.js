@@ -15,6 +15,7 @@ var UI = {
   },
   init: function init() {
     this.render();
+    document.addEventListener('click', this.HeaderMenu.clickAway);
   },
   render: function render() {
     this.DialogView.render();
@@ -123,7 +124,7 @@ var UI = {
       }
     },
     clickAway: function clickAway(e) {
-      if (!e.target.closest('.menus')) this.close();
+      if (!e.target.closest('.menus')) UI.HeaderMenu.close();
     },
     close: function close() {
       UI.removeClass('#header .menus .menu.open', 'open');

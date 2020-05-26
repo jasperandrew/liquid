@@ -5,6 +5,7 @@ const UI = {
 
     init() {
         this.render();
+        document.addEventListener('click', this.HeaderMenu.clickAway);
     },
 
     render() {
@@ -118,7 +119,7 @@ const UI = {
         },
 
         clickAway(e) {
-            if (!e.target.closest('.menus')) this.close();
+            if (!e.target.closest('.menus')) UI.HeaderMenu.close();
         },
 
         close() {

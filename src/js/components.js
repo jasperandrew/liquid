@@ -50,7 +50,7 @@ class HeaderComponent extends React.Component {
         if (e.key === 'Enter') DATA.Upload.text();
     }
 
-    render() {  // TODO // Make item and menu into components
+    render() {
         return (
             <div id='header_menu'>
                 <div className='logo'></div>

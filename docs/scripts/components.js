@@ -8,23 +8,29 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 var TopMenuItemComponent = /*#__PURE__*/function (_React$Component) {
   _inherits(TopMenuItemComponent, _React$Component);
+
+  var _super = _createSuper(TopMenuItemComponent);
 
   function TopMenuItemComponent(props) {
     _classCallCheck(this, TopMenuItemComponent);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(TopMenuItemComponent).call(this, props));
+    return _super.call(this, props);
   }
 
   _createClass(TopMenuItemComponent, [{
@@ -32,7 +38,7 @@ var TopMenuItemComponent = /*#__PURE__*/function (_React$Component) {
     value: function render() {
       var _this = this;
 
-      return React.createElement("a", {
+      return /*#__PURE__*/React.createElement("a", {
         onClick: function onClick() {
           return UI.HeaderMenu.sendMenuClick(_this.props.id);
         }
@@ -46,10 +52,12 @@ var TopMenuItemComponent = /*#__PURE__*/function (_React$Component) {
 var TopMenuBarComponent = /*#__PURE__*/function (_React$Component2) {
   _inherits(TopMenuBarComponent, _React$Component2);
 
+  var _super2 = _createSuper(TopMenuBarComponent);
+
   function TopMenuBarComponent(props) {
     _classCallCheck(this, TopMenuBarComponent);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(TopMenuBarComponent).call(this, props));
+    return _super2.call(this, props);
   }
 
   _createClass(TopMenuBarComponent, [{
@@ -64,25 +72,25 @@ var TopMenuBarComponent = /*#__PURE__*/function (_React$Component2) {
 
         for (var j in items) {
           var item = items[j];
-          itemHTML.push(React.createElement(TopMenuItemComponent, {
+          itemHTML.push( /*#__PURE__*/React.createElement(TopMenuItemComponent, {
             key: j,
             id: item.menu_item_id,
             name: item.menu_item_text
           }));
         }
 
-        menuHTML.push(React.createElement("div", {
+        menuHTML.push( /*#__PURE__*/React.createElement("div", {
           key: i,
           i: i,
           className: "menu"
-        }, React.createElement("span", {
+        }, /*#__PURE__*/React.createElement("span", {
           onMouseOver: function onMouseOver() {
             return UI.HeaderMenu.hover(i);
           },
           onClick: function onClick() {
             return UI.HeaderMenu.toggle(i);
           }
-        }, menus[i].title), React.createElement("div", {
+        }, menus[i].title), /*#__PURE__*/React.createElement("div", {
           className: "items"
         }, itemHTML)));
       };
@@ -91,7 +99,7 @@ var TopMenuBarComponent = /*#__PURE__*/function (_React$Component2) {
         _loop(i);
       }
 
-      return React.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "menus"
       }, menuHTML);
     }
@@ -103,10 +111,12 @@ var TopMenuBarComponent = /*#__PURE__*/function (_React$Component2) {
 var HeaderComponent = /*#__PURE__*/function (_React$Component3) {
   _inherits(HeaderComponent, _React$Component3);
 
+  var _super3 = _createSuper(HeaderComponent);
+
   function HeaderComponent(props) {
     _classCallCheck(this, HeaderComponent);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(HeaderComponent).call(this, props));
+    return _super3.call(this, props);
   }
 
   _createClass(HeaderComponent, [{
@@ -119,25 +129,25 @@ var HeaderComponent = /*#__PURE__*/function (_React$Component3) {
     value: function render() {
       var _this2 = this;
 
-      return React.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         id: "header_menu"
-      }, React.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         className: "logo"
-      }), React.createElement("div", {
+      }), /*#__PURE__*/React.createElement("div", {
         className: "title_menu"
-      }, React.createElement(TopMenuBarComponent, {
+      }, /*#__PURE__*/React.createElement(TopMenuBarComponent, {
         menus: this.props.menus
-      })), React.createElement("div", {
+      })), /*#__PURE__*/React.createElement("div", {
         className: "throwin_input"
-      }, React.createElement("input", {
+      }, /*#__PURE__*/React.createElement("input", {
         id: "throwin_file",
         type: "file",
         onChange: function onChange() {
           return DATA.Upload.file();
         }
-      }), React.createElement("label", {
+      }), /*#__PURE__*/React.createElement("label", {
         htmlFor: "throwin_file"
-      }, React.createElement("div", null), "Throw-in"), React.createElement("input", {
+      }, /*#__PURE__*/React.createElement("div", null), "Throw-in"), /*#__PURE__*/React.createElement("input", {
         id: "throwin_text",
         type: "text",
         onKeyDown: function onKeyDown(e) {
@@ -153,10 +163,12 @@ var HeaderComponent = /*#__PURE__*/function (_React$Component3) {
 var ThrowinComponent = /*#__PURE__*/function (_React$Component4) {
   _inherits(ThrowinComponent, _React$Component4);
 
+  var _super4 = _createSuper(ThrowinComponent);
+
   function ThrowinComponent(props) {
     _classCallCheck(this, ThrowinComponent);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(ThrowinComponent).call(this, props));
+    return _super4.call(this, props);
   }
 
   _createClass(ThrowinComponent, [{
@@ -174,21 +186,21 @@ var ThrowinComponent = /*#__PURE__*/function (_React$Component4) {
             var val = this.props.rawdata[name].toString();
             if (val.length > 70) val = val.slice(0, 70) + ' . . .';
             var id = "json_select_t".concat(this.props.n, "_").concat(name);
-            innerHTML.push(React.createElement("label", {
+            innerHTML.push( /*#__PURE__*/React.createElement("label", {
               key: k++,
               htmlFor: id
-            }, React.createElement("input", {
+            }, /*#__PURE__*/React.createElement("input", {
               type: "checkbox",
               keyname: name.toString(),
               keyval: val,
               id: id
-            }), React.createElement("span", null, name, React.createElement("span", null, '→' + val))));
-            innerHTML.push(React.createElement("br", {
+            }), /*#__PURE__*/React.createElement("span", null, name, /*#__PURE__*/React.createElement("span", null, '→' + val))));
+            innerHTML.push( /*#__PURE__*/React.createElement("br", {
               key: k++
             }));
           }
 
-          innerHTML.push(React.createElement("input", {
+          innerHTML.push( /*#__PURE__*/React.createElement("input", {
             key: k++,
             type: "button",
             id: 'json_submit_' + this.props.n,
@@ -196,14 +208,14 @@ var ThrowinComponent = /*#__PURE__*/function (_React$Component4) {
               return UI.TabView.submitJSONvars('#t' + _this3.props.n);
             }
           }));
-          innerHTML.push(React.createElement("label", {
+          innerHTML.push( /*#__PURE__*/React.createElement("label", {
             key: k++,
             htmlFor: 'json_submit_' + this.props.n
           }, "Submit"));
           break;
 
         case 'text':
-          innerHTML.push(React.createElement("span", {
+          innerHTML.push( /*#__PURE__*/React.createElement("span", {
             key: "1",
             dangerouslySetInnerHTML: {
               __html: this.props.rawdata
@@ -212,7 +224,7 @@ var ThrowinComponent = /*#__PURE__*/function (_React$Component4) {
           break;
 
         case 'webpage':
-          innerHTML.push(React.createElement("iframe", {
+          innerHTML.push( /*#__PURE__*/React.createElement("iframe", {
             key: "1",
             src: this.props.rawdata
           }));
@@ -220,7 +232,7 @@ var ThrowinComponent = /*#__PURE__*/function (_React$Component4) {
         default:
       }
 
-      return React.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: this.props.type,
         id: 't' + this.props.n
       }, innerHTML);
@@ -233,10 +245,12 @@ var ThrowinComponent = /*#__PURE__*/function (_React$Component4) {
 var TabButtonComponent = /*#__PURE__*/function (_React$Component5) {
   _inherits(TabButtonComponent, _React$Component5);
 
+  var _super5 = _createSuper(TabButtonComponent);
+
   function TabButtonComponent(props) {
     _classCallCheck(this, TabButtonComponent);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(TabButtonComponent).call(this, props));
+    return _super5.call(this, props);
   }
 
   _createClass(TabButtonComponent, [{
@@ -245,7 +259,7 @@ var TabButtonComponent = /*#__PURE__*/function (_React$Component5) {
       var _this4 = this;
 
       var active = this.props.is_active ? ' active' : '';
-      return React.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: "tab_button".concat(active),
         onClick: function onClick() {
           return UI.TabView.setActive(_this4.props.n);
@@ -260,10 +274,12 @@ var TabButtonComponent = /*#__PURE__*/function (_React$Component5) {
 var TabViewComponent = /*#__PURE__*/function (_React$Component6) {
   _inherits(TabViewComponent, _React$Component6);
 
+  var _super6 = _createSuper(TabViewComponent);
+
   function TabViewComponent(props) {
     _classCallCheck(this, TabViewComponent);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(TabViewComponent).call(this, props));
+    return _super6.call(this, props);
   }
 
   _createClass(TabViewComponent, [{
@@ -276,22 +292,22 @@ var TabViewComponent = /*#__PURE__*/function (_React$Component6) {
       DATA.Throwin.getAll().forEach(function (t, i) {
         var is_active = _this5.props.active_tab === i + 1;
         var active = is_active ? ' active' : '';
-        throwin_set.push(React.createElement("div", {
+        throwin_set.push( /*#__PURE__*/React.createElement("div", {
           key: i,
           className: "throwin".concat(active)
         }, t.getThrowinComponent()));
-        button_set.push(React.createElement(TabButtonComponent, {
+        button_set.push( /*#__PURE__*/React.createElement(TabButtonComponent, {
           key: i,
           n: t.id,
           title: t.title,
           is_active: is_active
         }));
       });
-      return React.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         id: "tabs"
-      }, React.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
         id: "throwin_set"
-      }, throwin_set), React.createElement("div", {
+      }, throwin_set), /*#__PURE__*/React.createElement("div", {
         id: "button_set"
       }, button_set));
     }
@@ -303,10 +319,12 @@ var TabViewComponent = /*#__PURE__*/function (_React$Component6) {
 var ReplyButtonComponent = /*#__PURE__*/function (_React$Component7) {
   _inherits(ReplyButtonComponent, _React$Component7);
 
+  var _super7 = _createSuper(ReplyButtonComponent);
+
   function ReplyButtonComponent(props) {
     _classCallCheck(this, ReplyButtonComponent);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(ReplyButtonComponent).call(this, props));
+    return _super7.call(this, props);
   }
 
   _createClass(ReplyButtonComponent, [{
@@ -314,14 +332,14 @@ var ReplyButtonComponent = /*#__PURE__*/function (_React$Component7) {
     value: function render() {
       var _this6 = this;
 
-      return React.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: 'option' + (this.props.isDefault ? ' default' : '')
-      }, React.createElement("input", {
+      }, /*#__PURE__*/React.createElement("input", {
         type: "radio",
         id: 'opt' + this.props.i,
         name: "options",
         value: this.props.optId
-      }), React.createElement("label", {
+      }), /*#__PURE__*/React.createElement("label", {
         htmlFor: 'opt' + this.props.i,
         onClick: function onClick() {
           return DATA.Dialog.handleAnswer(_this6.props.optId, 'button');
@@ -336,10 +354,12 @@ var ReplyButtonComponent = /*#__PURE__*/function (_React$Component7) {
 var ReplyTextComponent = /*#__PURE__*/function (_React$Component8) {
   _inherits(ReplyTextComponent, _React$Component8);
 
+  var _super8 = _createSuper(ReplyTextComponent);
+
   function ReplyTextComponent(props) {
     _classCallCheck(this, ReplyTextComponent);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(ReplyTextComponent).call(this, props));
+    return _super8.call(this, props);
   }
 
   _createClass(ReplyTextComponent, [{
@@ -351,9 +371,9 @@ var ReplyTextComponent = /*#__PURE__*/function (_React$Component8) {
         if (e.key === 'Enter') DATA.Dialog.handleAnswer(_this7.props.optId, 'text');
       };
 
-      return React.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         className: 'option' + (this.props.isDefault ? ' default' : '')
-      }, React.createElement("input", {
+      }, /*#__PURE__*/React.createElement("input", {
         type: "text",
         id: 'opt' + this.props.i,
         placeholder: this.props.optText,
@@ -368,10 +388,12 @@ var ReplyTextComponent = /*#__PURE__*/function (_React$Component8) {
 var DialogueComponent = /*#__PURE__*/function (_React$Component9) {
   _inherits(DialogueComponent, _React$Component9);
 
+  var _super9 = _createSuper(DialogueComponent);
+
   function DialogueComponent(props) {
     _classCallCheck(this, DialogueComponent);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(DialogueComponent).call(this, props));
+    return _super9.call(this, props);
   }
 
   _createClass(DialogueComponent, [{
@@ -382,9 +404,9 @@ var DialogueComponent = /*#__PURE__*/function (_React$Component9) {
       if (reply_opts !== null) reply_opts.forEach(function (opt) {
         reply_opts_jsx.push(opt.jsxElement);
       });
-      return React.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", {
         id: "dialogue"
-      }, React.createElement("p", {
+      }, /*#__PURE__*/React.createElement("p", {
         className: "prompt"
       }, this.props.prompt), reply_opts_jsx);
     }

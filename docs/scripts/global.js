@@ -7,7 +7,7 @@ var INIT_DIALOGUE = {
   data: null,
   type: 'button',
   reply_opts: [{
-    jsxElement: React.createElement(ReplyButtonComponent, {
+    jsxElement: /*#__PURE__*/React.createElement(ReplyButtonComponent, {
       key: 1,
       i: 1,
       isDefault: 0,
@@ -18,7 +18,7 @@ var INIT_DIALOGUE = {
     optText: 'Start the interview wizard',
     optId: 'wizard'
   }, {
-    jsxElement: React.createElement(ReplyButtonComponent, {
+    jsxElement: /*#__PURE__*/React.createElement(ReplyButtonComponent, {
       key: 2,
       i: 2,
       isDefault: 0,
@@ -389,8 +389,9 @@ function downloadData(data, filename) {
   document.body.removeChild(element);
 }
 
-function isHyperlink(string) {
-  if (!string) return false;
-  if (string.startsWith('https://') || string.startsWith('http://')) return true;
+function isHyperlink(str) {
+  if (!str) return false;
+  if (typeof str !== 'string') return false;
+  if (str.startsWith('https://') || str.startsWith('http://')) return true;
   return false;
 }

@@ -2,15 +2,19 @@
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -63,7 +67,7 @@ var Throwin = /*#__PURE__*/function () {
   }, {
     key: "getThrowinComponent",
     value: function getThrowinComponent() {
-      return React.createElement(ThrowinComponent, {
+      return /*#__PURE__*/React.createElement(ThrowinComponent, {
         key: this.id,
         n: this.id,
         title: this.title,
@@ -103,12 +107,14 @@ var Throwin = /*#__PURE__*/function () {
 var TextThrowin = /*#__PURE__*/function (_Throwin) {
   _inherits(TextThrowin, _Throwin);
 
+  var _super = _createSuper(TextThrowin);
+
   function TextThrowin(name, extension, rawdata) {
     var _this;
 
     _classCallCheck(this, TextThrowin);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TextThrowin).call(this, name, extension, rawdata));
+    _this = _super.call(this, name, extension, rawdata);
     _this.type = 'text';
     return _this;
   }
@@ -119,12 +125,14 @@ var TextThrowin = /*#__PURE__*/function (_Throwin) {
 var TableThrowin = /*#__PURE__*/function (_Throwin2) {
   _inherits(TableThrowin, _Throwin2);
 
+  var _super2 = _createSuper(TableThrowin);
+
   function TableThrowin(name, extension, rawdata) {
     var _this2;
 
     _classCallCheck(this, TableThrowin);
 
-    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(TableThrowin).call(this, name, extension, rawdata));
+    _this2 = _super2.call(this, name, extension, rawdata);
     _this2.type = 'table';
     _this2.object = null;
     _this2.rawdata = {
@@ -143,7 +151,7 @@ var TableThrowin = /*#__PURE__*/function (_Throwin2) {
     }
 
     if (typeof rawdata.cols[0] === "string") {
-      // Temporary check to see if cols are string or object
+      // Temposry check to see if cols are string or object
       rawdata.cols.forEach(function (col) {
         return _this2.rawdata.cols.push({
           title: col,
@@ -153,11 +161,8 @@ var TableThrowin = /*#__PURE__*/function (_Throwin2) {
       });
     } else {
       _this2.rawdata.cols = rawdata.cols;
-    }
+    } // this.rawdata.cols.forEach(col => col.formatter = formatHTML);
 
-    _this2.rawdata.cols.forEach(function (col) {
-      return col.formatter = formatHTML;
-    });
 
     return _this2;
   }
@@ -199,12 +204,14 @@ var TableThrowin = /*#__PURE__*/function (_Throwin2) {
 var JSONThrowin = /*#__PURE__*/function (_Throwin3) {
   _inherits(JSONThrowin, _Throwin3);
 
+  var _super3 = _createSuper(JSONThrowin);
+
   function JSONThrowin(name, extension, rawdata) {
     var _this3;
 
     _classCallCheck(this, JSONThrowin);
 
-    _this3 = _possibleConstructorReturn(this, _getPrototypeOf(JSONThrowin).call(this, name, extension, rawdata));
+    _this3 = _super3.call(this, name, extension, rawdata);
     _this3.type = 'json';
     _this3.object = null;
     return _this3;
@@ -216,12 +223,14 @@ var JSONThrowin = /*#__PURE__*/function (_Throwin3) {
 var JSONSelectThrowin = /*#__PURE__*/function (_JSONThrowin) {
   _inherits(JSONSelectThrowin, _JSONThrowin);
 
+  var _super4 = _createSuper(JSONSelectThrowin);
+
   function JSONSelectThrowin(name, extension, rawdata) {
     var _this4;
 
     _classCallCheck(this, JSONSelectThrowin);
 
-    _this4 = _possibleConstructorReturn(this, _getPrototypeOf(JSONSelectThrowin).call(this, name, extension, rawdata));
+    _this4 = _super4.call(this, name, extension, rawdata);
     _this4.type = 'json_select';
     _this4.object = null;
     return _this4;
@@ -242,12 +251,14 @@ var JSONSelectThrowin = /*#__PURE__*/function (_JSONThrowin) {
 var WebPageThrowin = /*#__PURE__*/function (_Throwin4) {
   _inherits(WebPageThrowin, _Throwin4);
 
+  var _super5 = _createSuper(WebPageThrowin);
+
   function WebPageThrowin(name, extension, rawdata) {
     var _this5;
 
     _classCallCheck(this, WebPageThrowin);
 
-    _this5 = _possibleConstructorReturn(this, _getPrototypeOf(WebPageThrowin).call(this, name, extension, rawdata));
+    _this5 = _super5.call(this, name, extension, rawdata);
     _this5.type = 'webpage';
     return _this5;
   } // Overload

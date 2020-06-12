@@ -35,7 +35,7 @@ server () {
 watch () {
     echo "[Info] Watching files for changes..."
     trap "kill 0" EXIT
-    npx babel --verbose -w src/js/ -d docs/scripts/ > util.babel.log 2>&1 &
+    npx babel src/js/ --watch --out-dir docs/scripts/ > util.babel.log 2>&1 &
     npx sass --watch src/sass/:docs/styles/ > util.sass.log 2>&1 &
     wait
 }

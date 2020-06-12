@@ -24,7 +24,7 @@ var UI = {
   },
   DialogView: {
     render: function render() {
-      ReactDOM.render(React.createElement(DialogueComponent, {
+      ReactDOM.render( /*#__PURE__*/React.createElement(DialogueComponent, {
         prompt: DATA.Dialog.get(0).prompt
       }), document.querySelector('#dialog'));
     }
@@ -41,7 +41,7 @@ var UI = {
     },
     render: function render(focus_tab) {
       if (focus_tab) this.active_tab = focus_tab;
-      ReactDOM.render(React.createElement(TabViewComponent, {
+      ReactDOM.render( /*#__PURE__*/React.createElement(TabViewComponent, {
         active_tab: this.active_tab
       }), document.querySelector('#tabview'));
       DATA.Throwin.getAll().forEach(function (t) {
@@ -158,7 +158,7 @@ var UI = {
       });
     },
     render: function render() {
-      ReactDOM.render(React.createElement(HeaderComponent, {
+      ReactDOM.render( /*#__PURE__*/React.createElement(HeaderComponent, {
         menus: this.menus
       }), document.querySelector('#header'));
     }

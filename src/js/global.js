@@ -309,8 +309,9 @@ function downloadData(data, filename) {
     document.body.removeChild(element);
 }
 
-function isHyperlink(string) {
-    if (!string) return false;
-    if (string.startsWith('https://') || string.startsWith('http://')) return true;
+function isHyperlink(str) {
+    if (!str) return false;
+    if (typeof str !== 'string') return false;
+    if (str.startsWith('https://') || str.startsWith('http://')) return true;
     return false;
 }

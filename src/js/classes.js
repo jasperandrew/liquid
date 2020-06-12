@@ -70,14 +70,15 @@ class TableThrowin extends Throwin {
                 return val;
             }
         }
+        
 
-        if(typeof(rawdata.cols[0]) === "string"){ // Temporary check to see if cols are string or object
+        if(typeof(rawdata.cols[0]) === "string"){ // Temposry check to see if cols are string or object
             rawdata.cols.forEach(col => this.rawdata.cols.push({ title:col, field:col, editor:true }));
         }else{
             this.rawdata.cols = rawdata.cols;
         }
 
-        this.rawdata.cols.forEach(col => col.formatter = formatHTML);
+        // this.rawdata.cols.forEach(col => col.formatter = formatHTML);
     }
 
     getTableObject() { return this.object; }

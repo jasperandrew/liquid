@@ -237,7 +237,7 @@ var DATA = {
           for (var i in json.answ_cands) {
             var opt = json.answ_cands[i];
             reply_opts.push({
-              jsxElement: React.createElement(ReplyButtonComponent, {
+              jsxElement: /*#__PURE__*/React.createElement(ReplyButtonComponent, {
                 key: i + 1,
                 i: i + 1,
                 isDefault: 0,
@@ -254,7 +254,7 @@ var DATA = {
 
         case 'text':
           reply_opts.push({
-            jsxElement: React.createElement(ReplyTextComponent, {
+            jsxElement: /*#__PURE__*/React.createElement(ReplyTextComponent, {
               key: 1,
               i: 1,
               optId: json.qst_id,

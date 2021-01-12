@@ -4,9 +4,9 @@
   "description": "Liquid",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx babel src/js/ -d docs/scripts/ && npx sass src/sass/:docs/styles/",
-    "start": "./util.sh a"
+    "server": "cd docs/ && python -m http.server 7000 > ../util.server.log 2>&1",
+    "watch": "npx babel src/js/ --watch --out-dir docs/scripts/ > util.babel.log 2>&1 & npx sass --watch src/sass/:docs/styles/ > util.sass.log 2>&1 &"
   },
   "repository": {
     "type": "git",

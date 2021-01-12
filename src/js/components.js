@@ -80,7 +80,8 @@ class ThrowinComponent extends React.Component {
             case 'json_select':
                 let k = 1;
                 for(let name in this.props.rawdata){
-                    let val = this.props.rawdata[name].toString();
+                    let val = this.props.rawdata[name]
+                    val = (val === null ? "null" : val.toString());
                     if(val.length > 70) val = val.slice(0,70) + ' . . .';
 
                     let id = `json_select_t${this.props.n}_${name}`;

@@ -183,7 +183,8 @@ var ThrowinComponent = /*#__PURE__*/function (_React$Component4) {
           var k = 1;
 
           for (var name in this.props.rawdata) {
-            var val = this.props.rawdata[name].toString();
+            var val = this.props.rawdata[name];
+            val = val === null ? "null" : val.toString();
             if (val.length > 70) val = val.slice(0, 70) + ' . . .';
             var id = "json_select_t".concat(this.props.n, "_").concat(name);
             innerHTML.push( /*#__PURE__*/React.createElement("label", {
